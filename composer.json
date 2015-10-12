@@ -18,7 +18,8 @@
     "require": {
         "php" : ">=5.5.0",
         "illuminate/support": "~5.1",
-        "intervention/image": "2.3.2"
+        "intervention/image": "2.3.2",
+        "spatie/laravel-medialibrary": "3.5.1"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*"
