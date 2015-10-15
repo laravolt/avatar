@@ -31,7 +31,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->bind('avatar',function($app){
             $config = $app->make('config');
-            return new Avatar($config->get('avatar.chars'), $config->get('avatar.colors'), $config->get('avatar.fonts'));
+            return new Avatar($config->get('avatar'));
         });
     }
 

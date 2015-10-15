@@ -1,6 +1,7 @@
 <?php
 namespace Laravolt\Avatar;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Intervention\Image\Facades\Image;
 use Stringy\Stringy;
@@ -10,18 +11,22 @@ class Avatar
     protected $chars;
     protected $colors;
     protected $fonts;
+    protected $fontSize;
+    protected $width;
+    protected $height;
 
     /**
      * Avatar constructor.
-     * @param int $chars
-     * @param array $colors
-     * @param $fonts
+     * @param array $config
      */
-    public function __construct($chars, array $colors, $fonts)
+    public function __construct(array $config)
     {
-        $this->chars = $chars;
-        $this->colors = $colors;
-        $this->fonts = $fonts;
+        $this->chars = Arr::get($config, 'chars', 2);
+        $this->colors = Arr::get($config, 'colors', ['#999999']);
+        $this->fonts = Arr::get($config, 'fonts', [1]);
+        $this->fontSize = Arr::get($config, 'fontSize', 32);
+        $this->width = Arr::get($config, 'width', 100);
+        $this->height = Arr::get($config, 'height', 100);
     }
 
 
@@ -29,10 +34,14 @@ class Avatar
     {
         $initials = $this->getInitials($name);
         $bg = $this->getBackground($name);
-        $img = Image::canvas(100, 100)->fill($bg);
-        $img->text($initials, 50, 50, function ($font) use ($name) {
-            $font->file(base_path('resources/laravolt/avatar/fonts/' . $this->getFont($name)));
-            $font->size(38);
+        $img = Image::canvas($this->width, $this->height)->fill($bg);
+
+        $x = $this->width / 2;
+        $y = $this->height / 2;
+
+        $img->text($initials, $x, $y, function ($font) use ($name) {
+            $font->file($this->getFont($name));
+            $font->size($this->fontSize);
             $font->color('#ffffff');
             $font->align('center');
             $font->valign('middle');
@@ -63,12 +72,19 @@ class Avatar
     protected function getBackground($name)
     {
         $number = ord($this->getInitials($name)[0]);
+
         return $this->colors[$number % count($this->colors)];
     }
 
     protected function getFont($name)
     {
         $number = ord($this->getInitials($name)[0]);
-        return $this->fonts[$number % count($this->fonts)];
+        $font = $this->fonts[$number % count($this->fonts)];
+        $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
+        if (is_file($fontFile)) {
+            return $fontFile;
+        }
+
+        return 5;
     }
 }

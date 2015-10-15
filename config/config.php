@@ -3,9 +3,12 @@
  * Set specific configuration variables here
  */
 return [
-    'chars'  => 2,
-    'fonts'  => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
-    'colors' => [
+    'width'    => 100,
+    'height'   => 100,
+    'chars'    => 2,
+    'fontSize' => 48,
+    'fonts'    => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
+    'colors'   => [
         '#f44336',
         '#E91E63',
         '#9C27B0',
