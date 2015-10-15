@@ -31,9 +31,6 @@ class Avatar
         $this->fontSize = Arr::get($config, 'fontSize', 32);
         $this->width = Arr::get($config, 'width', 100);
         $this->height = Arr::get($config, 'height', 100);
-
-        // init image
-        $this->image = Image::canvas($this->width, $this->height);
     }
 
     public function create($name)
@@ -72,6 +69,24 @@ class Avatar
     public function setForeground($hex)
     {
         $this->foreground = $hex;
+
+        return $this;
+    }
+
+    public function setDimension($width, $height = null)
+    {
+        if (!$height) {
+            $height = $width;
+        }
+        $this->width = $width;
+        $this->height = $height;
+
+        return $this;
+    }
+
+    public function setFontSize($size)
+    {
+        $this->fontSize = $size;
 
         return $this;
     }
@@ -129,6 +144,7 @@ class Avatar
 
     protected function buildAvatar()
     {
+        $this->image = Image::canvas($this->width, $this->height);
         $this->image->fill($this->background);
 
         $x = $this->width / 2;
