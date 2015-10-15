@@ -8,12 +8,15 @@ use Stringy\Stringy;
 
 class Avatar
 {
+    protected $name;
     protected $chars;
     protected $colors;
     protected $fonts;
     protected $fontSize;
     protected $width;
     protected $height;
+    protected $image;
+    protected $background = '#cccccc';
 
     /**
      * Avatar constructor.
@@ -27,37 +30,55 @@ class Avatar
         $this->fontSize = Arr::get($config, 'fontSize', 32);
         $this->width = Arr::get($config, 'width', 100);
         $this->height = Arr::get($config, 'height', 100);
+
+        // init image
+        $this->image = Image::canvas($this->width, $this->height);
     }
 
-
-    public function data($name)
+    public function create($name)
     {
-        $initials = $this->getInitials($name);
-        $bg = $this->getBackground($name);
-        $img = Image::canvas($this->width, $this->height)->fill($bg);
+        if (is_array($name)) {
+            throw new \InvalidArgumentException(
+                'Passed value cannot be an array'
+            );
+        } elseif (is_object($name) && !method_exists($name, '__toString')) {
+            throw new \InvalidArgumentException(
+                'Passed object must have a __toString method'
+            );
+        }
 
-        $x = $this->width / 2;
-        $y = $this->height / 2;
+        $this->name = (string)$name;
 
-        $img->text($initials, $x, $y, function ($font) use ($name) {
-            $font->file($this->getFont($name));
-            $font->size($this->fontSize);
-            $font->color('#ffffff');
-            $font->align('center');
-            $font->valign('middle');
-        });
+        $this->setBackground($this->getRandomBackground());
 
-        return $img->encode('data-url');
+        return $this;
     }
 
-    protected function getInitials($name)
+    public function toBase64()
     {
-        $name = Stringy::create($name)->collapseWhitespace();
+        $this->makeImage();
+
+        return $this->image->encode('data-url');
+    }
+
+    public function setBackground($hex)
+    {
+        $this->background = $hex;
+    }
+
+    protected function getInitials()
+    {
+        $name = Stringy::create($this->name)->collapseWhitespace();
         $words = new Collection(explode(' ', $name));
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
-            return Stringy::create($words->first())->substr(0, $this->chars);
+            $string = Stringy::create($words->first());
+            if ($string->length() >= $this->chars) {
+                return $string->substr(0, $this->chars);
+            }
+
+            return (string)$string;
         }
 
         // otherwise, use initial char from each word
@@ -69,22 +90,48 @@ class Avatar
         return $initials->slice(0, $this->chars)->implode('');
     }
 
-    protected function getBackground($name)
+    protected function getRandomBackground()
     {
-        $number = ord($this->getInitials($name)[0]);
+        if (!$this->name) {
+            return $this->background;
+        }
+
+        $number = ord($this->getInitials($this->name)[0]);
 
         return $this->colors[$number % count($this->colors)];
     }
 
-    protected function getFont($name)
+    protected function getFont()
     {
-        $number = ord($this->getInitials($name)[0]);
-        $font = $this->fonts[$number % count($this->fonts)];
-        $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
-        if (is_file($fontFile)) {
-            return $fontFile;
+        $initials = $this->getInitials();
+
+        if ($initials) {
+            $number = ord($initials[0]);
+            $font = $this->fonts[$number % count($this->fonts)];
+            $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
+            if (is_file($fontFile)) {
+                return $fontFile;
+            }
         }
 
         return 5;
+    }
+
+    protected function makeImage()
+    {
+        $this->image->fill($this->background);
+
+        $x = $this->width / 2;
+        $y = $this->height / 2;
+        $initials = $this->getInitials();
+
+        $this->image->text($initials, $x, $y, function ($font) {
+            $font->file($this->getFont());
+            $font->size($this->fontSize);
+            $font->color('#ffffff');
+            $font->align('center');
+            $font->valign('middle');
+        });
+
     }
 }
