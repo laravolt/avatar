@@ -17,6 +17,7 @@ class Avatar
     protected $height;
     protected $image;
     protected $background = '#cccccc';
+    protected $foreground = '#ffffff';
 
     /**
      * Avatar constructor.
@@ -56,7 +57,7 @@ class Avatar
 
     public function toBase64()
     {
-        $this->makeImage();
+        $this->buildAvatar();
 
         return $this->image->encode('data-url');
     }
@@ -64,6 +65,15 @@ class Avatar
     public function setBackground($hex)
     {
         $this->background = $hex;
+
+        return $this;
+    }
+
+    public function setForeground($hex)
+    {
+        $this->foreground = $hex;
+
+        return $this;
     }
 
     protected function getInitials()
@@ -117,7 +127,7 @@ class Avatar
         return 5;
     }
 
-    protected function makeImage()
+    protected function buildAvatar()
     {
         $this->image->fill($this->background);
 
@@ -128,7 +138,7 @@ class Avatar
         $this->image->text($initials, $x, $y, function ($font) {
             $font->file($this->getFont());
             $font->size($this->fontSize);
-            $font->color('#ffffff');
+            $font->color($this->foreground);
             $font->align('center');
             $font->valign('middle');
         });
