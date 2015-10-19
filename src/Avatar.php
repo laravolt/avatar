@@ -18,6 +18,7 @@ class Avatar
     protected $image;
     protected $background = '#cccccc';
     protected $foreground = '#ffffff';
+    protected $initials = '';
 
     /**
      * Avatar constructor.
@@ -47,6 +48,7 @@ class Avatar
 
         $this->name = (string)$name;
 
+        $this->initials = $this->getInitials();
         $this->setBackground($this->getRandomBackground());
 
         return $this;
@@ -117,11 +119,17 @@ class Avatar
 
     protected function getRandomBackground()
     {
-        if (!$this->name) {
+        if (strlen($this->initials) == 0) {
             return $this->background;
         }
 
-        $number = ord($this->getInitials($this->name)[0]);
+        $number = ord($this->initials[0]);
+        $i = 1;
+        $charLength = strlen($this->initials);
+        while($i < $charLength) {
+            $number += ord($this->initials[$i]);
+            $i++;
+        }
 
         return $this->colors[$number % count($this->colors)];
     }
