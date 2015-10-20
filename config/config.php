@@ -3,11 +3,26 @@
  * Set specific configuration variables here
  */
 return [
+    // Whether all characters supplied must be replaced with their closest ASCII counterparts
+    'ascii'    => false,
+
+    // Image width, in pixel
     'width'    => 100,
+
+    // Image height, in pixel
     'height'   => 100,
+
+    // Number of characters used as initials. If name consists of single word, the first N character will be used
     'chars'    => 2,
+
+    // font size
     'fontSize' => 48,
+
+    // Fonts used to render text.
+    // If contains more than one fonts, randomly selected based on name supplied
     'fonts'    => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
+
+    // List of background colors to be used, randomly selected based on name supplied
     'colors'   => [
         '#f44336',
         '#E91E63',

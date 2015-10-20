@@ -19,6 +19,7 @@ class Avatar
     protected $background = '#cccccc';
     protected $foreground = '#ffffff';
     protected $initials = '';
+    protected $ascii = false;
 
     /**
      * Avatar constructor.
@@ -32,6 +33,7 @@ class Avatar
         $this->fontSize = Arr::get($config, 'fontSize', 32);
         $this->width = Arr::get($config, 'width', 100);
         $this->height = Arr::get($config, 'height', 100);
+        $this->ascii = Arr::get($config, 'ascii', false);
     }
 
     public function create($name)
@@ -46,7 +48,11 @@ class Avatar
             );
         }
 
-        $this->name = (string)$name;
+        $this->name = Stringy::create($name)->collapseWhitespace();
+        if ($this->ascii)
+        {
+            $this->name = $this->name->toAscii();
+        }
 
         $this->initials = $this->getInitials();
         $this->setBackground($this->getRandomBackground());
@@ -95,13 +101,11 @@ class Avatar
 
     protected function getInitials()
     {
-        $name = Stringy::create($this->name)->collapseWhitespace();
-        $words = new Collection(explode(' ', $name));
+        $words = new Collection(explode(' ', $this->name));
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
-            $string = Stringy::create($words->first());
-            if ($string->length() >= $this->chars) {
+            if ($this->name->length() >= $this->chars) {
                 return $string->substr(0, $this->chars);
             }
 
@@ -126,7 +130,7 @@ class Avatar
         $number = ord($this->initials[0]);
         $i = 1;
         $charLength = strlen($this->initials);
-        while($i < $charLength) {
+        while ($i < $charLength) {
             $number += ord($this->initials[$i]);
             $i++;
         }
