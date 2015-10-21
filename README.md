@@ -56,24 +56,32 @@ return [
     // Whether all characters supplied must be replaced with their closest ASCII counterparts
     'ascii'    => false,
 
-    // image width, in pixel
+    // Image shape: circle or square
+    'shape' => 'circle',
+
+    // Image width, in pixel
     'width'    => 100,
 
-    // image height, in pixel
+    // Image height, in pixel
     'height'   => 100,
 
-    // number of characters used as initials
+    // Number of characters used as initials. If name consists of single word, the first N character will be used
     'chars'    => 2,
 
     // font size
     'fontSize' => 48,
 
     // Fonts used to render text.
-    // If contains more than one fonts, it will randomly choose which font used
+    // If contains more than one fonts, randomly selected based on name supplied
     'fonts'    => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
 
-    // list of background colors to be used
-    'colors'   => [
+    // List of foreground colors to be used, randomly selected based on name supplied
+    'foregrounds'   => [
+        '#FFFFFF'
+    ],
+
+    // List of background colors to be used, randomly selected based on name supplied
+    'backgrounds'   => [
         '#f44336',
         '#E91E63',
         '#9C27B0',
@@ -89,6 +97,16 @@ return [
         '#FFC107',
         '#FF9800',
         '#FF5722',
+    ],
+
+    'border'    => [
+        'size'  => 1,
+        
+        // border color, available value are:
+        // 'foreground' (same as foreground color)
+        // 'background' (same as background color)
+        // or any valid hex ('#aabbcc')
+        'color' => 'foreground'
     ]
 ];
 
@@ -103,6 +121,8 @@ Avatar::create('Soekarno')->setDimension(100, 200); // width = 100, height = 200
 Avatar::create('Soekarno')->setBackground('#001122');
 Avatar::create('Soekarno')->setForeground('#999999');
 Avatar::create('Soekarno')->setFontSize(72);
+Avatar::create('Soekarno')->setBorder(1, '#aabbcc'); // size = 1, color = #aabbcc
+Avatar::create('Soekarno')->setShape('square');
 
 // chaining
 Avatar::create('Habibie')->setDimension(50)->setFontSize(18)->toBase64();

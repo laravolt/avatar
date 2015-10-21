@@ -8,6 +8,7 @@ use Stringy\Stringy;
 
 class Avatar
 {
+    protected $shape;
     protected $name;
     protected $chars;
     protected $availableBackgrounds;
@@ -19,6 +20,8 @@ class Avatar
     protected $image;
     protected $background = '#cccccc';
     protected $foreground = '#ffffff';
+    protected $borderSize = 0;
+    protected $borderColor;
     protected $initials = '';
     protected $ascii = false;
 
@@ -28,6 +31,7 @@ class Avatar
      */
     public function __construct(array $config)
     {
+        $this->shape = Arr::get($config, 'shape', 'circle');
         $this->chars = Arr::get($config, 'chars', 2);
         $this->availableBackgrounds = Arr::get($config, 'backgrounds', [$this->background]);
         $this->availableForegrounds = Arr::get($config, 'foregrounds', [$this->foreground]);
@@ -36,6 +40,8 @@ class Avatar
         $this->width = Arr::get($config, 'width', 100);
         $this->height = Arr::get($config, 'height', 100);
         $this->ascii = Arr::get($config, 'ascii', false);
+        $this->borderSize = Arr::get($config, 'border.size');
+        $this->borderColor = Arr::get($config, 'border.color');
     }
 
     public function create($name)
@@ -51,8 +57,7 @@ class Avatar
         }
 
         $this->name = Stringy::create($name)->collapseWhitespace();
-        if ($this->ascii)
-        {
+        if ($this->ascii) {
             $this->name = $this->name->toAscii();
         }
 
@@ -98,6 +103,21 @@ class Avatar
     public function setFontSize($size)
     {
         $this->fontSize = $size;
+
+        return $this;
+    }
+
+    public function setBorder($size, $color)
+    {
+        $this->borderSize = $size;
+        $this->borderColor = $color;
+
+        return $this;
+    }
+
+    public function setShape($shape)
+    {
+        $this->shape = $shape;
 
         return $this;
     }
@@ -174,15 +194,28 @@ class Avatar
         return 5;
     }
 
+    protected function getBorderColor()
+    {
+        if ($this->borderColor == 'foreground') {
+            return $this->foreground;
+        }
+        if ($this->borderColor == 'background') {
+            return $this->background;
+        }
+
+        return $this->borderColor;
+    }
+
     protected function buildAvatar()
     {
-        $this->image = Image::canvas($this->width, $this->height);
-        $this->image->fill($this->background);
-
         $x = $this->width / 2;
         $y = $this->height / 2;
-        $initials = $this->getInitials();
 
+        $this->image = Image::canvas($this->width, $this->height);
+
+        $this->createShape();
+
+        $initials = $this->getInitials();
         $this->image->text($initials, $x, $y, function ($font) {
             $font->file($this->getFont());
             $font->size($this->fontSize);
@@ -191,5 +224,38 @@ class Avatar
             $font->valign('middle');
         });
 
+    }
+
+    protected function createShape()
+    {
+        $method = 'create' . ucfirst($this->shape) . 'Shape';
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        }
+
+        throw new \InvalidArgumentException("Shape [$this->shape] currently not supported.");
+    }
+
+    protected function createCircleShape()
+    {
+        $circleDiameter = $this->width - $this->borderSize;
+        $x = $this->width / 2;
+        $y = $this->height / 2;
+
+        $this->image->circle($circleDiameter, $x, $y, function ($draw) {
+            $draw->background($this->background);
+            $draw->border($this->borderSize, $this->getBorderColor());
+        });
+    }
+
+    protected function createSquareShape()
+    {
+        $x = $y = $this->borderSize;
+        $width = $this->width - ($this->borderSize * 2);
+        $height = $this->height - ($this->borderSize * 2);
+        $this->image->rectangle($x, $y, $width, $height, function ($draw) {
+            $draw->background($this->background);
+            $draw->border($this->borderSize, $this->getBorderColor());
+        });
     }
 }

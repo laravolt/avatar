@@ -6,6 +6,9 @@ return [
     // Whether all characters supplied must be replaced with their closest ASCII counterparts
     'ascii'    => false,
 
+    // Image shape: circle or square
+    'shape' => 'circle',
+
     // Image width, in pixel
     'width'    => 100,
 
@@ -44,5 +47,15 @@ return [
         '#FFC107',
         '#FF9800',
         '#FF5722',
+    ],
+
+    'border'    => [
+        'size'  => 1,
+        
+        // border color, available value are:
+        // 'foreground' (same as foreground color)
+        // 'background' (same as background color)
+        // or any valid hex ('#aabbcc')
+        'color' => 'foreground'
     ]
 ];
