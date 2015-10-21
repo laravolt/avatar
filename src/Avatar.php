@@ -10,7 +10,8 @@ class Avatar
 {
     protected $name;
     protected $chars;
-    protected $colors;
+    protected $availableBackgrounds;
+    protected $availableForegrounds;
     protected $fonts;
     protected $fontSize;
     protected $width;
@@ -28,7 +29,8 @@ class Avatar
     public function __construct(array $config)
     {
         $this->chars = Arr::get($config, 'chars', 2);
-        $this->colors = Arr::get($config, 'colors', ['#999999']);
+        $this->availableBackgrounds = Arr::get($config, 'backgrounds', [$this->background]);
+        $this->availableForegrounds = Arr::get($config, 'foregrounds', [$this->foreground]);
         $this->fonts = Arr::get($config, 'fonts', [1]);
         $this->fontSize = Arr::get($config, 'fontSize', 32);
         $this->width = Arr::get($config, 'width', 100);
@@ -55,6 +57,7 @@ class Avatar
         }
 
         $this->initials = $this->getInitials();
+        $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
         return $this;
@@ -135,7 +138,24 @@ class Avatar
             $i++;
         }
 
-        return $this->colors[$number % count($this->colors)];
+        return $this->availableBackgrounds[$number % count($this->availableBackgrounds)];
+    }
+
+    protected function getRandomForeground()
+    {
+        if (strlen($this->initials) == 0) {
+            return $this->foreground;
+        }
+
+        $number = ord($this->initials[0]);
+        $i = 1;
+        $charLength = strlen($this->initials);
+        while ($i < $charLength) {
+            $number += ord($this->initials[$i]);
+            $i++;
+        }
+
+        return $this->availableForegrounds[$number % count($this->availableForegrounds)];
     }
 
     protected function getFont()

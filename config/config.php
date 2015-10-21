@@ -22,8 +22,13 @@ return [
     // If contains more than one fonts, randomly selected based on name supplied
     'fonts'    => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
 
+    // List of foreground colors to be used, randomly selected based on name supplied
+    'foregrounds'   => [
+        '#FFFFFF'
+    ],
+
     // List of background colors to be used, randomly selected based on name supplied
-    'colors'   => [
+    'backgrounds'   => [
         '#f44336',
         '#E91E63',
         '#9C27B0',
