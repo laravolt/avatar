@@ -2,7 +2,7 @@
 
 ![](https://dl.dropboxusercontent.com/u/21271348/laravolt/avatar/avatar-result.png)
 
-Display unique, initial-based avatar (as base64) for Eloquent user. Can be used as default avatar if User doesn't have their own picture.
+Display unique avatar for any user based on their name. Can be used as default avatar when user has not uploaded the avatar image itself.
 
 ## Installation
 
