@@ -31,7 +31,8 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->bind('avatar',function($app){
             $config = $app->make('config');
-            return new Avatar($config->get('avatar'));
+            $cache = $app->make('cache');
+            return new Avatar($config->get('avatar'), $cache);
         });
     }
 

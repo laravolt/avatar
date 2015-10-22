@@ -1,10 +1,11 @@
 <?php
 namespace Laravolt\Avatar;
 
+use Stringy\Stringy;
 use Illuminate\Support\Arr;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Collection;
 use Intervention\Image\Facades\Image;
-use Stringy\Stringy;
 
 class Avatar
 {
@@ -14,6 +15,7 @@ class Avatar
     protected $availableBackgrounds;
     protected $availableForegrounds;
     protected $fonts;
+    protected $font;
     protected $fontSize;
     protected $width;
     protected $height;
@@ -25,11 +27,14 @@ class Avatar
     protected $initials = '';
     protected $ascii = false;
 
+    protected $cache;
+
     /**
      * Avatar constructor.
      * @param array $config
+     * @param CacheManager $cache
      */
-    public function __construct(array $config)
+    public function __construct(array $config, CacheManager $cache)
     {
         $this->shape = Arr::get($config, 'shape', 'circle');
         $this->chars = Arr::get($config, 'chars', 2);
@@ -42,6 +47,8 @@ class Avatar
         $this->ascii = Arr::get($config, 'ascii', false);
         $this->borderSize = Arr::get($config, 'border.size');
         $this->borderColor = Arr::get($config, 'border.color');
+
+        $this->cache = $cache;
     }
 
     public function create($name)
@@ -62,6 +69,7 @@ class Avatar
         }
 
         $this->initials = $this->getInitials();
+        $this->setFont();
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
@@ -70,9 +78,18 @@ class Avatar
 
     public function toBase64()
     {
-        $this->buildAvatar();
+        $keys = [];
+        $attributes = ['initials', 'shape', 'chars', 'font', 'fontSize', 'width', 'height', 'borderSize', 'borderColor'];
+        foreach ($attributes as $attr) {
+            $keys[] = $this->$attr;
+        }
 
-        return $this->image->encode('data-url');
+        $cacheKey = md5(implode('-', $keys));
+
+        return $this->cache->rememberForever($cacheKey, function(){
+            $this->buildAvatar();
+            return $this->image->encode('data-url');
+        });
     }
 
     public function setBackground($hex)
@@ -178,7 +195,7 @@ class Avatar
         return $this->availableForegrounds[$number % count($this->availableForegrounds)];
     }
 
-    protected function getFont()
+    protected function setFont()
     {
         $initials = $this->getInitials();
 
@@ -187,11 +204,12 @@ class Avatar
             $font = $this->fonts[$number % count($this->fonts)];
             $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
             if (is_file($fontFile)) {
-                return $fontFile;
+                $this->font = $fontFile;
+                return true;
             }
         }
 
-        return 5;
+        $this->font = 5;
     }
 
     protected function getBorderColor()
@@ -215,9 +233,8 @@ class Avatar
 
         $this->createShape();
 
-        $initials = $this->getInitials();
-        $this->image->text($initials, $x, $y, function ($font) {
-            $font->file($this->getFont());
+        $this->image->text($this->initials, $x, $y, function ($font) {
+            $font->file($this->font);
             $font->size($this->fontSize);
             $font->color($this->foreground);
             $font->align('center');

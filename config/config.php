@@ -51,7 +51,7 @@ return [
 
     'border'    => [
         'size'  => 1,
-        
+
         // border color, available value are:
         // 'foreground' (same as foreground color)
         // 'background' (same as background color)
