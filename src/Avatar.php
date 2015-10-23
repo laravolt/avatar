@@ -79,15 +79,26 @@ class Avatar
     public function toBase64()
     {
         $keys = [];
-        $attributes = ['initials', 'shape', 'chars', 'font', 'fontSize', 'width', 'height', 'borderSize', 'borderColor'];
+        $attributes = [
+            'initials',
+            'shape',
+            'chars',
+            'font',
+            'fontSize',
+            'width',
+            'height',
+            'borderSize',
+            'borderColor'
+        ];
         foreach ($attributes as $attr) {
             $keys[] = $this->$attr;
         }
 
         $cacheKey = md5(implode('-', $keys));
 
-        return $this->cache->rememberForever($cacheKey, function(){
+        return $this->cache->rememberForever($cacheKey, function () {
             $this->buildAvatar();
+
             return $this->image->encode('data-url');
         });
     }
@@ -146,10 +157,10 @@ class Avatar
         // if name contains single word, use first N character
         if ($words->count() === 1) {
             if ($this->name->length() >= $this->chars) {
-                return $string->substr(0, $this->chars);
+                return $this->name->substr(0, $this->chars);
             }
 
-            return (string)$string;
+            return (string) $words->first();
         }
 
         // otherwise, use initial char from each word
@@ -205,6 +216,7 @@ class Avatar
             $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
             if (is_file($fontFile)) {
                 $this->font = $fontFile;
+
                 return true;
             }
         }
