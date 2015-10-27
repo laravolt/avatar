@@ -35,6 +35,10 @@ Avatar::create('Joko Widodo')->toBase64();
 //this will display initials JW as an image
 <img src="{{ Avatar::create('Joko Widodo')->toBase64() }}" />
 
+//save to file
+Avatar::create('Susilo Bambang Yudhoyono')->save('sample.png');
+Avatar::create('Susilo Bambang Yudhoyono')->save('sample.jpg', 100); // quality = 100
+
 ```
 
 ## Non-ASCII Character

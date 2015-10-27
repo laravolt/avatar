@@ -85,6 +85,12 @@ class Avatar
         });
     }
 
+    public function save($path, $quality = 90)
+    {
+        $this->buildAvatar();
+        return $this->image->save($path, $quality);
+    }
+
     public function setBackground($hex)
     {
         $this->background = $hex;
