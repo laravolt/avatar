@@ -78,25 +78,7 @@ class Avatar
 
     public function toBase64()
     {
-        $keys = [];
-        $attributes = [
-            'initials',
-            'shape',
-            'chars',
-            'font',
-            'fontSize',
-            'width',
-            'height',
-            'borderSize',
-            'borderColor'
-        ];
-        foreach ($attributes as $attr) {
-            $keys[] = $this->$attr;
-        }
-
-        $cacheKey = md5(implode('-', $keys));
-
-        return $this->cache->rememberForever($cacheKey, function () {
+        return $this->cache->rememberForever($this->cacheKey(), function () {
             $this->buildAvatar();
 
             return $this->image->encode('data-url');
@@ -286,5 +268,27 @@ class Avatar
             $draw->background($this->background);
             $draw->border($this->borderSize, $this->getBorderColor());
         });
+    }
+
+    protected function cacheKey()
+    {
+        $keys = [];
+        $attributes = [
+            'initials',
+            'shape',
+            'chars',
+            'font',
+            'fontSize',
+            'width',
+            'height',
+            'borderSize',
+            'borderColor'
+        ];
+        foreach ($attributes as $attr) {
+            $keys[] = $this->$attr;
+        }
+
+        return md5(implode('-', $keys));
+
     }
 }
