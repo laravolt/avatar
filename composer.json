@@ -2,6 +2,7 @@
     "name": "laravolt/avatar",
     "description": "Display avatar as base64",
     "keywords": [
+        "laravel",
         "laravolt",
         "avatar"
     ],
