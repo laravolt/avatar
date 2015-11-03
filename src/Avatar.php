@@ -12,7 +12,6 @@ class Avatar
 {
     protected $shape;
     protected $name;
-    protected $fonts;
     protected $font;
     protected $fontSize;
     protected $width;
@@ -52,6 +51,7 @@ class Avatar
         $this->initials = $this->theme->getText();
         $this->setBackground($this->theme->getBackground());
         $this->setForeground($this->theme->getForeground());
+        $this->setFont($this->theme->getFont());
 
         return $this;
     }
@@ -99,6 +99,13 @@ class Avatar
     public function setFontSize($size)
     {
         $this->fontSize = $size;
+
+        return $this;
+    }
+
+    public function setFont($font)
+    {
+        $this->font = $font;
 
         return $this;
     }

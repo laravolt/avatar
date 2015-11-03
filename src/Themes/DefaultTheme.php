@@ -7,6 +7,8 @@ use Stringy\Stringy;
 
 class DefaultTheme implements Theme
 {
+    const FALLBACK_FONT = 5;
+
     protected $string;
     protected $initials = '';
     protected $charLimit = 2;
@@ -79,7 +81,7 @@ class DefaultTheme implements Theme
     {
         $initials = $this->getText();
 
-        if ($initials) {
+        if ($initials && $this->fonts) {
             $number = ord($initials[0]);
             $key = $number % count($this->fonts);
             $font = array_get($this->fonts, $key);
@@ -89,7 +91,7 @@ class DefaultTheme implements Theme
             }
         }
 
-        return 5;
+        return self::FALLBACK_FONT;
     }
 
     protected function makeInitials()
