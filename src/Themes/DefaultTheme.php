@@ -11,11 +11,16 @@ class DefaultTheme implements Theme
     protected $initials = '';
     protected $charLimit = 2;
     protected $ascii = false;
+    protected $backgrounds = ['#999999'];
+    protected $foregrounds = ['#FFFFFF'];
 
-    public function __construct($string, $ascii = false, $charLimit = 2)
+    public function __construct($string, $ascii = false, $charLimit = 2, $backgrounds = [], $foregrounds = [])
     {
         $this->ascii = $ascii;
         $this->charLimit = $charLimit;
+
+        $this->setBackgrounds($backgrounds);
+        $this->setForegrounds($foregrounds);
 
         $this->string = Stringy::create($string)->collapseWhitespace();
         if ($this->ascii) {
@@ -25,6 +30,20 @@ class DefaultTheme implements Theme
         $this->makeInitials();
     }
 
+    public function setBackgrounds(array $backgrounds)
+    {
+        if (!empty($backgrounds)) {
+            $this->backgrounds = $backgrounds;
+        }
+    }
+
+    public function setForegrounds(array $foregrounds)
+    {
+        if (!empty($foregrounds)) {
+            $this->foregrounds = $foregrounds;
+        }
+    }
+
     public function getText()
     {
         return $this->initials;
@@ -32,12 +51,12 @@ class DefaultTheme implements Theme
 
     public function getBackground()
     {
-        // TODO: Implement getBackground() method.
+        return $this->getColorByText($this->getText(), $this->backgrounds);
     }
 
     public function getForeground()
     {
-        // TODO: Implement getForeground() method.
+        return $this->getColorByText($this->getText(), $this->foregrounds);
     }
 
     protected function makeInitials()
@@ -62,5 +81,23 @@ class DefaultTheme implements Theme
 
 
         $this->initials = $initials;
+    }
+
+    protected function getColorByText($text, $colors)
+    {
+        $charLength = strlen($text);
+        if ($charLength == 0) {
+            return $colors[0];
+        }
+
+        $number = ord($text[0]);
+        $i = 1;
+        while ($i < $charLength) {
+            $number += ord($text[$i]);
+            $i++;
+        }
+
+        return $colors[$number % count($colors)];
+
     }
 }
