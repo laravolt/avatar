@@ -13,16 +13,32 @@ class DefaultTheme implements Theme
     protected $ascii = false;
     protected $backgrounds = ['#999999'];
     protected $foregrounds = ['#FFFFFF'];
+    protected $fonts = null;
 
-    public function __construct($string, $ascii = false, $charLimit = 2, $backgrounds = [], $foregrounds = [])
+    public function __construct($string = '', $ascii = false, $charLimit = 2, $backgrounds = [], $foregrounds = [], $fonts = [])
     {
         $this->ascii = $ascii;
         $this->charLimit = $charLimit;
+        $this->fonts = $fonts;
 
+        $this->setText($string);
         $this->setBackgrounds($backgrounds);
         $this->setForegrounds($foregrounds);
+    }
 
-        $this->string = Stringy::create($string)->collapseWhitespace();
+    public function setText($text)
+    {
+        if (is_array($text)) {
+            throw new \InvalidArgumentException(
+                'Passed value cannot be an array'
+            );
+        } elseif (is_object($text) && !method_exists($text, '__toString')) {
+            throw new \InvalidArgumentException(
+                'Passed object must have a __toString method'
+            );
+        }
+
+        $this->string = Stringy::create($text)->collapseWhitespace();
         if ($this->ascii) {
             $this->string = $this->string->toAscii();
         }
@@ -59,6 +75,23 @@ class DefaultTheme implements Theme
         return $this->getColorByText($this->getText(), $this->foregrounds);
     }
 
+    public function getFont()
+    {
+        $initials = $this->getText();
+
+        if ($initials) {
+            $number = ord($initials[0]);
+            $key = $number % count($this->fonts);
+            $font = array_get($this->fonts, $key);
+            $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
+            if ($font && is_file($fontFile)) {
+                return $fontFile;
+            }
+        }
+
+        return 5;
+    }
+
     protected function makeInitials()
     {
         $words = new Collection(explode(' ', $this->string));
@@ -72,13 +105,13 @@ class DefaultTheme implements Theme
         } else {
             // otherwise, use initial char from each word
             $chars = new Collection();
+
             $words->each(function ($word) use ($chars) {
                 $chars->push(Stringy::create($word)->substr(0, 1));
             });
 
             $initials = $chars->slice(0, $this->charLimit)->implode('');
         }
-
 
         $this->initials = $initials;
     }

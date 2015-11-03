@@ -3,6 +3,7 @@
 namespace Laravolt\Avatar;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Laravolt\Avatar\Themes\DefaultTheme;
 
 /**
  * Class PackageServiceProvider
@@ -29,10 +30,20 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->app->bind('avatar',function($app){
+        $this->app->bind('avatar', function ($app) {
             $config = $app->make('config');
             $cache = $app->make('cache');
-            return new Avatar($config->get('avatar'), $cache);
+
+            $theme = new DefaultTheme(
+                '',
+                $config->get('avatar.ascii'),
+                $config->get('avatar.chars'),
+                $config->get('avatar.backgrounds'),
+                $config->get('avatar.foregrounds'),
+                $config->get('avatar.fonts')
+            );
+
+            return new Avatar($config->get('avatar'), $cache, $theme);
         });
     }
 
@@ -85,6 +96,6 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function packagePath($path = '')
     {
-        return sprintf("%s/../%s", __DIR__ , $path);
+        return sprintf("%s/../%s", __DIR__, $path);
     }
 }
