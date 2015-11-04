@@ -1,12 +1,11 @@
 <?php
+
 namespace Laravolt\Avatar;
 
-use Laravolt\Avatar\Contracts\Theme;
-use Stringy\Stringy;
-use Illuminate\Support\Arr;
 use Illuminate\Cache\CacheManager;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Arr;
 use Intervention\Image\Facades\Image;
+use Laravolt\Avatar\Contracts\Theme;
 
 class Avatar
 {
@@ -28,9 +27,10 @@ class Avatar
 
     /**
      * Avatar constructor.
-     * @param array $config
+     *
+     * @param array        $config
      * @param CacheManager $cache
-     * @param Theme $theme
+     * @param Theme        $theme
      */
     public function __construct(array $config, CacheManager $cache, Theme $theme)
     {
@@ -68,6 +68,7 @@ class Avatar
     public function save($path, $quality = 90)
     {
         $this->buildAvatar();
+
         return $this->image->save($path, $quality);
     }
 
@@ -160,12 +161,11 @@ class Avatar
             $font->align('center');
             $font->valign('middle');
         });
-
     }
 
     protected function createShape()
     {
-        $method = 'create' . ucfirst($this->shape) . 'Shape';
+        $method = 'create'.ucfirst($this->shape).'Shape';
         if (method_exists($this, $method)) {
             return $this->$method();
         }
@@ -209,13 +209,12 @@ class Avatar
             'background',
             'foreground',
             'borderSize',
-            'borderColor'
+            'borderColor',
         ];
         foreach ($attributes as $attr) {
             $keys[] = $this->$attr;
         }
 
         return md5(implode('-', $keys));
-
     }
 }

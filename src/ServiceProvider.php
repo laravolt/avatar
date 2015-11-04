@@ -6,9 +6,8 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Laravolt\Avatar\Themes\DefaultTheme;
 
 /**
- * Class PackageServiceProvider
+ * Class PackageServiceProvider.
  *
- * @package Laravolt\Avatar
  * @see http://laravel.com/docs/5.1/packages#service-providers
  * @see http://laravel.com/docs/5.1/providers
  */
@@ -18,6 +17,7 @@ class ServiceProvider extends BaseServiceProvider
      * Indicates if loading of the provider is deferred.
      *
      * @see http://laravel.com/docs/5.1/providers#deferred-providers
+     *
      * @var bool
      */
     protected $defer = false;
@@ -26,6 +26,7 @@ class ServiceProvider extends BaseServiceProvider
      * Register the service provider.
      *
      * @see http://laravel.com/docs/5.1/providers#the-register-method
+     *
      * @return void
      */
     public function register()
@@ -48,9 +49,10 @@ class ServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Application is booting
+     * Application is booting.
      *
      * @see http://laravel.com/docs/5.1/providers#the-boot-method
+     *
      * @return void
      */
     public function boot()
@@ -60,9 +62,10 @@ class ServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Register the package public assets
+     * Register the package public assets.
      *
      * @see http://laravel.com/docs/5.1/packages#public-assets
+     *
      * @return void
      */
     protected function registerAssets()
@@ -73,9 +76,10 @@ class ServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Register the package configurations
+     * Register the package configurations.
      *
      * @see http://laravel.com/docs/5.1/packages#configuration
+     *
      * @return void
      */
     protected function registerConfigurations()
@@ -89,13 +93,14 @@ class ServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Loads a path relative to the package base directory
+     * Loads a path relative to the package base directory.
      *
      * @param string $path
+     *
      * @return string
      */
     protected function packagePath($path = '')
     {
-        return sprintf("%s/../%s", __DIR__, $path);
+        return sprintf('%s/../%s', __DIR__, $path);
     }
 }

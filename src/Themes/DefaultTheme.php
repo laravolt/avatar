@@ -1,4 +1,5 @@
 <?php
+
 namespace Laravolt\Avatar\Themes;
 
 use Illuminate\Support\Collection;
@@ -85,7 +86,7 @@ class DefaultTheme implements Theme
             $number = ord($initials[0]);
             $key = $number % count($this->fonts);
             $font = array_get($this->fonts, $key);
-            $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
+            $fontFile = base_path('resources/laravolt/avatar/fonts/'.$font);
             if ($font && is_file($fontFile)) {
                 return $fontFile;
             }
@@ -100,7 +101,6 @@ class DefaultTheme implements Theme
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
-
             $length = min($this->charLimit, $this->string->length());
 
             $initials = $this->string->substr(0, $length);
@@ -133,6 +133,5 @@ class DefaultTheme implements Theme
         }
 
         return $colors[$number % count($colors)];
-
     }
 }

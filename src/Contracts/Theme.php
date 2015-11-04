@@ -1,4 +1,5 @@
 <?php
+
 namespace Laravolt\Avatar\Contracts;
 
 interface Theme
