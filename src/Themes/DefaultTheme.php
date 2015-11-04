@@ -62,24 +62,24 @@ class DefaultTheme implements Theme
         }
     }
 
-    public function getText()
+    public function getInitials()
     {
         return $this->initials;
     }
 
     public function getBackground()
     {
-        return $this->getColorByText($this->getText(), $this->backgrounds);
+        return $this->getColorByText($this->getInitials(), $this->backgrounds);
     }
 
     public function getForeground()
     {
-        return $this->getColorByText($this->getText(), $this->foregrounds);
+        return $this->getColorByText($this->getInitials(), $this->foregrounds);
     }
 
     public function getFont()
     {
-        $initials = $this->getText();
+        $initials = $this->getInitials();
 
         if ($initials && $this->fonts) {
             $number = ord($initials[0]);

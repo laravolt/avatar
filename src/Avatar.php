@@ -48,7 +48,7 @@ class Avatar
     public function create($name)
     {
         $this->theme->setText($name);
-        $this->initials = $this->theme->getText();
+        $this->setInitials($this->theme->getInitials());
         $this->setBackground($this->theme->getBackground());
         $this->setForeground($this->theme->getForeground());
         $this->setFont($this->theme->getFont());
@@ -69,6 +69,13 @@ class Avatar
     {
         $this->buildAvatar();
         return $this->image->save($path, $quality);
+    }
+
+    public function setInitials($initials)
+    {
+        $this->initials = $initials;
+
+        return $this;
     }
 
     public function setBackground($hex)

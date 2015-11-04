@@ -5,28 +5,28 @@ class DefaultThemeTest extends PHPUnit_Framework_TestCase
     public function testHandleNameProperly()
     {
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('Bayu Hendra Winata');
-        $this->assertEquals('BH', $theme->getText());
+        $this->assertEquals('BH', $theme->getInitials());
 
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('Jokowi');
-        $this->assertEquals('Jo', $theme->getText());
+        $this->assertEquals('Jo', $theme->getInitials());
 
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('');
-        $this->assertEquals('', $theme->getText());
+        $this->assertEquals('', $theme->getInitials());
 
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('Ěmon', true);
-        $this->assertEquals('Em', $theme->getText());
+        $this->assertEquals('Em', $theme->getInitials());
 
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('Ěmon', false);
-        $this->assertNotEquals('Em', $theme->getText());
+        $this->assertNotEquals('Em', $theme->getInitials());
 
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('Bayu Hendra Winata', true, 3);
-        $this->assertEquals('BHW', $theme->getText());
+        $this->assertEquals('BHW', $theme->getInitials());
 
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('Jokowi', true, 1);
-        $this->assertEquals('J', $theme->getText());
+        $this->assertEquals('J', $theme->getInitials());
 
         $theme = new \Laravolt\Avatar\Themes\DefaultTheme('Jokowi', true, 999);
-        $this->assertEquals('Jokowi', $theme->getText());
+        $this->assertEquals('Jokowi', $theme->getInitials());
     }
 
     public function testDefaultBackgroundColor()

@@ -5,9 +5,11 @@ interface Theme
 {
     public function __construct($string);
 
-    public function getText();
+    public function getInitials();
 
     public function getBackground();
 
     public function getForeground();
+
+    public function getFont();
 }
