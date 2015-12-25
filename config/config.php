@@ -27,7 +27,7 @@ return [
 
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds'   => [
-        '#FFFFFF'
+        '#FFFFFF',
     ],
 
     // List of background colors to be used, randomly selected based on name supplied
@@ -56,6 +56,6 @@ return [
         // 'foreground' (same as foreground color)
         // 'background' (same as background color)
         // or any valid hex ('#aabbcc')
-        'color' => 'foreground'
-    ]
+        'color' => 'foreground',
+    ],
 ];

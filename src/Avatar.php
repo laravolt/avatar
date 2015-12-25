@@ -1,11 +1,12 @@
 <?php
+
 namespace Laravolt\Avatar;
 
-use Stringy\Stringy;
-use Illuminate\Support\Arr;
 use Illuminate\Cache\CacheManager;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Intervention\Image\Facades\Image;
+use Stringy\Stringy;
 
 class Avatar
 {
@@ -31,7 +32,8 @@ class Avatar
 
     /**
      * Avatar constructor.
-     * @param array $config
+     *
+     * @param array        $config
      * @param CacheManager $cache
      */
     public function __construct(array $config, CacheManager $cache)
@@ -88,6 +90,7 @@ class Avatar
     public function save($path, $quality = 90)
     {
         $this->buildAvatar();
+
         return $this->image->save($path, $quality);
     }
 
@@ -201,7 +204,7 @@ class Avatar
         if ($initials) {
             $number = ord($initials[0]);
             $font = $this->fonts[$number % count($this->fonts)];
-            $fontFile = base_path('resources/laravolt/avatar/fonts/' . $font);
+            $fontFile = base_path('resources/laravolt/avatar/fonts/'.$font);
             if (is_file($fontFile)) {
                 $this->font = $fontFile;
 
@@ -240,12 +243,11 @@ class Avatar
             $font->align('center');
             $font->valign('middle');
         });
-
     }
 
     protected function createShape()
     {
-        $method = 'create' . ucfirst($this->shape) . 'Shape';
+        $method = 'create'.ucfirst($this->shape).'Shape';
         if (method_exists($this, $method)) {
             return $this->$method();
         }
@@ -288,13 +290,12 @@ class Avatar
             'width',
             'height',
             'borderSize',
-            'borderColor'
+            'borderColor',
         ];
         foreach ($attributes as $attr) {
             $keys[] = $this->$attr;
         }
 
         return md5(implode('-', $keys));
-
     }
 }
