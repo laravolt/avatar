@@ -21,7 +21,7 @@
         "illuminate/support": "~5.1",
         "illuminate/cache": "~5.1",
         "intervention/image": "2.3.2",
-        "danielstjules/stringy": "~1.8"
+        "danielstjules/stringy": "~2.2"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*"
