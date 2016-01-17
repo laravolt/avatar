@@ -206,9 +206,8 @@ class Avatar
         if ($initials) {
             $number = ord($initials[0]);
             $font = $this->fonts[$number % count($this->fonts)];
-            $fontFile = base_path('resources/laravolt/avatar/fonts/'.$font);
-            if (is_file($fontFile)) {
-                $this->font = $fontFile;
+            if (is_file($font)) {
+                $this->font = $font;
 
                 return true;
             }
