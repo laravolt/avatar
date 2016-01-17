@@ -5,6 +5,8 @@ namespace Laravolt\Avatar;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Intervention\Image\AbstractFont;
+use Intervention\Image\AbstractShape;
 use Intervention\Image\Facades\Image;
 use Stringy\Stringy;
 
@@ -236,7 +238,7 @@ class Avatar
 
         $this->createShape();
 
-        $this->image->text($this->initials, $x, $y, function ($font) {
+        $this->image->text($this->initials, $x, $y, function (AbstractFont $font) {
             $font->file($this->font);
             $font->size($this->fontSize);
             $font->color($this->foreground);
@@ -261,7 +263,7 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $this->image->circle($circleDiameter, $x, $y, function ($draw) {
+        $this->image->circle($circleDiameter, $x, $y, function (AbstractShape $draw) {
             $draw->background($this->background);
             $draw->border($this->borderSize, $this->getBorderColor());
         });
@@ -272,7 +274,7 @@ class Avatar
         $x = $y = $this->borderSize;
         $width = $this->width - ($this->borderSize * 2);
         $height = $this->height - ($this->borderSize * 2);
-        $this->image->rectangle($x, $y, $width, $height, function ($draw) {
+        $this->image->rectangle($x, $y, $width, $height, function (AbstractShape $draw) {
             $draw->background($this->background);
             $draw->border($this->borderSize, $this->getBorderColor());
         });

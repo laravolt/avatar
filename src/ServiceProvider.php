@@ -2,6 +2,7 @@
 
 namespace Laravolt\Avatar;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 /**
@@ -30,7 +31,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->app->bind('avatar', function ($app) {
+        $this->app->bind('avatar', function (Application $app) {
             $config = $app->make('config');
             $cache = $app->make('cache');
 
