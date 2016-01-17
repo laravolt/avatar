@@ -23,7 +23,7 @@ return [
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-    'fonts'    => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
+    'fonts'    => [ base_path('resources/laravolt/avatar/fonts/OpenSans-Bold.ttf'), base_path('resources/laravolt/avatar/fonts/rockwell.ttf') ],
 
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds'   => [
