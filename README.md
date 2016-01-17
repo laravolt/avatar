@@ -1,8 +1,10 @@
 # Avatar
 
-![](https://dl.dropboxusercontent.com/u/21271348/laravolt/avatar/avatar-result.png)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650/big.png)](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650)
 
 Display unique avatar for any user based on their name. Can be used as default avatar when user has not uploaded the avatar image itself.
+
+![](https://dl.dropboxusercontent.com/u/21271348/laravolt/avatar/avatar-result.png)
 
 ## Installation
 
