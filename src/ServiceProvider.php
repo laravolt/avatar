@@ -5,10 +5,6 @@ namespace Laravolt\Avatar;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-/**
- * Class PackageServiceProvider.
- *
- */
 class ServiceProvider extends BaseServiceProvider
 {
     /**
