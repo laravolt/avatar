@@ -8,15 +8,11 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 /**
  * Class PackageServiceProvider.
  *
- * @see http://laravel.com/docs/5.1/packages#service-providers
- * @see http://laravel.com/docs/5.1/providers
  */
 class ServiceProvider extends BaseServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
-     *
-     * @see http://laravel.com/docs/5.1/providers#deferred-providers
      *
      * @var bool
      */
@@ -24,8 +20,6 @@ class ServiceProvider extends BaseServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @see http://laravel.com/docs/5.1/providers#the-register-method
      *
      * @return void
      */
@@ -42,8 +36,6 @@ class ServiceProvider extends BaseServiceProvider
     /**
      * Application is booting.
      *
-     * @see http://laravel.com/docs/5.1/providers#the-boot-method
-     *
      * @return void
      */
     public function boot()
@@ -54,8 +46,6 @@ class ServiceProvider extends BaseServiceProvider
 
     /**
      * Register the package public assets.
-     *
-     * @see http://laravel.com/docs/5.1/packages#public-assets
      *
      * @return void
      */
@@ -68,8 +58,6 @@ class ServiceProvider extends BaseServiceProvider
 
     /**
      * Register the package configurations.
-     *
-     * @see http://laravel.com/docs/5.1/packages#configuration
      *
      * @return void
      */
