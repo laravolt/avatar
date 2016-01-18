@@ -8,11 +8,17 @@ Display unique avatar for any user based on their name. Can be used as default a
 
 ## Installation
 
-Via Composer
+### Laravel 5.2:
 
 ``` bash
 $ composer require laravolt/avatar
 ```
+
+### Laravel 5.1:
+``` bash
+composer require laravolt/avatar ~0.3
+```
+
 ## Service Provider
 ``` php
 Intervention\Image\ImageServiceProvider::class,
