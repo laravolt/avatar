@@ -33,7 +33,7 @@ class Avatar
     /**
      * Avatar constructor.
      *
-     * @param array        $config
+     * @param array $config
      * @param CacheManager $cache
      */
     public function __construct(array $config, CacheManager $cache)
@@ -151,7 +151,7 @@ class Avatar
                 return $this->name->substr(0, $this->chars);
             }
 
-            return (string) $words->first();
+            return (string)$words->first();
         }
 
         // otherwise, use initial char from each word
@@ -204,11 +204,27 @@ class Avatar
         if ($initials) {
             $number = ord($initials[0]);
             $font = $this->fonts[$number % count($this->fonts)];
-            $fontFile = base_path('resources/laravolt/avatar/fonts/'.$font);
-            if (is_file($fontFile)) {
-                $this->font = $fontFile;
 
-                return true;
+            // list of folder to scan where font located, order by priority
+            $fontFolder = [
+                // no folder at all, allow developer to supply full path to file in their configuration
+                "",
+
+                // find file located in published asset folder
+                base_path('resources/laravolt/avatar/fonts/'),
+
+                // find font included by default in package
+                __DIR__ . '/../resources/assets/fonts/',
+            ];
+
+            foreach ($fontFolder as $folder) {
+                $fontFile = $folder . $font;
+
+                if (is_file($fontFile)) {
+                    $this->font = $fontFile;
+
+                    return true;
+                }
             }
         }
 
@@ -247,7 +263,7 @@ class Avatar
 
     protected function createShape()
     {
-        $method = 'create'.ucfirst($this->shape).'Shape';
+        $method = 'create' . ucfirst($this->shape) . 'Shape';
         if (method_exists($this, $method)) {
             return $this->$method();
         }
