@@ -20,7 +20,7 @@
         "php" : ">=5.5.0",
         "illuminate/support": "~5.2",
         "illuminate/cache": "~5.2",
-        "intervention/image": "2.3.2",
+        "intervention/image": "^2.1",
         "danielstjules/stringy": "~2.2"
     },
     "require-dev": {
