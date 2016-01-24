@@ -32,13 +32,16 @@ class Avatar
 
     protected $cache;
 
+    protected $initialGenerator;
+
     /**
      * Avatar constructor.
      *
-     * @param array $config
-     * @param CacheManager $cache
+     * @param array            $config
+     * @param CacheManager     $cache
+     * @param InitialGenerator $initialGenerator
      */
-    public function __construct(array $config, CacheManager $cache)
+    public function __construct(array $config, CacheManager $cache, InitialGenerator $initialGenerator)
     {
         $this->shape = Arr::get($config, 'shape', 'circle');
         $this->chars = Arr::get($config, 'chars', 2);
@@ -53,26 +56,14 @@ class Avatar
         $this->borderColor = Arr::get($config, 'border.color');
 
         $this->cache = $cache;
+        $this->initialGenerator = $initialGenerator;
     }
 
     public function create($name)
     {
-        if (is_array($name)) {
-            throw new \InvalidArgumentException(
-                'Passed value cannot be an array'
-            );
-        } elseif (is_object($name) && !method_exists($name, '__toString')) {
-            throw new \InvalidArgumentException(
-                'Passed object must have a __toString method'
-            );
-        }
+        $this->initialGenerator->setName($name)->setLength($this->chars);
+        $this->initials = $this->initialGenerator->getInitial();
 
-        $this->name = Stringy::create($name)->collapseWhitespace();
-        if ($this->ascii) {
-            $this->name = $this->name->toAscii();
-        }
-
-        $this->initials = $this->getInitials();
         $this->setFont();
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
@@ -143,26 +134,9 @@ class Avatar
         return $this;
     }
 
-    protected function getInitials()
+    public function getInitial()
     {
-        $words = new Collection(explode(' ', $this->name));
-
-        // if name contains single word, use first N character
-        if ($words->count() === 1) {
-            if ($this->name->length() >= $this->chars) {
-                return $this->name->substr(0, $this->chars);
-            }
-
-            return (string)$words->first();
-        }
-
-        // otherwise, use initial char from each word
-        $initials = new Collection();
-        $words->each(function ($word) use ($initials) {
-            $initials->push(Stringy::create($word)->substr(0, 1));
-        });
-
-        return $initials->slice(0, $this->chars)->implode('');
+        return $this->initials;
     }
 
     protected function getRandomBackground()
@@ -201,7 +175,7 @@ class Avatar
 
     protected function setFont()
     {
-        $initials = $this->getInitials();
+        $initials = $this->getInitial();
 
         if ($initials) {
             $number = ord($initials[0]);
@@ -216,11 +190,11 @@ class Avatar
                 base_path('resources/laravolt/avatar/fonts/'),
 
                 // find font included by default in package
-                __DIR__ . '/../resources/assets/fonts/',
+                __DIR__.'/../resources/assets/fonts/',
             ];
 
             foreach ($fontFolder as $folder) {
-                $fontFile = $folder . $font;
+                $fontFile = $folder.$font;
 
                 if (is_file($fontFile)) {
                     $this->font = $fontFile;
@@ -265,7 +239,7 @@ class Avatar
 
     protected function createShape()
     {
-        $method = 'create' . ucfirst($this->shape) . 'Shape';
+        $method = 'create'.ucfirst($this->shape).'Shape';
         if (method_exists($this, $method)) {
             return $this->$method();
         }
