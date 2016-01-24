@@ -25,7 +25,7 @@ class ServiceProvider extends BaseServiceProvider
             $config = $app->make('config');
             $cache = $app->make('cache');
 
-            return new Avatar($config->get('avatar'), $cache);
+            return new Avatar($config->get('avatar'), $cache, new InitialGenerator());
         });
     }
 
