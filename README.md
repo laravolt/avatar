@@ -1,6 +1,8 @@
 # Avatar
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650/big.png)](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650.svg)](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650)
+[![Travis](https://img.shields.io/travis/laravolt/avatar.svg)](https://travis-ci.org/laravolt/avatar)
+
 
 Display unique avatar for any user based on their name. Can be used as default avatar when user has not uploaded the avatar image itself.
 
