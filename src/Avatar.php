@@ -4,11 +4,9 @@ namespace Laravolt\Avatar;
 
 use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
 use Intervention\Image\Facades\Image;
-use Stringy\Stringy;
 
 class Avatar
 {
