@@ -41,14 +41,9 @@ class Avatar
     /**
      * Avatar constructor.
      *
-<<<<<<< HEAD
      * @param array            $config
      * @param CacheManager     $cache
      * @param InitialGenerator $initialGenerator
-=======
-     * @param array        $config
-     * @param CacheManager $cache
->>>>>>> origin/master
      */
     public function __construct(array $config, CacheManager $cache, InitialGenerator $initialGenerator)
     {
