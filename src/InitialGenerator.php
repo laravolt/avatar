@@ -1,4 +1,5 @@
 <?php
+
 namespace Laravolt\Avatar;
 
 use Illuminate\Support\Collection;
@@ -14,6 +15,7 @@ class InitialGenerator
 
     /**
      * Identifier constructor.
+     *
      * @param string $name
      * @param int    $length
      */
@@ -74,7 +76,7 @@ class InitialGenerator
                 return $this->name->substr(0, $this->length);
             }
 
-            return (string)$words->first();
+            return (string) $words->first();
         }
 
         // otherwise, use initial char from each word
@@ -84,6 +86,5 @@ class InitialGenerator
         });
 
         return $initials->slice(0, $this->length)->implode('');
-
     }
 }

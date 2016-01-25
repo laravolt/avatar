@@ -3,7 +3,6 @@
 
 class AvatarTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -53,7 +52,6 @@ class AvatarTest extends PHPUnit_Framework_TestCase
         $this->assertAttributeEquals(1, 'borderSize', $avatar);
         $this->assertAttributeEquals('#999999', 'borderColor', $avatar);
         $this->assertAttributeEquals(false, 'ascii', $avatar);
-
     }
 
     /**

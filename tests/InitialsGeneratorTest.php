@@ -3,7 +3,6 @@
 
 class InitialGeneratorTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -49,7 +48,7 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $generator = new \Laravolt\Avatar\InitialGenerator('Fulan');
 
-        $this->assertEquals('Fu', (string)$generator->getInitial());
+        $this->assertEquals('Fu', (string) $generator->getInitial());
     }
 
     /**
@@ -59,7 +58,7 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $generator = new \Laravolt\Avatar\InitialGenerator('Fulan Doe');
 
-        $this->assertEquals('FD', (string)$generator->getInitial());
+        $this->assertEquals('FD', (string) $generator->getInitial());
     }
 
     /**
@@ -70,7 +69,7 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
         $generator = new \Laravolt\Avatar\InitialGenerator('Joe');
         $generator->setLength(4);
 
-        $this->assertEquals('Joe', (string)$generator->getInitial());
+        $this->assertEquals('Joe', (string) $generator->getInitial());
     }
 
     /**
@@ -81,7 +80,7 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
         $generator = new \Laravolt\Avatar\InitialGenerator('Fulan John Doe');
         $generator->setLength(2);
 
-        $this->assertEquals('FJ', (string)$generator->getInitial());
+        $this->assertEquals('FJ', (string) $generator->getInitial());
     }
 
     /**
@@ -91,7 +90,7 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $generator = new \Laravolt\Avatar\InitialGenerator('');
 
-        $this->assertEquals('', (string)$generator->getInitial());
+        $this->assertEquals('', (string) $generator->getInitial());
     }
 
     /**
@@ -101,7 +100,7 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $generator = new \Laravolt\Avatar\InitialGenerator('Bāyu');
 
-        $this->assertEquals('Bā', (string)$generator->getInitial());
+        $this->assertEquals('Bā', (string) $generator->getInitial());
     }
 
     /**
@@ -112,7 +111,6 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
         $generator = new \Laravolt\Avatar\InitialGenerator('Bāyu');
         $generator->setAscii(true);
 
-        $this->assertEquals('Ba', (string)$generator->getInitial());
+        $this->assertEquals('Ba', (string) $generator->getInitial());
     }
-
 }

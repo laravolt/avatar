@@ -30,7 +30,7 @@ class ServiceProvider extends BaseServiceProvider
             // list of folder to scan where font located, order by priority
             $fontFolder = [
                 // no folder at all, allow developer to supply full path to file in their configuration
-                "",
+                '',
 
                 // find file located in published asset folder
                 base_path('resources/laravolt/avatar/fonts/'),
