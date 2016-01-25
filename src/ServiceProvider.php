@@ -25,7 +25,23 @@ class ServiceProvider extends BaseServiceProvider
             $config = $app->make('config');
             $cache = $app->make('cache');
 
-            return new Avatar($config->get('avatar'), $cache, new InitialGenerator());
+            $avatar = new Avatar($config->get('avatar'), $cache, new InitialGenerator());
+
+            // list of folder to scan where font located, order by priority
+            $fontFolder = [
+                // no folder at all, allow developer to supply full path to file in their configuration
+                "",
+
+                // find file located in published asset folder
+                base_path('resources/laravolt/avatar/fonts/'),
+
+                // find font included by default in package
+                __DIR__.'/../resources/assets/fonts/',
+            ];
+
+            $avatar->setFontFolder($fontFolder);
+
+            return $avatar;
         });
     }
 

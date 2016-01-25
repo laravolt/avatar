@@ -1,0 +1,22 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+
+matrix:
+  allow_failures:
+    - php: 7.0
+  include:
+    - php: 5.6
+      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+
+before_script:
+  - travis_retry composer self-update
+  - travis_retry composer update --prefer-source $PREFER_LOWEST
+  - printf "\n" | pecl install imagick
+
+branches:
+  only:
+    - master

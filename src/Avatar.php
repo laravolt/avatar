@@ -12,27 +12,31 @@ use Stringy\Stringy;
 
 class Avatar
 {
-    protected $shape;
     protected $name;
+
     protected $chars;
+    protected $shape;
+    protected $width;
+    protected $height;
     protected $availableBackgrounds;
     protected $availableForegrounds;
     protected $fonts;
-    protected $font;
     protected $fontSize;
-    protected $width;
-    protected $height;
-    protected $image;
-    protected $background = '#cccccc';
-    protected $foreground = '#ffffff';
     protected $borderSize = 0;
     protected $borderColor;
-    protected $initials = '';
     protected $ascii = false;
+
+    protected $image;
+    protected $font;
+    protected $background = '#cccccc';
+    protected $foreground = '#ffffff';
+    protected $initials = '';
 
     protected $cache;
 
     protected $initialGenerator;
+
+    protected $fontFolder;
 
     /**
      * Avatar constructor.
@@ -69,6 +73,11 @@ class Avatar
         $this->setBackground($this->getRandomBackground());
 
         return $this;
+    }
+
+    public function setFontFolder($folders)
+    {
+        $this->fontFolder = $folders;
     }
 
     public function toBase64()
@@ -181,19 +190,11 @@ class Avatar
             $number = ord($initials[0]);
             $font = $this->fonts[$number % count($this->fonts)];
 
-            // list of folder to scan where font located, order by priority
-            $fontFolder = [
-                // no folder at all, allow developer to supply full path to file in their configuration
-                "",
+            if(!is_array($this->fontFolder)) {
+                throw new \Exception('Font folder not set');
+            }
 
-                // find file located in published asset folder
-                base_path('resources/laravolt/avatar/fonts/'),
-
-                // find font included by default in package
-                __DIR__.'/../resources/assets/fonts/',
-            ];
-
-            foreach ($fontFolder as $folder) {
+            foreach ($this->fontFolder as $folder) {
                 $fontFile = $folder.$font;
 
                 if (is_file($fontFile)) {
