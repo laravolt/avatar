@@ -188,7 +188,7 @@ class Avatar
             $number = ord($initials[0]);
             $font = $this->fonts[$number % count($this->fonts)];
 
-            if(!is_array($this->fontFolder)) {
+            if (!is_array($this->fontFolder)) {
                 throw new \Exception('Font folder not set');
             }
 
