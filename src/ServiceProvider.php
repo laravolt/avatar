@@ -2,20 +2,13 @@
 
 namespace Laravolt\Avatar;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-/**
- * Class PackageServiceProvider.
- *
- * @see http://laravel.com/docs/5.1/packages#service-providers
- * @see http://laravel.com/docs/5.1/providers
- */
 class ServiceProvider extends BaseServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
-     *
-     * @see http://laravel.com/docs/5.1/providers#deferred-providers
      *
      * @var bool
      */
@@ -24,24 +17,36 @@ class ServiceProvider extends BaseServiceProvider
     /**
      * Register the service provider.
      *
-     * @see http://laravel.com/docs/5.1/providers#the-register-method
-     *
      * @return void
      */
     public function register()
     {
-        $this->app->bind('avatar', function ($app) {
+        $this->app->bind('avatar', function (Application $app) {
             $config = $app->make('config');
             $cache = $app->make('cache');
 
-            return new Avatar($config->get('avatar'), $cache);
+            $avatar = new Avatar($config->get('avatar'), $cache, new InitialGenerator());
+
+            // list of folder to scan where font located, order by priority
+            $fontFolder = [
+                // no folder at all, allow developer to supply full path to file in their configuration
+                '',
+
+                // find file located in published asset folder
+                base_path('resources/laravolt/avatar/fonts/'),
+
+                // find font included by default in package
+                __DIR__.'/../resources/assets/fonts/',
+            ];
+
+            $avatar->setFontFolder($fontFolder);
+
+            return $avatar;
         });
     }
 
     /**
      * Application is booting.
-     *
-     * @see http://laravel.com/docs/5.1/providers#the-boot-method
      *
      * @return void
      */
@@ -54,8 +59,6 @@ class ServiceProvider extends BaseServiceProvider
     /**
      * Register the package public assets.
      *
-     * @see http://laravel.com/docs/5.1/packages#public-assets
-     *
      * @return void
      */
     protected function registerAssets()
@@ -67,8 +70,6 @@ class ServiceProvider extends BaseServiceProvider
 
     /**
      * Register the package configurations.
-     *
-     * @see http://laravel.com/docs/5.1/packages#configuration
      *
      * @return void
      */

@@ -4,39 +4,46 @@ namespace Laravolt\Avatar;
 
 use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+use Intervention\Image\AbstractFont;
+use Intervention\Image\AbstractShape;
 use Intervention\Image\Facades\Image;
-use Stringy\Stringy;
 
 class Avatar
 {
-    protected $shape;
     protected $name;
+
     protected $chars;
+    protected $shape;
+    protected $width;
+    protected $height;
     protected $availableBackgrounds;
     protected $availableForegrounds;
     protected $fonts;
-    protected $font;
     protected $fontSize;
-    protected $width;
-    protected $height;
-    protected $image;
-    protected $background = '#cccccc';
-    protected $foreground = '#ffffff';
     protected $borderSize = 0;
     protected $borderColor;
-    protected $initials = '';
     protected $ascii = false;
 
+    protected $image;
+    protected $font;
+    protected $background = '#cccccc';
+    protected $foreground = '#ffffff';
+    protected $initials = '';
+
     protected $cache;
+
+    protected $initialGenerator;
+
+    protected $fontFolder;
 
     /**
      * Avatar constructor.
      *
-     * @param array        $config
-     * @param CacheManager $cache
+     * @param array            $config
+     * @param CacheManager     $cache
+     * @param InitialGenerator $initialGenerator
      */
-    public function __construct(array $config, CacheManager $cache)
+    public function __construct(array $config, CacheManager $cache, InitialGenerator $initialGenerator)
     {
         $this->shape = Arr::get($config, 'shape', 'circle');
         $this->chars = Arr::get($config, 'chars', 2);
@@ -51,31 +58,24 @@ class Avatar
         $this->borderColor = Arr::get($config, 'border.color');
 
         $this->cache = $cache;
+        $this->initialGenerator = $initialGenerator;
     }
 
     public function create($name)
     {
-        if (is_array($name)) {
-            throw new \InvalidArgumentException(
-                'Passed value cannot be an array'
-            );
-        } elseif (is_object($name) && !method_exists($name, '__toString')) {
-            throw new \InvalidArgumentException(
-                'Passed object must have a __toString method'
-            );
-        }
+        $this->initialGenerator->setName($name)->setLength($this->chars);
+        $this->initials = $this->initialGenerator->getInitial();
 
-        $this->name = Stringy::create($name)->collapseWhitespace();
-        if ($this->ascii) {
-            $this->name = $this->name->toAscii();
-        }
-
-        $this->initials = $this->getInitials();
         $this->setFont();
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
         return $this;
+    }
+
+    public function setFontFolder($folders)
+    {
+        $this->fontFolder = $folders;
     }
 
     public function toBase64()
@@ -141,26 +141,16 @@ class Avatar
         return $this;
     }
 
-    protected function getInitials()
+    public function getInitial()
     {
-        $words = new Collection(explode(' ', $this->name));
+        return $this->initials;
+    }
 
-        // if name contains single word, use first N character
-        if ($words->count() === 1) {
-            if ($this->name->length() >= $this->chars) {
-                return $this->name->substr(0, $this->chars);
-            }
+    public function getImageObject()
+    {
+        $this->buildAvatar();
 
-            return (string) $words->first();
-        }
-
-        // otherwise, use initial char from each word
-        $initials = new Collection();
-        $words->each(function ($word) use ($initials) {
-            $initials->push(Stringy::create($word)->substr(0, 1));
-        });
-
-        return $initials->slice(0, $this->chars)->implode('');
+        return $this->image;
     }
 
     protected function getRandomBackground()
@@ -199,16 +189,24 @@ class Avatar
 
     protected function setFont()
     {
-        $initials = $this->getInitials();
+        $initials = $this->getInitial();
 
         if ($initials) {
             $number = ord($initials[0]);
             $font = $this->fonts[$number % count($this->fonts)];
-            $fontFile = base_path('resources/laravolt/avatar/fonts/'.$font);
-            if (is_file($fontFile)) {
-                $this->font = $fontFile;
 
-                return true;
+            if (!is_array($this->fontFolder)) {
+                throw new \Exception('Font folder not set');
+            }
+
+            foreach ($this->fontFolder as $folder) {
+                $fontFile = $folder.$font;
+
+                if (is_file($fontFile)) {
+                    $this->font = $fontFile;
+
+                    return true;
+                }
             }
         }
 
@@ -236,7 +234,7 @@ class Avatar
 
         $this->createShape();
 
-        $this->image->text($this->initials, $x, $y, function ($font) {
+        $this->image->text($this->initials, $x, $y, function (AbstractFont $font) {
             $font->file($this->font);
             $font->size($this->fontSize);
             $font->color($this->foreground);
@@ -261,7 +259,7 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $this->image->circle($circleDiameter, $x, $y, function ($draw) {
+        $this->image->circle($circleDiameter, $x, $y, function (AbstractShape $draw) {
             $draw->background($this->background);
             $draw->border($this->borderSize, $this->getBorderColor());
         });
@@ -272,7 +270,7 @@ class Avatar
         $x = $y = $this->borderSize;
         $width = $this->width - ($this->borderSize * 2);
         $height = $this->height - ($this->borderSize * 2);
-        $this->image->rectangle($x, $y, $width, $height, function ($draw) {
+        $this->image->rectangle($x, $y, $width, $height, function (AbstractShape $draw) {
             $draw->background($this->background);
             $draw->border($this->borderSize, $this->getBorderColor());
         });

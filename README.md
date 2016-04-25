@@ -1,18 +1,29 @@
 # Avatar
 
-![](https://dl.dropboxusercontent.com/u/21271348/laravolt/avatar/avatar-result.png)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650.svg)](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650)
+[![Travis](https://img.shields.io/travis/laravolt/avatar.svg)](https://travis-ci.org/laravolt/avatar)
+
 
 Display unique avatar for any user based on their name. Can be used as default avatar when user has not uploaded the avatar image itself.
 
+![](https://dl.dropboxusercontent.com/u/21271348/laravolt/avatar/avatar-result.png)
+
 ## Installation
 
-Via Composer
+### Laravel 5.2:
 
 ``` bash
 $ composer require laravolt/avatar
 ```
+
+### Laravel 5.1:
+``` bash
+composer require laravolt/avatar ~0.3
+```
+
 ## Service Provider
 ``` php
+Intervention\Image\ImageServiceProvider::class,
 Laravolt\Avatar\ServiceProvider::class,
 ```
 ## Facade (Alias)
@@ -77,6 +88,7 @@ return [
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
+    // You can provide absolute path, path relative to folder resources/laravolt/avatar/fonts/, or mixed.    
     'fonts'    => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
 
     // List of foreground colors to be used, randomly selected based on name supplied
