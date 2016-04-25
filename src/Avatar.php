@@ -146,6 +146,13 @@ class Avatar
         return $this->initials;
     }
 
+    public function getImageObject()
+    {
+        $this->buildAvatar();
+
+        return $this->image;
+    }
+
     protected function getRandomBackground()
     {
         if (strlen($this->initials) == 0) {
