@@ -39,7 +39,7 @@ class InitialGenerator
 
         $name = Stringy::create($name)->collapseWhitespace();
 
-        if(filter_var($name, FILTER_VALIDATE_EMAIL)) {
+        if (filter_var($name, FILTER_VALIDATE_EMAIL)) {
             // turn bayu.hendra@gmail.com into "Bayu Hendra"
             $name = current($name->split('@', 1))->replace('.', ' ');
         }
@@ -78,10 +78,10 @@ class InitialGenerator
         // if name contains single word, use first N character
         if ($words->count() === 1) {
             if ($this->name->length() >= $this->length) {
-                return (string) $this->name->substr(0, $this->length);
+                return (string)$this->name->substr(0, $this->length);
             }
 
-            return (string) $words->first();
+            return (string)$words->first();
         }
 
         // otherwise, use initial char from each word
