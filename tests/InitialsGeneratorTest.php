@@ -113,4 +113,19 @@ class InitialGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('Ba', (string) $generator->getInitial());
     }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_initials_from_email()
+    {
+        $generator = new \Laravolt\Avatar\InitialGenerator('adi.budi@laravolt.com');
+        $this->assertEquals('ab', $generator->getInitial());
+
+        $generator = new \Laravolt\Avatar\InitialGenerator('citra@laravolt.com');
+        $this->assertEquals('ci', $generator->getInitial());
+
+        $generator = new \Laravolt\Avatar\InitialGenerator('DANI@laravolt.com');
+        $this->assertEquals('DA', $generator->getInitial());
+    }
 }
