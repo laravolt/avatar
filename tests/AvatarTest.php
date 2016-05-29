@@ -73,4 +73,66 @@ class AvatarTest extends PHPUnit_Framework_TestCase
 
         $this->assertAttributeEquals('#FFFFFF', 'foreground', $avatar);
     }
+
+    /**
+     * @test
+     */
+    public function it_has_corrent_random_background()
+    {
+        $config = [
+            'foregrounds' => ['#000000', '#111111'],
+            'backgrounds' => ['#111111', '#000000'],
+        ];
+
+        $cache = Mockery::mock('Illuminate\Cache\CacheManager');
+
+        $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
+
+        $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar->setFontFolder(['fonts/']);
+
+        $name = 'A';
+
+        $generator->shouldReceive('setLength')->andReturn(1);
+        $generator->shouldReceive('setName')->andReturn($name);
+        $generator->shouldReceive('getInitial')->andReturn('A');
+        $avatar->create($name);
+
+        $this->assertAttributeEquals('#000000', 'background', $avatar);
+        $this->assertAttributeEquals('#111111', 'foreground', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_different_random_background()
+    {
+        $config = [
+            'backgrounds' => ['#000000', '#111111'],
+        ];
+
+        $cache = Mockery::mock('Illuminate\Cache\CacheManager');
+
+        $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
+
+        $name1 = 'AA';
+        $name2 = 'AAA';
+
+        $generator->shouldReceive('setLength')->andReturn(2);
+        $generator->shouldReceive('setName')->andReturn($name1);
+        $generator->shouldReceive('getInitial')->andReturn('AA');
+
+        $avatar1 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar1->setFontFolder(['fonts/']);
+        $avatar1->create($name1);
+
+        $generator->shouldReceive('setName')->andReturn($name2);
+
+        $avatar2 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar2->setFontFolder(['fonts/']);
+        $avatar2->create($name2);
+
+        $this->assertAttributeEquals('#000000', 'background', $avatar1);
+        $this->assertAttributeEquals('#111111', 'background', $avatar2);
+    }
 }

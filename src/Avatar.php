@@ -63,7 +63,10 @@ class Avatar
 
     public function create($name)
     {
-        $this->initialGenerator->setName($name)->setLength($this->chars);
+        $this->name = $name;
+
+        $this->initialGenerator->setName($name);
+        $this->initialGenerator->setLength($this->chars);
         $this->initials = $this->initialGenerator->getInitial();
 
         $this->setFont();
@@ -155,15 +158,15 @@ class Avatar
 
     protected function getRandomBackground()
     {
-        if (strlen($this->initials) == 0) {
+        if (strlen($this->name) == 0) {
             return $this->background;
         }
 
-        $number = ord($this->initials[0]);
+        $number = ord($this->name[0]);
         $i = 1;
-        $charLength = strlen($this->initials);
+        $charLength = strlen($this->name);
         while ($i < $charLength) {
-            $number += ord($this->initials[$i]);
+            $number += ord($this->name[$i]);
             $i++;
         }
 
@@ -172,15 +175,15 @@ class Avatar
 
     protected function getRandomForeground()
     {
-        if (strlen($this->initials) == 0) {
+        if (strlen($this->name) == 0) {
             return $this->foreground;
         }
 
-        $number = ord($this->initials[0]);
+        $number = ord($this->name[0]);
         $i = 1;
-        $charLength = strlen($this->initials);
+        $charLength = strlen($this->name);
         while ($i < $charLength) {
-            $number += ord($this->initials[$i]);
+            $number += ord($this->name[$i]);
             $i++;
         }
 
