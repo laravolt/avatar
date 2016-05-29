@@ -259,7 +259,7 @@ class Avatar
     {
         $keys = [];
         $attributes = [
-            'initials',
+            'name',
             'shape',
             'chars',
             'font',
