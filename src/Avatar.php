@@ -291,7 +291,5 @@ class Avatar
         }
 
         return $array[$number % count($array)];
-
     }
-
 }
