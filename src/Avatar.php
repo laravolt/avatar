@@ -158,36 +158,12 @@ class Avatar
 
     protected function getRandomBackground()
     {
-        if (strlen($this->name) == 0) {
-            return $this->background;
-        }
-
-        $number = ord($this->name[0]);
-        $i = 1;
-        $charLength = strlen($this->name);
-        while ($i < $charLength) {
-            $number += ord($this->name[$i]);
-            $i++;
-        }
-
-        return $this->availableBackgrounds[$number % count($this->availableBackgrounds)];
+        return $this->getRandomElement($this->availableBackgrounds, $this->background);
     }
 
     protected function getRandomForeground()
     {
-        if (strlen($this->name) == 0) {
-            return $this->foreground;
-        }
-
-        $number = ord($this->name[0]);
-        $i = 1;
-        $charLength = strlen($this->name);
-        while ($i < $charLength) {
-            $number += ord($this->name[$i]);
-            $i++;
-        }
-
-        return $this->availableForegrounds[$number % count($this->availableForegrounds)];
+        return $this->getRandomElement($this->availableForegrounds, $this->foreground);
     }
 
     protected function setFont()
@@ -299,4 +275,23 @@ class Avatar
 
         return md5(implode('-', $keys));
     }
+
+    protected function getRandomElement($array, $default)
+    {
+        if (strlen($this->name) == 0) {
+            return $default;
+        }
+
+        $number = ord($this->name[0]);
+        $i = 1;
+        $charLength = strlen($this->name);
+        while ($i < $charLength) {
+            $number += ord($this->name[$i]);
+            $i++;
+        }
+
+        return $array[$number % count($array)];
+
+    }
+
 }
