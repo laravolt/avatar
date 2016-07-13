@@ -16,6 +16,13 @@ before_script:
   - travis_retry composer update --prefer-source $PREFER_LOWEST
   - printf "\n" | pecl install imagick
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
 branches:
   only:
     - master
+
+notifications:
+    on_success: never
+    on_failure: always
