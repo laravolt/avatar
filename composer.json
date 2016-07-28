@@ -28,6 +28,7 @@
         "mockery/mockery": "0.9.*"
     },
     "autoload": {
+        "files": ["src/helpers.php"],
         "psr-4": {
             "Laravolt\\Avatar\\": "src"
         }
