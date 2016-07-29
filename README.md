@@ -23,7 +23,6 @@ composer require laravolt/avatar ~0.3
 
 ## Service Provider
 ``` php
-Intervention\Image\ImageServiceProvider::class,
 Laravolt\Avatar\ServiceProvider::class,
 ```
 ## Facade (Alias)

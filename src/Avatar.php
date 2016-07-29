@@ -6,7 +6,7 @@ use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Arr;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
 
 class Avatar
 {
@@ -209,7 +209,8 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $this->image = Image::canvas($this->width, $this->height);
+        $manager = new ImageManager(array('driver' => config('avatar.driver')));
+        $this->image = $manager->canvas($this->width, $this->height);
 
         $this->createShape();
 
