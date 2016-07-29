@@ -3,6 +3,6 @@
 if (!function_exists('avatar')) {
     function avatar($subject)
     {
-        return \Laravolt\Avatar\Avatar::create($subject)->toBase64();
+        return app()->make('avatar')->create($subject)->toBase64();
     }
 }
