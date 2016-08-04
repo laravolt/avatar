@@ -136,6 +136,7 @@ Avatar::create('Soekarno')->setDimension(100, 200); // width = 100, height = 200
 Avatar::create('Soekarno')->setBackground('#001122');
 Avatar::create('Soekarno')->setForeground('#999999');
 Avatar::create('Soekarno')->setFontSize(72);
+Avatar::create('Soekarno')->setFont('/path/to/font.ttf');
 Avatar::create('Soekarno')->setBorder(1, '#aabbcc'); // size = 1, color = #aabbcc
 Avatar::create('Soekarno')->setShape('square');
 

@@ -25,7 +25,7 @@ class Avatar
     protected $ascii = false;
 
     protected $image;
-    protected $font;
+    protected $font = null;
     protected $background = '#cccccc';
     protected $foreground = '#ffffff';
     protected $initials = '';
@@ -35,6 +35,7 @@ class Avatar
     protected $initialGenerator;
 
     protected $fontFolder;
+    protected $defaultFont = 5;
 
     /**
      * Avatar constructor.
@@ -69,7 +70,6 @@ class Avatar
         $this->initialGenerator->setLength($this->chars);
         $this->initials = $this->initialGenerator->getInitial();
 
-        $this->setFont();
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
@@ -79,6 +79,15 @@ class Avatar
     public function setFontFolder($folders)
     {
         $this->fontFolder = $folders;
+    }
+
+    public function setFont($font)
+    {
+        if (is_file($font)) {
+            $this->font = $font;
+        }
+
+        return $this;
     }
 
     public function toBase64()
@@ -166,7 +175,7 @@ class Avatar
         return $this->getRandomElement($this->availableForegrounds, $this->foreground);
     }
 
-    protected function setFont()
+    protected function setRandomFont()
     {
         $initials = $this->getInitial();
 
@@ -183,13 +192,12 @@ class Avatar
 
                 if (is_file($fontFile)) {
                     $this->font = $fontFile;
-
-                    return true;
+                    break;
                 }
             }
         }
 
-        $this->font = 5;
+        $this->font = $this->defaultFont;
     }
 
     protected function getBorderColor()
@@ -213,6 +221,8 @@ class Avatar
         $this->image = $manager->canvas($this->width, $this->height);
 
         $this->createShape();
+
+        $this->chooseFont();
 
         $this->image->text($this->initials, $x, $y, function (AbstractFont $font) {
             $font->file($this->font);
@@ -292,5 +302,12 @@ class Avatar
         }
 
         return $array[$number % count($array)];
+    }
+
+    protected function chooseFont()
+    {
+        if (!$this->font) {
+            $this->setRandomFont();
+        }
     }
 }
