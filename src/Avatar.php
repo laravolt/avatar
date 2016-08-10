@@ -177,6 +177,8 @@ class Avatar
 
     protected function setRandomFont()
     {
+        $this->font = $this->defaultFont;
+
         $initials = $this->getInitial();
 
         if ($initials) {
@@ -197,7 +199,6 @@ class Avatar
             }
         }
 
-        $this->font = $this->defaultFont;
     }
 
     protected function getBorderColor()
