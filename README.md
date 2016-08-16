@@ -85,6 +85,9 @@ return [
     // font size
     'fontSize' => 48,
 
+    // convert initial letter to uppercase
+    'uppercase' => false,
+
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
     // You can provide absolute path, path relative to folder resources/laravolt/avatar/fonts/, or mixed.    

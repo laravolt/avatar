@@ -59,8 +59,17 @@ class Avatar
         $this->borderColor = Arr::get($config, 'border.color');
 
         $this->cache = $cache;
-        $this->initialGenerator = $initialGenerator;
+        $this->initialGenerator = $initialGenerator->setUppercase(Arr::get($config, 'uppercase'));
     }
+
+    /**
+     * @return String
+     */
+    function __toString()
+    {
+        return (string) $this->toBase64();
+    }
+
 
     public function create($name)
     {
@@ -272,6 +281,7 @@ class Avatar
         $keys = [];
         $attributes = [
             'name',
+            'initials',
             'shape',
             'chars',
             'font',

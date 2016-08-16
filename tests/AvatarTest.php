@@ -12,6 +12,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('getInitial')->andReturn('AB');
+        $generator->shouldReceive('setUppercase')->andReturnSelf();
 
         new \Laravolt\Avatar\Avatar([], $cache, $generator);
     }
@@ -38,6 +39,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('getInitial')->andReturn('AB');
+        $generator->shouldReceive('setUppercase');
 
         $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
 
@@ -64,6 +66,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
         $generator->shouldReceive('setName')->andReturnSelf();
         $generator->shouldReceive('setLength');
         $generator->shouldReceive('getInitial')->andReturn('A');
+        $generator->shouldReceive('setUppercase')->andReturnSelf();
         $generator->shouldReceive('base_path');
         $config = ['backgrounds' => ['#000000', '#111111'], 'foregrounds' => ['#EEEEEE', '#FFFFFF']];
 
@@ -77,7 +80,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_has_corrent_random_background()
+    public function it_has_correct_random_background()
     {
         $config = [
             'foregrounds' => ['#000000', '#111111'],
@@ -87,6 +90,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
         $cache = Mockery::mock('Illuminate\Cache\CacheManager');
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
+        $generator->shouldReceive('setUppercase')->andReturnSelf();
 
         $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
         $avatar->setFontFolder(['fonts/']);
@@ -95,6 +99,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
 
         $generator->shouldReceive('setLength')->andReturn(1);
         $generator->shouldReceive('setName')->andReturn($name);
+        $generator->shouldReceive('setUppercase')->andReturnSelf();
         $generator->shouldReceive('getInitial')->andReturn('A');
         $avatar->create($name);
 
@@ -114,6 +119,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
         $cache = Mockery::mock('Illuminate\Cache\CacheManager');
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
+        $generator->shouldReceive('setUppercase')->andReturnSelf();
 
         $name1 = 'AA';
         $name2 = 'AAA';

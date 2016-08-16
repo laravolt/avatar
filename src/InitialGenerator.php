@@ -13,6 +13,8 @@ class InitialGenerator
 
     protected $ascii = false;
 
+    protected $uppercase = false;
+
     /**
      * Identifier constructor.
      *
@@ -71,25 +73,41 @@ class InitialGenerator
         return $this;
     }
 
+    public function setUppercase($uppercase)
+    {
+        $this->uppercase = $uppercase;
+
+        return $this;
+    }
+
     public function getInitial()
     {
         $words = new Collection(explode(' ', $this->name));
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
+
+            $initial = (string)$words->first();
+
             if ($this->name->length() >= $this->length) {
-                return (string) $this->name->substr(0, $this->length);
+                $initial = (string)$this->name->substr(0, $this->length);
             }
 
-            return (string) $words->first();
+        } else {
+            // otherwise, use initial char from each word
+            $initials = new Collection();
+            $words->each(function ($word) use ($initials) {
+                $initials->push(Stringy::create($word)->substr(0, 1));
+            });
+
+            $initial = $initials->slice(0, $this->length)->implode('');
+
         }
 
-        // otherwise, use initial char from each word
-        $initials = new Collection();
-        $words->each(function ($word) use ($initials) {
-            $initials->push(Stringy::create($word)->substr(0, 1));
-        });
+        if ($this->uppercase) {
+            $initial = strtoupper($initial);
+        }
 
-        return $initials->slice(0, $this->length)->implode('');
+        return $initial;
     }
 }
