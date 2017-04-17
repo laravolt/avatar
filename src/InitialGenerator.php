@@ -86,13 +86,11 @@ class InitialGenerator
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
-
-            $initial = (string)$words->first();
+            $initial = (string) $words->first();
 
             if ($this->name->length() >= $this->length) {
-                $initial = (string)$this->name->substr(0, $this->length);
+                $initial = (string) $this->name->substr(0, $this->length);
             }
-
         } else {
             // otherwise, use initial char from each word
             $initials = new Collection();
@@ -101,7 +99,6 @@ class InitialGenerator
             });
 
             $initial = $initials->slice(0, $this->length)->implode('');
-
         }
 
         if ($this->uppercase) {

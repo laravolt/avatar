@@ -63,13 +63,12 @@ class Avatar
     }
 
     /**
-     * @return String
+     * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return (string) $this->toBase64();
     }
-
 
     public function create($name)
     {
@@ -207,7 +206,6 @@ class Avatar
                 }
             }
         }
-
     }
 
     protected function getBorderColor()
@@ -227,7 +225,7 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $manager = new ImageManager(array('driver' => config('avatar.driver')));
+        $manager = new ImageManager(['driver' => config('avatar.driver')]);
         $this->image = $manager->canvas($this->width, $this->height);
 
         $this->createShape();
