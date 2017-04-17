@@ -3,7 +3,6 @@
 namespace Laravolt\Avatar;
 
 use Illuminate\Cache\CacheManager;
-use Illuminate\Support\Arr;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
 use Intervention\Image\ImageManager;
@@ -46,20 +45,39 @@ class Avatar
      */
     public function __construct(array $config, CacheManager $cache, InitialGenerator $initialGenerator)
     {
-        $this->shape = Arr::get($config, 'shape', 'circle');
-        $this->chars = Arr::get($config, 'chars', 2);
-        $this->availableBackgrounds = Arr::get($config, 'backgrounds', [$this->background]);
-        $this->availableForegrounds = Arr::get($config, 'foregrounds', [$this->foreground]);
-        $this->fonts = Arr::get($config, 'fonts', [1]);
-        $this->fontSize = Arr::get($config, 'fontSize', 32);
-        $this->width = Arr::get($config, 'width', 100);
-        $this->height = Arr::get($config, 'height', 100);
-        $this->ascii = Arr::get($config, 'ascii', false);
-        $this->borderSize = Arr::get($config, 'border.size');
-        $this->borderColor = Arr::get($config, 'border.color');
+        $default = [
+            'shape'       => 'circle',
+            'chars'       => 2,
+            'backgrounds' => [$this->background],
+            'foregrounds' => [$this->foreground],
+            'fonts'       => [1],
+            'fontSize'    => 32,
+            'width'       => 100,
+            'height'      => 100,
+            'ascii'       => false,
+            'uppercase'   => false,
+            'border'      => [
+                'size'  => 1,
+                'color' => 'foreground',
+            ],
+        ];
+
+        $config += $default;
+
+        $this->shape = $config['shape'];
+        $this->chars = $config['chars'];
+        $this->availableBackgrounds = $config['backgrounds'];
+        $this->availableForegrounds = $config['foregrounds'];
+        $this->fonts = $config['fonts'];
+        $this->fontSize = $config['fontSize'];
+        $this->width = $config['width'];
+        $this->height = $config['height'];
+        $this->ascii = $config['ascii'];
+        $this->borderSize = $config['border']['size'];
+        $this->borderColor = $config['border']['color'];
 
         $this->cache = $cache;
-        $this->initialGenerator = $initialGenerator->setUppercase(Arr::get($config, 'uppercase'));
+        $this->initialGenerator = $initialGenerator->setUppercase($config['uppercase']);
     }
 
     /**
@@ -67,7 +85,7 @@ class Avatar
      */
     public function __toString()
     {
-        return (string) $this->toBase64();
+        return (string)$this->toBase64();
     }
 
     public function create($name)
@@ -100,11 +118,14 @@ class Avatar
 
     public function toBase64()
     {
-        return $this->cache->rememberForever($this->cacheKey(), function () {
-            $this->buildAvatar();
+        return $this->cache->rememberForever(
+            $this->cacheKey(),
+            function () {
+                $this->buildAvatar();
 
-            return $this->image->encode('data-url');
-        });
+                return $this->image->encode('data-url');
+            }
+        );
     }
 
     public function save($path, $quality = 90)
@@ -232,13 +253,15 @@ class Avatar
 
         $this->chooseFont();
 
-        $this->image->text($this->initials, $x, $y, function (AbstractFont $font) {
+        $this->image->text(
+            $this->initials, $x, $y, function (AbstractFont $font) {
             $font->file($this->font);
             $font->size($this->fontSize);
             $font->color($this->foreground);
             $font->align('center');
             $font->valign('middle');
-        });
+        }
+        );
     }
 
     protected function createShape()
@@ -257,10 +280,12 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $this->image->circle($circleDiameter, $x, $y, function (AbstractShape $draw) {
+        $this->image->circle(
+            $circleDiameter, $x, $y, function (AbstractShape $draw) {
             $draw->background($this->background);
             $draw->border($this->borderSize, $this->getBorderColor());
-        });
+        }
+        );
     }
 
     protected function createSquareShape()
@@ -268,10 +293,12 @@ class Avatar
         $x = $y = $this->borderSize;
         $width = $this->width - ($this->borderSize * 2);
         $height = $this->height - ($this->borderSize * 2);
-        $this->image->rectangle($x, $y, $width, $height, function (AbstractShape $draw) {
+        $this->image->rectangle(
+            $x, $y, $width, $height, function (AbstractShape $draw) {
             $draw->background($this->background);
             $draw->border($this->borderSize, $this->getBorderColor());
-        });
+        }
+        );
     }
 
     protected function cacheKey()
