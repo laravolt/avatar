@@ -63,9 +63,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function registerAssets()
     {
-        $this->publishes([
-            $this->packagePath('resources/assets') => base_path('resources/laravolt/avatar'),
-        ], 'assets');
+        $this->publishes([$this->packagePath('resources/assets') => base_path('resources/laravolt/avatar')], 'assets');
     }
 
     /**
@@ -75,19 +73,14 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function registerConfigurations()
     {
-        $this->mergeConfigFrom(
-            $this->packagePath('config/config.php'), 'avatar'
-        );
-        $this->publishes([
-            $this->packagePath('config/config.php') => config_path('avatar.php'),
-        ], 'config');
+        $this->mergeConfigFrom($this->packagePath('config/config.php'), 'avatar');
+        $this->publishes([$this->packagePath('config/config.php') => config_path('avatar.php')], 'config');
     }
 
     /**
      * Loads a path relative to the package base directory.
      *
      * @param string $path
-     *
      * @return string
      */
     protected function packagePath($path = '')

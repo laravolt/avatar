@@ -254,13 +254,16 @@ class Avatar
         $this->chooseFont();
 
         $this->image->text(
-            $this->initials, $x, $y, function (AbstractFont $font) {
-            $font->file($this->font);
-            $font->size($this->fontSize);
-            $font->color($this->foreground);
-            $font->align('center');
-            $font->valign('middle');
-        }
+            $this->initials,
+            $x,
+            $y,
+            function (AbstractFont $font) {
+                $font->file($this->font);
+                $font->size($this->fontSize);
+                $font->color($this->foreground);
+                $font->align('center');
+                $font->valign('middle');
+            }
         );
     }
 
@@ -281,10 +284,13 @@ class Avatar
         $y = $this->height / 2;
 
         $this->image->circle(
-            $circleDiameter, $x, $y, function (AbstractShape $draw) {
-            $draw->background($this->background);
-            $draw->border($this->borderSize, $this->getBorderColor());
-        }
+            $circleDiameter,
+            $x,
+            $y,
+            function (AbstractShape $draw) {
+                $draw->background($this->background);
+                $draw->border($this->borderSize, $this->getBorderColor());
+            }
         );
     }
 
@@ -294,10 +300,14 @@ class Avatar
         $width = $this->width - ($this->borderSize * 2);
         $height = $this->height - ($this->borderSize * 2);
         $this->image->rectangle(
-            $x, $y, $width, $height, function (AbstractShape $draw) {
-            $draw->background($this->background);
-            $draw->border($this->borderSize, $this->getBorderColor());
-        }
+            $x,
+            $y,
+            $width,
+            $height,
+            function (AbstractShape $draw) {
+                $draw->background($this->background);
+                $draw->border($this->borderSize, $this->getBorderColor());
+            }
         );
     }
 
