@@ -85,7 +85,7 @@ class Avatar
      */
     public function __toString()
     {
-        return (string)$this->toBase64();
+        return (string) $this->toBase64();
     }
 
     public function create($name)
@@ -255,12 +255,12 @@ class Avatar
 
         $this->image->text(
             $this->initials, $x, $y, function (AbstractFont $font) {
-            $font->file($this->font);
-            $font->size($this->fontSize);
-            $font->color($this->foreground);
-            $font->align('center');
-            $font->valign('middle');
-        }
+                $font->file($this->font);
+                $font->size($this->fontSize);
+                $font->color($this->foreground);
+                $font->align('center');
+                $font->valign('middle');
+            }
         );
     }
 
@@ -282,9 +282,9 @@ class Avatar
 
         $this->image->circle(
             $circleDiameter, $x, $y, function (AbstractShape $draw) {
-            $draw->background($this->background);
-            $draw->border($this->borderSize, $this->getBorderColor());
-        }
+                $draw->background($this->background);
+                $draw->border($this->borderSize, $this->getBorderColor());
+            }
         );
     }
 
@@ -295,9 +295,9 @@ class Avatar
         $height = $this->height - ($this->borderSize * 2);
         $this->image->rectangle(
             $x, $y, $width, $height, function (AbstractShape $draw) {
-            $draw->background($this->background);
-            $draw->border($this->borderSize, $this->getBorderColor());
-        }
+                $draw->background($this->background);
+                $draw->border($this->borderSize, $this->getBorderColor());
+            }
         );
     }
 
