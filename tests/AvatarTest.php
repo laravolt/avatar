@@ -8,7 +8,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
      */
     public function it_can_instantiated()
     {
-        $cache = Mockery::mock('Illuminate\Cache\CacheManager');
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('getInitial')->andReturn('AB');
@@ -35,7 +35,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
             'border'      => ['size' => 1, 'color' => '#999999'],
         ];
 
-        $cache = Mockery::mock('Illuminate\Cache\CacheManager');
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('getInitial')->andReturn('AB');
@@ -61,7 +61,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
      */
     public function it_can_override_attributes_after_set_name()
     {
-        $cache = Mockery::mock('Illuminate\Cache\CacheManager');
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('setName')->andReturnSelf();
         $generator->shouldReceive('setLength');
@@ -87,7 +87,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
             'backgrounds' => ['#111111', '#000000'],
         ];
 
-        $cache = Mockery::mock('Illuminate\Cache\CacheManager');
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('setUppercase')->andReturnSelf();
@@ -116,7 +116,7 @@ class AvatarTest extends PHPUnit_Framework_TestCase
             'backgrounds' => ['#000000', '#111111'],
         ];
 
-        $cache = Mockery::mock('Illuminate\Cache\CacheManager');
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('setUppercase')->andReturnSelf();
