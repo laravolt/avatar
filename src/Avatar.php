@@ -77,7 +77,10 @@ class Avatar
         $this->borderColor = $config['border']['color'];
 
         $this->cache = $cache;
-        $this->initialGenerator = $initialGenerator->setUppercase($config['uppercase']);
+        $this->initialGenerator = $initialGenerator;
+
+        $this->initialGenerator->setUppercase($config['uppercase']);
+        $this->initialGenerator->setAscii($config['ascii']);
     }
 
     /**

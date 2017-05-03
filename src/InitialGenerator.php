@@ -51,15 +51,11 @@ class InitialGenerator
         }
 
         $this->name = $name;
-
-        return $this;
     }
 
     public function setLength($length = 2)
     {
         $this->length = $length;
-
-        return $this;
     }
 
     public function setAscii($ascii)
@@ -69,15 +65,11 @@ class InitialGenerator
         if ($this->ascii) {
             $this->name = $this->name->toAscii();
         }
-
-        return $this;
     }
 
     public function setUppercase($uppercase)
     {
         $this->uppercase = $uppercase;
-
-        return $this;
     }
 
     public function getInitial()
