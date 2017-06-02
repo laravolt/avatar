@@ -6,11 +6,11 @@
 
 Display unique avatar for any user based on their name. Can be used as default avatar when user has not uploaded the avatar image itself.
 
-![](https://dl.dropboxusercontent.com/u/21271348/laravolt/avatar/avatar-result.png)
+![Preview](https://cloud.githubusercontent.com/assets/149716/26735022/6dbd77e2-47ea-11e7-8a05-7772465309c5.png)
 
 ## Installation
 
-### Laravel 5.2:
+### Laravel 5.2/5.3/5.4:
 
 ``` bash
 $ composer require laravolt/avatar
