@@ -23,7 +23,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->bind('avatar', function (Application $app) {
             $config = $app->make('config');
-            $cache = $app->make('cache');
+            $cache = $app->make('cache.store');
 
             $avatar = new Avatar($config->get('avatar'), $cache, new InitialGenerator());
 
@@ -63,9 +63,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function registerAssets()
     {
-        $this->publishes([
-            $this->packagePath('resources/assets') => base_path('resources/laravolt/avatar'),
-        ], 'assets');
+        $this->publishes([$this->packagePath('resources/assets') => base_path('resources/laravolt/avatar')], 'assets');
     }
 
     /**
@@ -75,12 +73,8 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function registerConfigurations()
     {
-        $this->mergeConfigFrom(
-            $this->packagePath('config/config.php'), 'avatar'
-        );
-        $this->publishes([
-            $this->packagePath('config/config.php') => config_path('avatar.php'),
-        ], 'config');
+        $this->mergeConfigFrom($this->packagePath('config/config.php'), 'avatar');
+        $this->publishes([$this->packagePath('config/config.php') => config_path('avatar.php')], 'config');
     }
 
     /**

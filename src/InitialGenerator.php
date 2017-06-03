@@ -13,6 +13,8 @@ class InitialGenerator
 
     protected $ascii = false;
 
+    protected $uppercase = false;
+
     /**
      * Identifier constructor.
      *
@@ -39,20 +41,21 @@ class InitialGenerator
 
         $name = Stringy::create($name)->collapseWhitespace();
 
+        if (filter_var($name, FILTER_VALIDATE_EMAIL)) {
+            // turn bayu.hendra@gmail.com into "Bayu Hendra"
+            $name = current($name->split('@', 1))->replace('.', ' ');
+        }
+
         if ($this->ascii) {
             $name = $name->toAscii();
         }
 
         $this->name = $name;
-
-        return $this;
     }
 
     public function setLength($length = 2)
     {
         $this->length = $length;
-
-        return $this;
     }
 
     public function setAscii($ascii)
@@ -62,8 +65,11 @@ class InitialGenerator
         if ($this->ascii) {
             $this->name = $this->name->toAscii();
         }
+    }
 
-        return $this;
+    public function setUppercase($uppercase)
+    {
+        $this->uppercase = $uppercase;
     }
 
     public function getInitial()
@@ -72,19 +78,25 @@ class InitialGenerator
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
-            if ($this->name->length() >= $this->length) {
-                return $this->name->substr(0, $this->length);
-            }
+            $initial = (string) $words->first();
 
-            return (string) $words->first();
+            if ($this->name->length() >= $this->length) {
+                $initial = (string) $this->name->substr(0, $this->length);
+            }
+        } else {
+            // otherwise, use initial char from each word
+            $initials = new Collection();
+            $words->each(function ($word) use ($initials) {
+                $initials->push(Stringy::create($word)->substr(0, 1));
+            });
+
+            $initial = $initials->slice(0, $this->length)->implode('');
         }
 
-        // otherwise, use initial char from each word
-        $initials = new Collection();
-        $words->each(function ($word) use ($initials) {
-            $initials->push(Stringy::create($word)->substr(0, 1));
-        });
+        if ($this->uppercase) {
+            $initial = strtoupper($initial);
+        }
 
-        return $initials->slice(0, $this->length)->implode('');
+        return $initial;
     }
 }
