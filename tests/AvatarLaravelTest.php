@@ -1,7 +1,6 @@
 <?php
 
-
-class AvatarTest extends PHPUnit_Framework_TestCase
+class AvatarLaravelTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
