@@ -101,7 +101,7 @@ class Avatar
      */
     public function __toString()
     {
-        return (string)$this->toBase64();
+        return (string) $this->toBase64();
     }
 
     public function create($name)
