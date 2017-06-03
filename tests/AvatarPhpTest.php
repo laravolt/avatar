@@ -1,22 +1,7 @@
 <?php
 
-class AvatarPhpTest extends PHPUnit_Framework_TestCase
+class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @test
-     */
-    public function it_can_instantiated()
-    {
-        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
-
-        $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
-        $generator->shouldReceive('getInitial')->andReturn('AB');
-        $generator->shouldReceive('setUppercase');
-        $generator->shouldReceive('setAscii');
-
-        new \Laravolt\Avatar\Avatar();
-    }
-
     /**
      * @test
      */
