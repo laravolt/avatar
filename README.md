@@ -9,9 +9,11 @@ Display unique avatar for any user based on their name. Can be used as default a
 ![Preview](https://cloud.githubusercontent.com/assets/149716/26735022/6dbd77e2-47ea-11e7-8a05-7772465309c5.png)
 
 ## Installation
+This package originally built for Laravel, but can also be used in any PHP project.
+
+[Read more about integration with PHP project here.](#integration-with-other-php-project)
 
 ### Laravel 5.2/5.3/5.4:
-
 ``` bash
 $ composer require laravolt/avatar
 ```
@@ -37,7 +39,7 @@ This will create config file located in `config/avatar.php` and a set of fonts l
 
 ## Usage
 ```php
-//this will outpu data-uri (base64 image data)
+//this will output data-uri (base64 image data)
 //something like data:image/png;base64,iVBORw0KGg....
 Avatar::create('Joko Widodo')->toBase64();
 
@@ -147,3 +149,18 @@ Avatar::create('Soekarno')->setShape('square');
 Avatar::create('Habibie')->setDimension(50)->setFontSize(18)->toBase64();
 
 ``` 
+
+## Integration With Other PHP Project
+```php
+// include composer autoload
+require 'vendor/autoload.php';
+
+// import the Avatar class
+use Laravolt\Avatar\Avatar;
+
+// create your first avatar
+$avatar = new Avatar($config);
+$avatar->create('John Doe')->toBase64();
+$avatar->create('John Doe')->save('path/to/file.png', $quality = 90);
+```
+`$config` is just an ordinary array with same format as explained above (See [Configuration](#configuration)).
