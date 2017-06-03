@@ -73,7 +73,6 @@ class AvatarLaravelTest extends PHPUnit_Framework_TestCase
         $config = ['backgrounds' => ['#000000', '#111111'], 'foregrounds' => ['#EEEEEE', '#FFFFFF']];
 
         $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
-        $avatar->setFontFolder(['fonts/']);
         $avatar->create('A');
 
         $this->assertAttributeEquals('#FFFFFF', 'foreground', $avatar);
@@ -96,7 +95,6 @@ class AvatarLaravelTest extends PHPUnit_Framework_TestCase
         $generator->shouldReceive('setAscii');
 
         $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
-        $avatar->setFontFolder(['fonts/']);
 
         $name = 'A';
 
@@ -133,13 +131,11 @@ class AvatarLaravelTest extends PHPUnit_Framework_TestCase
         $generator->shouldReceive('getInitial')->andReturn('AA');
 
         $avatar1 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
-        $avatar1->setFontFolder(['fonts/']);
         $avatar1->create($name1);
 
         $generator->shouldReceive('setName')->andReturn($name2);
 
         $avatar2 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
-        $avatar2->setFontFolder(['fonts/']);
         $avatar2->create($name2);
 
         $this->assertAttributeEquals('#000000', 'background', $avatar1);

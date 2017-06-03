@@ -58,7 +58,6 @@ class AvatarPhpTest extends PHPUnit_Framework_TestCase
         $config = ['backgrounds' => ['#000000', '#111111'], 'foregrounds' => ['#EEEEEE', '#FFFFFF']];
 
         $avatar = new \Laravolt\Avatar\Avatar($config);
-        $avatar->setFontFolder(['fonts/']);
         $avatar->create('A');
 
         $this->assertAttributeEquals('#FFFFFF', 'foreground', $avatar);
@@ -75,7 +74,6 @@ class AvatarPhpTest extends PHPUnit_Framework_TestCase
         ];
 
         $avatar = new \Laravolt\Avatar\Avatar($config);
-        $avatar->setFontFolder(['fonts/']);
         $name = 'A';
         $avatar->create($name);
 
