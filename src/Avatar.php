@@ -31,11 +31,12 @@ class Avatar
     protected $initials = '';
 
     protected $cache;
+    protected $driver;
 
     protected $initialGenerator;
 
     protected $fontFolder;
-    protected $defaultFont = 'OpenSans-Bold.ttf';
+    protected $defaultFont = __DIR__.'/../resources/assets/fonts/OpenSans-Bold.ttf';
 
     /**
      * Avatar constructor.
@@ -47,6 +48,7 @@ class Avatar
     public function __construct(array $config = [], Repository $cache = null, InitialGenerator $initialGenerator = null)
     {
         $default = [
+            'driver'      => 'gd',
             'shape'       => 'circle',
             'chars'       => 2,
             'backgrounds' => [$this->background],
@@ -65,6 +67,7 @@ class Avatar
 
         $config += $default;
 
+        $this->driver = $config['driver'];
         $this->shape = $config['shape'];
         $this->chars = $config['chars'];
         $this->availableBackgrounds = $config['backgrounds'];
@@ -233,7 +236,6 @@ class Avatar
 
             foreach ($this->fontFolder as $folder) {
                 $fontFile = $folder.$font;
-
                 if (is_file($fontFile)) {
                     $this->font = $fontFile;
                     break;
@@ -259,7 +261,7 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $manager = new ImageManager(['driver' => config('avatar.driver')]);
+        $manager = new ImageManager(['driver' => $this->driver]);
         $this->image = $manager->canvas($this->width, $this->height);
 
         $this->createShape();
