@@ -1,7 +1,7 @@
 <?php
 
 
-class InitialGeneratorTest extends PHPUnit_Framework_TestCase
+class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

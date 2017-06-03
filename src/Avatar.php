@@ -2,6 +2,7 @@
 
 namespace Laravolt\Avatar;
 
+use Illuminate\Cache\ArrayStore;
 use Illuminate\Contracts\Cache\Repository;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
@@ -30,11 +31,12 @@ class Avatar
     protected $initials = '';
 
     protected $cache;
+    protected $driver;
 
     protected $initialGenerator;
 
     protected $fontFolder;
-    protected $defaultFont = 5;
+    protected $defaultFont = __DIR__.'/../resources/assets/fonts/OpenSans-Bold.ttf';
 
     /**
      * Avatar constructor.
@@ -43,15 +45,16 @@ class Avatar
      * @param Repository       $cache
      * @param InitialGenerator $initialGenerator
      */
-    public function __construct(array $config, Repository $cache, InitialGenerator $initialGenerator)
+    public function __construct(array $config = [], Repository $cache = null, InitialGenerator $initialGenerator = null)
     {
         $default = [
+            'driver'      => 'gd',
             'shape'       => 'circle',
             'chars'       => 2,
             'backgrounds' => [$this->background],
             'foregrounds' => [$this->foreground],
-            'fonts'       => [1],
-            'fontSize'    => 32,
+            'fonts'       => [$this->defaultFont],
+            'fontSize'    => 48,
             'width'       => 100,
             'height'      => 100,
             'ascii'       => false,
@@ -64,17 +67,27 @@ class Avatar
 
         $config += $default;
 
+        $this->driver = $config['driver'];
         $this->shape = $config['shape'];
         $this->chars = $config['chars'];
         $this->availableBackgrounds = $config['backgrounds'];
         $this->availableForegrounds = $config['foregrounds'];
         $this->fonts = $config['fonts'];
         $this->fontSize = $config['fontSize'];
+        $this->fontFolder = [__DIR__.'/../resources/assets/fonts/'];
         $this->width = $config['width'];
         $this->height = $config['height'];
         $this->ascii = $config['ascii'];
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
+
+        if (\is_null($cache)) {
+            $cache = new ArrayStore();
+        }
+
+        if (\is_null($initialGenerator)) {
+            $initialGenerator = new InitialGenerator();
+        }
 
         $this->cache = $cache;
         $this->initialGenerator = $initialGenerator;
@@ -88,7 +101,7 @@ class Avatar
      */
     public function __toString()
     {
-        return (string) $this->toBase64();
+        return (string)$this->toBase64();
     }
 
     public function create($name)
@@ -121,14 +134,14 @@ class Avatar
 
     public function toBase64()
     {
-        return $this->cache->rememberForever(
-            $this->cacheKey(),
-            function () {
-                $this->buildAvatar();
+        $key = $this->cacheKey();
+        if ($avatar = $this->cache->get($key)) {
+            return $avatar;
+        }
 
-                return $this->image->encode('data-url');
-            }
-        );
+        $this->buildAvatar();
+
+        return $this->image->encode('data-url');
     }
 
     public function save($path, $quality = 90)
@@ -223,7 +236,6 @@ class Avatar
 
             foreach ($this->fontFolder as $folder) {
                 $fontFile = $folder.$font;
-
                 if (is_file($fontFile)) {
                     $this->font = $fontFile;
                     break;
@@ -249,7 +261,7 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $manager = new ImageManager(['driver' => config('avatar.driver')]);
+        $manager = new ImageManager(['driver' => $this->driver]);
         $this->image = $manager->canvas($this->width, $this->height);
 
         $this->createShape();
