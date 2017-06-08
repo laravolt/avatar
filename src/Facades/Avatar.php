@@ -1,8 +1,9 @@
 <?php
 
-namespace Laravolt\Avatar;
+namespace Laravolt\Avatar\Facades;
+use Illuminate\Support\Facades\Facade;
 
-class Facade extends \Illuminate\Support\Facades\Facade
+class Avatar extends Facade
 {
     /**
      * {@inheritdoc}
