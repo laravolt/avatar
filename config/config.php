@@ -41,8 +41,7 @@ return [
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-    // You can provide absolute path, path relative to folder resources/laravolt/avatar/fonts/, or mixed.
-    'fonts'    => ['OpenSans-Bold.ttf', 'rockwell.ttf'],
+    'fonts'    => [__DIR__.'/../fonts/OpenSans-Bold.ttf', __DIR__.'/../fonts/rockwell.ttf'],
 
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds'   => [

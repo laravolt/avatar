@@ -35,8 +35,7 @@ class Avatar
 
     protected $initialGenerator;
 
-    protected $fontFolder;
-    protected $defaultFont = __DIR__.'/../resources/assets/fonts/OpenSans-Bold.ttf';
+    protected $defaultFont = __DIR__.'/../fonts/OpenSans-Bold.ttf';
 
     /**
      * Avatar constructor.
@@ -73,8 +72,8 @@ class Avatar
         $this->availableBackgrounds = $config['backgrounds'];
         $this->availableForegrounds = $config['foregrounds'];
         $this->fonts = $config['fonts'];
+        $this->font = $this->defaultFont;
         $this->fontSize = $config['fontSize'];
-        $this->fontFolder = [__DIR__.'/../resources/assets/fonts/'];
         $this->width = $config['width'];
         $this->height = $config['height'];
         $this->ascii = $config['ascii'];
@@ -101,26 +100,17 @@ class Avatar
      */
     public function __toString()
     {
-        return (string) $this->toBase64();
+        return (string)$this->toBase64();
     }
 
     public function create($name)
     {
         $this->name = $name;
 
-        $this->initialGenerator->setName($name);
-        $this->initialGenerator->setLength($this->chars);
-        $this->initials = $this->initialGenerator->make();
-
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
         return $this;
-    }
-
-    public function setFontFolder($folders)
-    {
-        $this->fontFolder = $folders;
     }
 
     public function setFont($font)
@@ -222,26 +212,9 @@ class Avatar
 
     protected function setRandomFont()
     {
-        $this->font = $this->defaultFont;
+        $randomFont = $this->getRandomElement($this->fonts, $this->defaultFont);
 
-        $initials = $this->getInitial();
-
-        if ($initials) {
-            $number = ord($initials[0]);
-            $font = $this->fonts[$number % count($this->fonts)];
-
-            if (!is_array($this->fontFolder)) {
-                throw new \Exception('Font folder not set');
-            }
-
-            foreach ($this->fontFolder as $folder) {
-                $fontFile = $folder.$font;
-                if (is_file($fontFile)) {
-                    $this->font = $fontFile;
-                    break;
-                }
-            }
-        }
+        $this->setFont($randomFont);
     }
 
     protected function getBorderColor()
@@ -258,6 +231,8 @@ class Avatar
 
     protected function buildAvatar()
     {
+        $this->buildInitial();
+
         $x = $this->width / 2;
         $y = $this->height / 2;
 
@@ -350,7 +325,7 @@ class Avatar
 
     protected function getRandomElement($array, $default)
     {
-        if (strlen($this->name) == 0) {
+        if (strlen($this->name) == 0 || count($array) == 0) {
             return $default;
         }
 
@@ -370,5 +345,12 @@ class Avatar
         if (!$this->font) {
             $this->setRandomFont();
         }
+    }
+
+    protected function buildInitial()
+    {
+        $this->initialGenerator->setName($this->name);
+        $this->initialGenerator->setLength($this->chars);
+        $this->initials = $this->initialGenerator->make();
     }
 }
