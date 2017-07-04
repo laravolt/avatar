@@ -50,8 +50,13 @@ Avatar::create('Joko Widodo')->toBase64();
 //save to file
 Avatar::create('Susilo Bambang Yudhoyono')->save('sample.png');
 Avatar::create('Susilo Bambang Yudhoyono')->save('sample.jpg', 100); // quality = 100
-
 ```
+
+## Get underlying Intervention image object
+```php
+Avatar::create('Abdul Somad')->getImageObject();
+```
+The method will return an instance of [Intervention image object](http://image.intervention.io/), so you can use it for further purposes.
 
 ## Non-ASCII Character
 By default, this package will try to output any initials letter as it is. If the name supplied contains any non-ASCII character (e.g. ā, Ě, ǽ) then the result will depend on which font used (see config). It the font supports characters supplied, it will successfully displayed, otherwise it will not.
