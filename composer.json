@@ -1,6 +1,6 @@
 {
     "name": "laravolt/avatar",
-    "description": "Display avatar as base64",
+    "description": "Turn name, email, and any other string into beautiful, initial-based avatar.",
     "keywords": [
         "laravel",
         "laravolt",
