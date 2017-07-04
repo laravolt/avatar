@@ -72,7 +72,7 @@ class InitialGenerator
         $this->uppercase = $uppercase;
     }
 
-    public function getInitial()
+    public function make()
     {
         $words = new Collection(explode(' ', $this->name));
 

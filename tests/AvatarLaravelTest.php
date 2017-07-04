@@ -23,7 +23,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
 
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
-        $generator->shouldReceive('getInitial')->andReturn('AB');
+        $generator->shouldReceive('make')->andReturn('AB');
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
 
@@ -51,7 +51,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('setName')->andReturnSelf();
         $generator->shouldReceive('setLength');
-        $generator->shouldReceive('getInitial')->andReturn('A');
+        $generator->shouldReceive('make')->andReturn('A');
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
         $generator->shouldReceive('base_path');
@@ -86,7 +86,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setLength')->andReturn(1);
         $generator->shouldReceive('setName')->andReturn($name);
         $generator->shouldReceive('setUppercase')->andReturnSelf();
-        $generator->shouldReceive('getInitial')->andReturn('A');
+        $generator->shouldReceive('make')->andReturn('A');
         $avatar->create($name);
 
         $this->assertAttributeEquals('#000000', 'background', $avatar);
@@ -113,7 +113,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
 
         $generator->shouldReceive('setLength')->andReturn(2);
         $generator->shouldReceive('setName')->andReturn($name1);
-        $generator->shouldReceive('getInitial')->andReturn('AA');
+        $generator->shouldReceive('make')->andReturn('AA');
 
         $avatar1 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
         $avatar1->create($name1);

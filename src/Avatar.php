@@ -110,7 +110,7 @@ class Avatar
 
         $this->initialGenerator->setName($name);
         $this->initialGenerator->setLength($this->chars);
-        $this->initials = $this->initialGenerator->getInitial();
+        $this->initials = $this->initialGenerator->make();
 
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
