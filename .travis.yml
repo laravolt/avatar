@@ -9,13 +9,9 @@ matrix:
     - php: 7.0
       env: setup=stable coverage=no
     - php: 7.0
-      env: setup=basic coverage=no
-    - php: 7.0
       env: setup=lowest coverage=no
     - php: 7.1
       env: setup=stable coverage=no
-    - php: 7.1
-      env: setup=basic coverage=no
     - php: 7.1
       env: setup=lowest coverage=no
     - php: 7.1
@@ -26,7 +22,6 @@ before_script:
   - travis_retry composer self-update
   - composer config discard-changes true
   - printf "\n" | pecl install imagick
-  - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-dist --no-interaction; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable; fi
   - if [[ $setup = 'coveralls' ]]; then travis_retry composer require "satooshi/php-coveralls" --prefer-dist --no-interaction --dev; fi
