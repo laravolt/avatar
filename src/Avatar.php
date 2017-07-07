@@ -248,7 +248,7 @@ class Avatar
 
         $this->createShape();
 
-        $this->chooseFont();
+        $this->setRandomFont();
 
         $this->image->text(
             $this->initials,
@@ -347,13 +347,6 @@ class Avatar
         }
 
         return $array[$number % count($array)];
-    }
-
-    protected function chooseFont()
-    {
-        if (!$this->font) {
-            $this->setRandomFont();
-        }
     }
 
     protected function buildInitial()
