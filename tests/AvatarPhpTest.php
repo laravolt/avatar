@@ -141,6 +141,22 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_generate_base64_from_cache()
+    {
+        $cachedAvatar = 'data:image/png;base64,iVBO';
+
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
+        $cache->shouldReceive('get')->andReturn($cachedAvatar);
+
+        $avatar = new \Laravolt\Avatar\Avatar([], $cache);
+        $result = (string)$avatar->create('Citra')->setDimension(5, 5)->toBase64();
+
+        $this->assertEquals($cachedAvatar, $result);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_generate_file()
     {
         $file = __DIR__.'/avatar.png';

@@ -125,13 +125,17 @@ class Avatar
     public function toBase64()
     {
         $key = $this->cacheKey();
-        if ($avatar = $this->cache->get($key)) {
-            return $avatar;
+        if ($base64 = $this->cache->get($key)) {
+            return $base64;
         }
 
         $this->buildAvatar();
 
-        return $this->image->encode('data-url');
+        $base64 = $this->image->encode('data-url');
+
+        $this->cache->put($key, $base64, 0);
+
+        return $base64;
     }
 
     public function save($path, $quality = 90)
