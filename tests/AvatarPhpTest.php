@@ -230,13 +230,15 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     public function it_can_set_border()
     {
         $borderSize = 1;
-        $borderColor = '#ffffff';
+        $borderColors = ['#ffffff', 'foreground', 'background'];
 
         $avatar = new \Laravolt\Avatar\Avatar();
-        $avatar->setBorder($borderSize, $borderColor);
+        foreach ($borderColors as $color) {
+            $avatar->setBorder($borderSize, $color)->buildAvatar();
 
-        $this->assertAttributeEquals($borderSize, 'borderSize', $avatar);
-        $this->assertAttributeEquals($borderColor, 'borderColor', $avatar);
+            $this->assertAttributeEquals($borderSize, 'borderSize', $avatar);
+            $this->assertAttributeEquals($color, 'borderColor', $avatar);
+        }
     }
 
     /**
@@ -249,7 +251,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar = new \Laravolt\Avatar\Avatar();
 
         foreach ($shapes as $shape) {
-            $avatar->setShape($shape);
+            $avatar->setShape($shape)->buildAvatar();
             $this->assertAttributeEquals($shape, 'shape', $avatar);
         }
     }
