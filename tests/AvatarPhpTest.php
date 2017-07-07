@@ -87,4 +87,164 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertAttributeEquals('#000000', 'background', $avatar1);
         $this->assertAttributeEquals('#111111', 'background', $avatar2);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_create_initials_from_name()
+    {
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->create('Bayu Hendra')->buildAvatar();
+
+        $this->assertAttributeEquals('Bayu Hendra', 'name', $avatar);
+        $this->assertAttributeEquals('BH', 'initials', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_accept_valid_font_file()
+    {
+        $font = __DIR__.'/fonts/rockwell.ttf';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setFont($font);
+
+        $this->assertAttributeEquals($font, 'font', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_cannot_accept_invalid_font_file()
+    {
+        $font = __DIR__.'/fonts/invalid-font.ttf';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setFont($font);
+
+        $this->assertAttributeNotEquals($font, 'font', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_base64()
+    {
+        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $result = (string)$avatar->create('Citra')->setDimension(5, 5)->toBase64();
+
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_file()
+    {
+        $file = __DIR__.'/avatar.png';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->create('Citra')->setDimension(5, 5)->save($file);
+
+        $this->assertFileExists($file);
+
+        unlink($file);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_background()
+    {
+        $hex = '#ffffff';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setBackground($hex);
+
+        $this->assertAttributeEquals($hex, 'background', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_foreground()
+    {
+        $hex = '#ffffff';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setForeground($hex);
+
+        $this->assertAttributeEquals($hex, 'foreground', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_dimension()
+    {
+        $width = $height = 5;
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setDimension($width, $height);
+
+        $this->assertAttributeEquals($width, 'width', $avatar);
+        $this->assertAttributeEquals($height, 'height', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_font_size()
+    {
+        $size = 12;
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setFontSize($size);
+
+        $this->assertAttributeEquals($size, 'fontSize', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_border()
+    {
+        $borderSize = 1;
+        $borderColor = '#ffffff';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setBorder($borderSize, $borderColor);
+
+        $this->assertAttributeEquals($borderSize, 'borderSize', $avatar);
+        $this->assertAttributeEquals($borderColor, 'borderColor', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_accept_valid_shape()
+    {
+        $shape = 'circle';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setShape($shape);
+
+        $this->assertAttributeEquals($shape, 'shape', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throw_exception_for_invalid_shape()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $shape = 'triangle';
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setShape($shape)->buildAvatar();
+
+    }
+
 }

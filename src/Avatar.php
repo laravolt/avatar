@@ -229,7 +229,7 @@ class Avatar
         return $this->borderColor;
     }
 
-    protected function buildAvatar()
+    public function buildAvatar()
     {
         $this->buildInitial();
 
