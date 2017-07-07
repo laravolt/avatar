@@ -244,12 +244,14 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_accept_valid_shape()
     {
-        $shape = 'circle';
+        $shapes = ['circle', 'square'];
 
         $avatar = new \Laravolt\Avatar\Avatar();
-        $avatar->setShape($shape);
 
-        $this->assertAttributeEquals($shape, 'shape', $avatar);
+        foreach ($shapes as $shape) {
+            $avatar->setShape($shape);
+            $this->assertAttributeEquals($shape, 'shape', $avatar);
+        }
     }
 
     /**
@@ -284,5 +286,17 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar->create('Citra Kirana')->buildAvatar();
 
         $this->assertEquals('CK', $avatar->getInitial());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_cast_to_string()
+    {
+        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $result = $avatar->create('Citra')->setDimension(5, 5)->__toString();
+
+        $this->assertEquals($expected, $result);
     }
 }
