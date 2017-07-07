@@ -260,7 +260,5 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $shape = 'triangle';
         $avatar = new \Laravolt\Avatar\Avatar();
         $avatar->setShape($shape)->buildAvatar();
-
     }
-
 }
