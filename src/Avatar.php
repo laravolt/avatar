@@ -24,6 +24,9 @@ class Avatar
     protected $borderColor;
     protected $ascii = false;
 
+    /**
+     * @var \Intervention\Image\Image
+     */
     protected $image;
     protected $font = null;
     protected $background = '#cccccc';
@@ -259,6 +262,8 @@ class Avatar
                 $font->valign('middle');
             }
         );
+
+        return $this;
     }
 
     protected function createShape()

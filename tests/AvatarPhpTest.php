@@ -200,13 +200,15 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_set_dimension()
     {
-        $width = $height = 5;
-
         $avatar = new \Laravolt\Avatar\Avatar();
-        $avatar->setDimension($width, $height);
 
-        $this->assertAttributeEquals($width, 'width', $avatar);
-        $this->assertAttributeEquals($height, 'height', $avatar);
+        $avatar->setDimension(4, 5);
+        $this->assertAttributeEquals(4, 'width', $avatar);
+        $this->assertAttributeEquals(5, 'height', $avatar);
+
+        $avatar->setDimension(10);
+        $this->assertAttributeEquals(10, 'width', $avatar);
+        $this->assertAttributeEquals(10, 'height', $avatar);
     }
 
     /**
@@ -260,5 +262,27 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $shape = 'triangle';
         $avatar = new \Laravolt\Avatar\Avatar();
         $avatar->setShape($shape)->buildAvatar();
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_raw_image_object()
+    {
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $imageObject = $avatar->buildAvatar()->getImageObject();
+
+        $this->assertInstanceOf(\Intervention\Image\Image::class, $imageObject);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_initial()
+    {
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->create('Citra Kirana')->buildAvatar();
+
+        $this->assertEquals('CK', $avatar->getInitial());
     }
 }
