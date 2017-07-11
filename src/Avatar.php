@@ -7,6 +7,8 @@ use Illuminate\Contracts\Cache\Repository;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
 use Intervention\Image\ImageManager;
+use Laravolt\Avatar\Generator\DefaultGenerator;
+use Laravolt\Avatar\Generator\GeneratorInterface;
 
 class Avatar
 {
@@ -23,6 +25,7 @@ class Avatar
     protected $borderSize = 0;
     protected $borderColor;
     protected $ascii = false;
+    protected $uppercase = false;
 
     /**
      * @var \Intervention\Image\Image
@@ -43,11 +46,10 @@ class Avatar
     /**
      * Avatar constructor.
      *
-     * @param array            $config
-     * @param Repository       $cache
-     * @param InitialGenerator $initialGenerator
+     * @param array      $config
+     * @param Repository $cache
      */
-    public function __construct(array $config = [], Repository $cache = null, InitialGenerator $initialGenerator = null)
+    public function __construct(array $config = [], Repository $cache = null)
     {
         $default = [
             'driver'      => 'gd',
@@ -80,6 +82,7 @@ class Avatar
         $this->width = $config['width'];
         $this->height = $config['height'];
         $this->ascii = $config['ascii'];
+        $this->uppercase = $config['uppercase'];
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
 
@@ -87,15 +90,7 @@ class Avatar
             $cache = new ArrayStore();
         }
 
-        if (\is_null($initialGenerator)) {
-            $initialGenerator = new InitialGenerator();
-        }
-
         $this->cache = $cache;
-        $this->initialGenerator = $initialGenerator;
-
-        $this->initialGenerator->setUppercase($config['uppercase']);
-        $this->initialGenerator->setAscii($config['ascii']);
     }
 
     /**
@@ -104,6 +99,11 @@ class Avatar
     public function __toString()
     {
         return (string)$this->toBase64();
+    }
+
+    public function setGenerator(GeneratorInterface $generator)
+    {
+        $this->initialGenerator = $generator;
     }
 
     public function create($name)
@@ -351,8 +351,11 @@ class Avatar
 
     protected function buildInitial()
     {
-        $this->initialGenerator->setName($this->name);
-        $this->initialGenerator->setLength($this->chars);
-        $this->initials = $this->initialGenerator->make();
+        // fallback to default
+        if(!$this->initialGenerator) {
+            $this->initialGenerator = new DefaultGenerator();
+        }
+
+        $this->initials = $this->initialGenerator->make($this->name, $this->chars, $this->uppercase, $this->ascii);
     }
 }

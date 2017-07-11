@@ -301,4 +301,24 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_set_custom_generator()
+    {
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar->setGenerator(new FooGenerator());
+
+        $this->assertEquals('foo', $avatar->buildAvatar()->getInitial());
+    }
+}
+
+class FooGenerator implements \Laravolt\Avatar\Generator\GeneratorInterface
+{
+    public function make($name, $length, $uppercase, $ascii)
+    {
+        return 'foo';
+    }
+
 }

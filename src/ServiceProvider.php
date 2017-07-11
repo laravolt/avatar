@@ -25,10 +25,23 @@ class ServiceProvider extends BaseServiceProvider
             $config = $app->make('config');
             $cache = $app->make('cache.store');
 
-            $avatar = new Avatar($config->get('avatar'), $cache, new InitialGenerator());
+            $avatar = new Avatar($config->get('avatar'), $cache);
+            $avatar->setGenerator($app['avatar.generator']);
 
             return $avatar;
         });
+
+        $this->app->bind('avatar.generator', function (Application $app) {
+            $config = $app->make('config');
+            $class = $config->get('avatar.generator');
+
+            return new $class;
+        });
+    }
+
+    public function provides()
+    {
+        return ['avatar', 'avatar.generator'];
     }
 
     /**
@@ -56,7 +69,6 @@ class ServiceProvider extends BaseServiceProvider
      * Loads a path relative to the package base directory.
      *
      * @param string $path
-     *
      * @return string
      */
     protected function packagePath($path = '')
