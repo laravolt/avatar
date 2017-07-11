@@ -320,5 +320,4 @@ class FooGenerator implements \Laravolt\Avatar\Generator\GeneratorInterface
     {
         return 'foo';
     }
-
 }

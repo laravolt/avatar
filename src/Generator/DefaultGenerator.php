@@ -7,7 +7,6 @@ use Stringy\Stringy;
 
 class DefaultGenerator implements GeneratorInterface
 {
-
     public function make($name, $length = 2, $uppercase = false, $ascii = false)
     {
         $this->setName($name, $ascii);
@@ -63,5 +62,4 @@ class DefaultGenerator implements GeneratorInterface
 
         $this->name = $name;
     }
-
 }

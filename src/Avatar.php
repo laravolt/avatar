@@ -352,7 +352,7 @@ class Avatar
     protected function buildInitial()
     {
         // fallback to default
-        if(!$this->initialGenerator) {
+        if (!$this->initialGenerator) {
             $this->initialGenerator = new DefaultGenerator();
         }
 
