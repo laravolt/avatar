@@ -6,3 +6,4 @@
 * remove font folder publishing (Laravel version)
 * remove `setFontFolder`
 * `fonts` config only accept full path
+* add `toSvg()`
