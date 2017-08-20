@@ -148,6 +148,44 @@ class Avatar
         return $this->image->save($path, $quality);
     }
 
+    public function toSvg()
+    {
+        $this->buildInitial();
+
+        $x = $y = $this->borderSize / 2;
+        $width = $height = $this->width - $this->borderSize;
+        $radius = ($this->width - $this->borderSize) / 2;
+        $center = $this->width / 2;
+
+        $svg = '<svg width="'.$this->width.'" height="'.$this->height.'">';
+
+        if ($this->shape == 'rectangle') {
+            $svg .= '<rect x="'.$x
+                .'" y="'.$y
+                .'" width="'.$width.'" height="'.$height
+                .'" stroke="'.$this->borderColor
+                .'" stroke-width="'.$this->borderSize
+                .'" fill="'.$this->background.'" />';
+        } elseif ($this->shape == 'circle') {
+            $svg .= '<circle cx="'.$center
+                .'" cy="'.$center
+                .'" r="'.$radius
+                .'" stroke="'.$this->borderColor
+                .'" stroke-width="'.$this->borderSize
+                .'" fill="'.$this->background.'" />';
+        }
+
+        $svg .= '<text x="'.$center.'" y="'.$center
+            .'" font-size="'.$this->fontSize
+            .'" fill="'.$this->foreground.'" alignment-baseline="middle" text-anchor="middle">'
+            .$this->getInitial()
+            .'</text>';
+
+        $svg .= '</svg>';
+
+        return $svg;
+    }
+
     public function setBackground($hex)
     {
         $this->background = $hex;
