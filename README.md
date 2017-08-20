@@ -38,6 +38,8 @@ php artisan vendor:publish --provider="Laravolt\Avatar\ServiceProvider"
 This will create config file located in `config/avatar.php` and a set of fonts located in `resources/laravolt/avatar/fonts`.
 
 ## Usage
+
+### Output As Base64
 ```php
 //this will output data-uri (base64 image data)
 //something like data:image/png;base64,iVBORw0KGg....
@@ -46,10 +48,17 @@ Avatar::create('Joko Widodo')->toBase64();
 //use in view
 //this will display initials JW as an image
 <img src="{{ Avatar::create('Joko Widodo')->toBase64() }}" />
+```
 
-//save to file
+### Save As File
+```php
 Avatar::create('Susilo Bambang Yudhoyono')->save('sample.png');
 Avatar::create('Susilo Bambang Yudhoyono')->save('sample.jpg', 100); // quality = 100
+```
+
+### Output As SVG
+```php
+Avatar::create('Susilo Bambang Yudhoyono')->toSvg();
 ```
 
 ## Get underlying Intervention image object
