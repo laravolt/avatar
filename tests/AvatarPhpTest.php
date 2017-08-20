@@ -176,7 +176,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = '<svg width="100" height="100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
-        $expected .= '<text x="50" y="50" font-size="24" fill="text" alignment-baseline="middle" text-anchor="middle">AB</text>';
+        $expected .= '<text x="50" y="50" font-size="24" fill="white" alignment-baseline="middle" text-anchor="middle">AB</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -199,7 +199,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = '<svg width="100" height="100">';
         $expected .= '<rect x="5" y="5" width="90" height="90" stroke="yellow" stroke-width="10" fill="red" />';
-        $expected .= '<text x="50" y="50" font-size="24" fill="text" alignment-baseline="middle" text-anchor="middle">AB</text>';
+        $expected .= '<text x="50" y="50" font-size="24" fill="white" alignment-baseline="middle" text-anchor="middle">AB</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar();
