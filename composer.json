@@ -43,6 +43,14 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Laravolt\\Avatar\\ServiceProvider"
+            ],
+            "aliases": {
+                "Menu": "Laravolt\\Avatar\\Facade"
+            }
         }
     }
 }
