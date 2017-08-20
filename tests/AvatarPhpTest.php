@@ -172,6 +172,52 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_generate_circle_svg()
+    {
+        $expected = '<svg width="100" height="100">';
+        $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
+        $expected .= '<text x="50" y="50" font-size="24" fill="text" alignment-baseline="middle" text-anchor="middle">AB</text>';
+        $expected .= '</svg>';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $svg = $avatar->create('Andi Budiman')
+                      ->setShape('circle')
+                      ->setFontSize(24)
+                      ->setDimension(100, 100)
+                      ->setForeground('white')
+                      ->setBorder(10, 'yellow')
+                      ->setBackground('red')
+                      ->toSvg();
+
+        $this->assertEquals($expected, $svg);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_rectangle_svg()
+    {
+        $expected = '<svg width="100" height="100">';
+        $expected .= '<rect x="5" y="5" width="90" height="90" stroke="yellow" stroke-width="10" fill="red" />';
+        $expected .= '<text x="50" y="50" font-size="24" fill="text" alignment-baseline="middle" text-anchor="middle">AB</text>';
+        $expected .= '</svg>';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $svg = $avatar->create('Andi Budiman')
+                      ->setShape('rectangle')
+                      ->setFontSize(24)
+                      ->setDimension(100, 100)
+                      ->setForeground('white')
+                      ->setBorder(10, 'yellow')
+                      ->setBackground('red')
+                      ->toSvg();
+
+        $this->assertEquals($expected, $svg);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_set_background()
     {
         $hex = '#ffffff';
