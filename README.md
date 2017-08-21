@@ -1,11 +1,14 @@
-# Avatar
+# laravolt/avatar
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650/mini.png)](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650)
 [![Travis](https://img.shields.io/travis/laravolt/avatar.svg)](https://travis-ci.org/laravolt/avatar)
 [![Coverage Status](https://coveralls.io/repos/github/laravolt/avatar/badge.svg?branch=master)](https://coveralls.io/github/laravolt/avatar?branch=master)
 
-Display unique avatar for any user based on their name. Can be used as default avatar when user has not uploaded the avatar image itself.
+![Preview](https://user-images.githubusercontent.com/149716/29503524-840ccd0c-8662-11e7-92f9-9ec3ed8a24af.png)
 
+Display unique avatar for any user based on their (initials) name.
+
+## Preview
 ![Preview](https://cloud.githubusercontent.com/assets/149716/26735022/6dbd77e2-47ea-11e7-8a05-7772465309c5.png)
 
 ## Installation
@@ -13,7 +16,7 @@ This package originally built for Laravel, but can also be used in any PHP proje
 
 [Read more about integration with PHP project here.](#integration-with-other-php-project)
 
-### Laravel 5.2/5.3/5.4:
+### Laravel 5.2/5.3/5.4/5.5:
 ``` bash
 $ composer require laravolt/avatar
 ```
@@ -23,12 +26,14 @@ $ composer require laravolt/avatar
 composer require laravolt/avatar ~0.3
 ```
 
-## Service Provider
+## Service Provider & Facade
+**Note: only for Laravel 5.4 and below, because since Laravel 5.5 we use package auto-discovery.**
+
 ``` php
 Laravolt\Avatar\ServiceProvider::class,
-```
-## Facade (Alias)
-``` php
+
+...
+
 'Avatar'    => Laravolt\Avatar\Facade::class,
 ```
 ## Publish Asset and Config
