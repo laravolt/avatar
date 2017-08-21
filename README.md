@@ -36,11 +36,11 @@ Laravolt\Avatar\ServiceProvider::class,
 
 'Avatar'    => Laravolt\Avatar\Facade::class,
 ```
-## Publish Asset and Config
+## Publish Config (Optional)
 ``` php
 php artisan vendor:publish --provider="Laravolt\Avatar\ServiceProvider"
 ```
-This will create config file located in `config/avatar.php` and a set of fonts located in `resources/laravolt/avatar/fonts`.
+This will create config file located in `config/laravolt/avatar.php`.
 
 ## Usage
 

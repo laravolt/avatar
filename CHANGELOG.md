@@ -7,3 +7,4 @@
 * remove `setFontFolder`
 * `fonts` config only accept full path
 * add `toSvg()`
+* move config file from `config/avatar.php` to `config/laravolt/avatar.php`
