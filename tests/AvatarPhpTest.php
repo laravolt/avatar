@@ -204,7 +204,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
         $avatar = new \Laravolt\Avatar\Avatar();
         $svg = $avatar->create('Andi Budiman')
-                      ->setShape('rectangle')
+                      ->setShape('square')
                       ->setFontSize(24)
                       ->setDimension(100, 100)
                       ->setForeground('white')

@@ -159,7 +159,7 @@ class Avatar
 
         $svg = '<svg width="'.$this->width.'" height="'.$this->height.'">';
 
-        if ($this->shape == 'rectangle') {
+        if ($this->shape == 'square') {
             $svg .= '<rect x="'.$x
                 .'" y="'.$y
                 .'" width="'.$width.'" height="'.$height
