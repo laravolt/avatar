@@ -49,7 +49,7 @@
                 "Laravolt\\Avatar\\ServiceProvider"
             ],
             "aliases": {
-                "Menu": "Laravolt\\Avatar\\Facade"
+                "Avatar": "Laravolt\\Avatar\\Facade"
             }
         }
     }
