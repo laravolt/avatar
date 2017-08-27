@@ -10,8 +10,8 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $config = [
             'ascii'       => false,
             'shape'       => 'circle',
-            'width'       => 100,
-            'height'      => 100,
+            'width'       => 200,
+            'height'      => 200,
             'chars'       => 2,
             'fontSize'    => 48,
             'fonts'       => ['arial.ttf'],
@@ -24,8 +24,8 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
         $this->assertAttributeEquals(2, 'chars', $avatar);
         $this->assertAttributeEquals('circle', 'shape', $avatar);
-        $this->assertAttributeEquals(100, 'width', $avatar);
-        $this->assertAttributeEquals(100, 'height', $avatar);
+        $this->assertAttributeEquals(200, 'width', $avatar);
+        $this->assertAttributeEquals(200, 'height', $avatar);
         $this->assertAttributeEquals(['#000000'], 'availableBackgrounds', $avatar);
         $this->assertAttributeEquals(['#FFFFFF'], 'availableForegrounds', $avatar);
         $this->assertAttributeEquals(['arial.ttf'], 'fonts', $avatar);
