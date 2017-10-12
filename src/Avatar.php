@@ -15,6 +15,7 @@ class Avatar
     protected $name;
 
     protected $chars;
+    protected $temporaryChars;
     protected $shape;
     protected $width;
     protected $height;
@@ -74,6 +75,7 @@ class Avatar
         $this->driver = $config['driver'];
         $this->shape = $config['shape'];
         $this->chars = $config['chars'];
+        $this->temporaryChars = $this->chars;
         $this->availableBackgrounds = $config['backgrounds'];
         $this->availableForegrounds = $config['foregrounds'];
         $this->fonts = $config['fonts'];
@@ -106,13 +108,23 @@ class Avatar
         $this->initialGenerator = $generator;
     }
 
-    public function create($name)
+    public function create($name, $chars = -1)
     {
         $this->name = $name;
 
+        $this->temporaryChars = $chars > 0 ? $chars : $this->chars;
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
+        return $this;
+    }
+    
+    public function setChars($chars)
+    {
+        $c = intval($chars);
+        $this->chars = $c > 0 ? $chars : $this->chars;
+        $this->temporaryChars = $this->chars;
+            
         return $this;
     }
 
@@ -355,7 +367,7 @@ class Avatar
             'name',
             'initials',
             'shape',
-            'chars',
+            'temporaryChars',
             'font',
             'fontSize',
             'width',
@@ -394,6 +406,6 @@ class Avatar
             $this->initialGenerator = new DefaultGenerator();
         }
 
-        $this->initials = $this->initialGenerator->make($this->name, $this->chars, $this->uppercase, $this->ascii);
+        $this->initials = $this->initialGenerator->make($this->name, $this->temporaryChars, $this->uppercase, $this->ascii);
     }
 }
