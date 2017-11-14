@@ -131,7 +131,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_base64()
     {
-        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALklEQVQImW2MsQ0AIAzDkv5/WnqTWSgw4CmypRiQJHRxjejukdQrTmCTZCb+fS59JySHiK7uhQAAAABJRU5ErkJggg==';
         $avatar = new \Laravolt\Avatar\Avatar();
         $result = (string)$avatar->create('Citra')->setDimension(5, 5)->toBase64();
 
@@ -341,7 +341,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_cast_to_string()
     {
-        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALklEQVQImW2MsQ0AIAzDkv5/WnqTWSgw4CmypRiQJHRxjejukdQrTmCTZCb+fS59JySHiK7uhQAAAABJRU5ErkJggg==';
         $avatar = new \Laravolt\Avatar\Avatar();
         $result = $avatar->create('Citra')->setDimension(5, 5)->__toString();
 
