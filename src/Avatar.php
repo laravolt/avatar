@@ -316,7 +316,7 @@ class Avatar
 
     protected function createCircleShape()
     {
-        $circleDiameter = $this->width - $this->borderSize;
+        $circleDiameter = $this->width;
         $x = $this->width / 2;
         $y = $this->height / 2;
 
@@ -333,14 +333,13 @@ class Avatar
 
     protected function createSquareShape()
     {
-        $x = $y = $this->borderSize;
-        $width = $this->width - ($this->borderSize * 2);
-        $height = $this->height - ($this->borderSize * 2);
+        $x = $y = 0;
+
         $this->image->rectangle(
             $x,
             $y,
-            $width,
-            $height,
+            $this->width,
+            $this->height,
             function (AbstractShape $draw) {
                 $draw->background($this->background);
                 $draw->border($this->borderSize, $this->getBorderColor());
