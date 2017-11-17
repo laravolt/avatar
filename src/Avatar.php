@@ -333,9 +333,11 @@ class Avatar
 
     protected function createSquareShape()
     {
-        $x = $y = $this->borderSize;
-        $width = $this->width - ($this->borderSize * 2);
-        $height = $this->height - ($this->borderSize * 2);
+        $edge = (ceil($this->borderSize / 2));
+        $x = $y = $edge;
+        $width = $this->width - $edge;
+        $height = $this->height - $edge;
+
         $this->image->rectangle(
             $x,
             $y,
