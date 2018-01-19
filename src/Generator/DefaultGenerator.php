@@ -7,7 +7,7 @@ use Stringy\Stringy;
 
 class DefaultGenerator implements GeneratorInterface
 {
-    public function make($name, $length = 2, $uppercase = false, $ascii = false)
+    public function make($name, $length = 2, $uppercase = false, $ascii = false, $lastWord = false)
     {
         $this->setName($name, $ascii);
 
@@ -27,7 +27,11 @@ class DefaultGenerator implements GeneratorInterface
                 $initials->push(Stringy::create($word)->substr(0, 1));
             });
 
-            $initial = $initials->slice(0, $length)->implode('');
+            if ($length === 2 && $lastWord) {
+                $initial = $initials->first() . $initials->last();
+            } else {
+                $initial = $initials->slice(0, $length)->implode('');
+            }
         }
 
         if ($uppercase) {

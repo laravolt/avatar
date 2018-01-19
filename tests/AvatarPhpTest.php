@@ -103,6 +103,22 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_create_initials_from_name_using_last_name()
+    {
+        $config = [
+            'lastWord' => true,
+        ];
+
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->create('Guilherme Ferruzzi Pressutto')->buildAvatar();
+
+        $this->assertAttributeEquals('Guilherme Ferruzzi Pressutto', 'name', $avatar);
+        $this->assertAttributeEquals('GP', 'initials', $avatar);
+    }
+
+    /**
+     * @test
+     */
     public function it_accept_valid_font_file()
     {
         $font = __DIR__.'/fonts/rockwell.ttf';
