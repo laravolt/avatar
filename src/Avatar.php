@@ -15,6 +15,7 @@ class Avatar
     protected $name;
 
     protected $chars;
+    protected $lastWord;
     protected $shape;
     protected $width;
     protected $height;
@@ -55,6 +56,7 @@ class Avatar
             'driver'      => 'gd',
             'shape'       => 'circle',
             'chars'       => 2,
+            'lastWord'    => false,
             'backgrounds' => [$this->background],
             'foregrounds' => [$this->foreground],
             'fonts'       => [$this->defaultFont],
@@ -74,6 +76,7 @@ class Avatar
         $this->driver = $config['driver'];
         $this->shape = $config['shape'];
         $this->chars = $config['chars'];
+        $this->lastWord = $config['lastWord'];
         $this->availableBackgrounds = $config['backgrounds'];
         $this->availableForegrounds = $config['foregrounds'];
         $this->fonts = $config['fonts'];
