@@ -399,6 +399,6 @@ class Avatar
             $this->initialGenerator = new DefaultGenerator();
         }
 
-        $this->initials = $this->initialGenerator->make($this->name, $this->chars, $this->uppercase, $this->ascii);
+        $this->initials = $this->initialGenerator->make($this->name, $this->chars, $this->uppercase, $this->ascii, $this->lastWord);
     }
 }
