@@ -36,6 +36,9 @@ return [
     // Number of characters used as initials. If name consists of single word, the first N character will be used
     'chars'    => 2,
 
+    // When number of characters is 2 you can choose to use the last word instead of the second one
+    'lastWord'    => false,
+
     // font size
     'fontSize' => 48,
 
