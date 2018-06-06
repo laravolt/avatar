@@ -42,6 +42,12 @@ php artisan vendor:publish --provider="Laravolt\Avatar\ServiceProvider"
 ```
 This will create config file located in `config/laravolt/avatar.php`.
 
+## Lumen Service Provider
+
+```php
+$app->register(Laravolt\Avatar\LumenServiceProvider);
+```
+
 ## Usage
 
 ### Output As Base64
