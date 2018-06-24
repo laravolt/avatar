@@ -2,14 +2,19 @@
 
 class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
 {
+    protected $generator;
+
+    public function setUp()
+    {
+        $this->generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
+    }
+
     /**
      * @test
      */
     public function it_accept_string()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('BH', $generator->make('Bayu Hendra'));
+        $this->assertEquals('BH', $this->generator->make('Bayu Hendra'));
     }
 
     /**
@@ -17,9 +22,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_accept_stringy()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('BH', $generator->make(new \Stringy\Stringy('Bayu Hendra')));
+        $this->assertEquals('BH', $this->generator->make(new \Stringy\Stringy('Bayu Hendra')));
     }
 
     /**
@@ -28,8 +31,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_cannot_accept_array()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-        $generator->make(['Bayu', 'Hendra']);
+        $this->generator->make(['Bayu', 'Hendra']);
     }
 
     /**
@@ -38,8 +40,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_cannot_accept_object_without_to_string_function()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-        $generator->make(new \Laravolt\Avatar\Generator\DefaultGenerator(new stdClass()));
+        $this->generator->make(new \Laravolt\Avatar\Generator\DefaultGenerator(new stdClass()));
     }
 
     /**
@@ -47,9 +48,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_initials_from_single_word_name()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('Fu', (string)$generator->make('Fulan'));
+        $this->assertEquals('Fu', (string)$this->generator->make('Fulan'));
     }
 
     /**
@@ -57,9 +56,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_initials_from_multi_word_name()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('FD', (string)$generator->make('Fulan Doe'));
+        $this->assertEquals('FD', (string)$this->generator->make('Fulan Doe'));
     }
 
     /**
@@ -77,9 +74,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_initials_if_name_longer_than_expected_length()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('FJ', (string)$generator->make('Fulan John Doe', 2));
+        $this->assertEquals('FJ', (string)$this->generator->make('Fulan John Doe', 2));
     }
 
     /**
@@ -87,9 +82,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_handle_empty_name()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('', (string)$generator->make(''));
+        $this->assertEquals('', (string)$this->generator->make(''));
     }
 
     /**
@@ -97,9 +90,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_allow_non_ascii()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('Bā', (string)$generator->make('Bāyu'));
+        $this->assertEquals('Bā', (string)$this->generator->make('Bāyu'));
     }
 
     /**
@@ -107,9 +98,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_convert_to_ascii()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('Ba', (string)$generator->make('Bāyu', 2, false, true));
+        $this->assertEquals('Ba', (string)$this->generator->make('Bāyu', 2, false, true));
     }
 
     /**
@@ -117,10 +106,8 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_initials_from_email()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
-
-        $this->assertEquals('ab', $generator->make('adi.budi@laravolt.com'));
-        $this->assertEquals('ci', $generator->make('citra@laravolt.com'));
-        $this->assertEquals('DA', $generator->make('DANI@laravolt.com'));
+        $this->assertEquals('ab', $this->generator->make('adi.budi@laravolt.com'));
+        $this->assertEquals('ci', $this->generator->make('citra@laravolt.com'));
+        $this->assertEquals('DA', $this->generator->make('DANI@laravolt.com'));
     }
 }
