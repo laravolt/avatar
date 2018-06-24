@@ -1,12 +1,16 @@
 <?php
 
-class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
+use Stringy\Stringy;
+use PHPUnit\Framework\TestCase;
+use Laravolt\Avatar\Generator\DefaultGenerator;
+
+class InitialGeneratorTest extends TestCase
 {
     protected $generator;
 
     public function setUp()
     {
-        $this->generator = new \Laravolt\Avatar\Generator\DefaultGenerator();
+        $this->generator = new DefaultGenerator();
     }
 
     /**
@@ -22,7 +26,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_accept_stringy()
     {
-        $this->assertEquals('BH', $this->generator->make(new \Stringy\Stringy('Bayu Hendra')));
+        $this->assertEquals('BH', $this->generator->make(new Stringy('Bayu Hendra')));
     }
 
     /**
@@ -40,7 +44,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_cannot_accept_object_without_to_string_function()
     {
-        $this->generator->make(new \Laravolt\Avatar\Generator\DefaultGenerator(new stdClass()));
+        $this->generator->make(new DefaultGenerator(new stdClass()));
     }
 
     /**
@@ -64,7 +68,7 @@ class InitialGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_initials_if_name_shorter_than_expected_length()
     {
-        $generator = new \Laravolt\Avatar\Generator\DefaultGenerator('Joe');
+        $generator = new DefaultGenerator('Joe');
 
         $this->assertEquals('Joe', (string)$generator->make('Joe', 4));
     }
