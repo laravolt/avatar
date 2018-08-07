@@ -156,6 +156,7 @@ class Avatar
         $width = $height = $this->width - $this->borderSize;
         $radius = ($this->width - $this->borderSize) / 2;
         $center = $this->width / 2;
+        $textY = $center + round($this->fontSize / 4);
 
         $svg = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="'.$this->width.'" height="'.$this->height.'">';
 
@@ -175,7 +176,7 @@ class Avatar
                 .'" fill="'.$this->background.'" />';
         }
 
-        $svg .= '<text x="'.$center.'" y="'.$center
+        $svg .= '<text x="'.$center.'" y="'.$textY
             .'" font-size="'.$this->fontSize
             .'" fill="'.$this->foreground.'" alignment-baseline="middle" text-anchor="middle">'
             .$this->getInitial()
