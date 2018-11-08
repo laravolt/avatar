@@ -177,7 +177,7 @@ class Avatar
 
         $svg .= '<text x="'.$center.'" y="'.$center
             .'" font-size="'.$this->fontSize
-            .'" fill="'.$this->foreground.'" alignment-baseline="middle" text-anchor="middle">'
+            .'" fill="'.$this->foreground.'" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">'
             .$this->getInitial()
             .'</text>';
 
