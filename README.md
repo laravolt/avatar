@@ -72,6 +72,29 @@ Avatar::create('Susilo Bambang Yudhoyono')->save('sample.jpg', 100); // quality 
 Avatar::create('Susilo Bambang Yudhoyono')->toSvg();
 ```
 
+You may specify custom font-family for your SVG text.
+```html
+<head>
+    <!--Prepare custom font family, using Google Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Laravolt" rel="stylesheet">
+
+    <!--OR-->
+    
+    <!--Setup your own style-->
+    <style>
+    @font-face {
+        font-family: Laravolt;
+        src: url({{ asset('fonts/laravolt.woff')) }});
+    }
+</style>
+</head>
+```
+
+```php
+Avatar::create('Susilo Bambang Yudhoyono')->setFontFamily('Laravolt')->toSvg();
+```
+
+
 ## Get underlying Intervention image object
 ```php
 Avatar::create('Abdul Somad')->getImageObject();
@@ -129,6 +152,9 @@ return [
 
     // font size
     'fontSize' => 48,
+
+    // Font family to be used in SVG text
+    'fontFamily' => null,
 
     // convert initial letter to uppercase
     'uppercase' => false,
