@@ -131,9 +131,9 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_base64()
     {
-        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAET0lEQVRogeWa227qOBSG/8QcAoSIUmiFUFVoK1VqL/MmMw+132a/CTe9qFQqUbhD4kzakOaA56ZkkmCbBALtnvnviLWc9bGW7WXHEqUU/wVljtRvnH9HSvOFaYGEHO90OjsNdF2Pwh4EJh2YWr5xHOd50nU9+HMvoH1BKHCY8zwFoBIByQnfQ3FEiEi//rviKElEjgrAUpLoxI3ISSEURcHNzQ1s2w6+/xcAlWcTJyInhSCE4PHxEdlsltX8G8DfrIZd068QolQqQdM0FAoFFAoFEEJACAGlFJ7nwXVdrFYrrFYrGIYB0zR3glQqFR4EAPwFoAJgngSECSHLMi4uLlCv15HL5bjGhBDkcjkUi0X/mW3bmM/nGI1GsCyLaSfq80szMMYML7WYENVqFVdXV8hkDl9HJ5MJ+v3+1vPz83O0Wq04XYRguIM9CtFqtdBut1OBAMCNyGKxgOM4zLbJZMJNc5ZXoRBJkoS7uztompbMU4EopRiPx8w213XR7XbRbDZRKpVACIFt25jNZhgOh1E//aiwUosGqa+vr1Gr1VKDAIDZbIZer3dQH19rDBckBFGtVtFut4UdUkqxWCwwm81gmiZc14UkSchms/6spmkaZPnfLH59fcVyuTwIJArDTXhZltFsNoUdWZaFfr+Pj4+PrTbHcWCaJkajETKZDGq1mh/ZNCCiCoKEQrNrev38/ES32+UOzKBc18VwOMRwONw5vaqqivv7e2ab4zh4enqKPqYApNCsFUyrer3OfRmlFL1eLxZEVIGy42AF/WVOv6qqIp/PczsYj8exVulTigmya6odjUZHceYQbUBCs5WqcotMv3b6KfrymzIjoigK15A1Q/0EbYHIsiyqPn9UNILaAtlVS7muezRnDhEzIiL9MSB/qrZAPM8TG+yI2HcpMUha+5G0tQWyXq8hOpAQTc3fqQ2IFDy25O3eAKBQKBzZpWTalPLMhH9/f+caqqr6I8cJ0yPR6i3LMqrV6tEc2lchkE16GYYhHCeNRuNHRCU4HILe+Ptf27axWCy4HeRyubhHNqeQBAgWxF2l+tnZGW5vb4V1WVSKoqDRaODy8jK2TVxFFwVJ13Xa6XSwXC5hGAbK5TLXuFKpoFwuYzqdYrlcYrVa+YcPhBDk83koioJSqYRyuexDp7GfiZ6iMFc3XdfR6XTw9vaGh4cH4SJICEG9XhdujdNW5AsXAHZq+ZSO42AwGAgH/jcq3pHphno+n6Pf72O9Xh/Zr3hiRQPgg0hBo+l0ipeXl2/fVAUmlq3TeNFiEIIxTRPPz88YDAbCEkYkz/MwmUy4574xxfwMt/cXq2KxCE3TUCwWoSgKstksZFmGJElYr9fwPA+O48CyLFiWBcMwYu33RQd0AIYAGvuCcGFOobgfROPWGaE0O5WSfNVNemEglZsOu7TPTYiklZ+EI0cnEoXYtx/+93dRotrndtCWL4c4kBZIVCe/r/UPIRXXJIR8Is0AAAAASUVORK5CYII=';
         $avatar = new \Laravolt\Avatar\Avatar();
-        $result = (string)$avatar->create('Citra')->setDimension(5, 5)->toBase64();
+        $result = (string)$avatar->create('Citra')->setDimension(50, 50)->toBase64();
 
         $this->assertEquals($expected, $result);
     }
@@ -341,9 +341,9 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_cast_to_string()
     {
-        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+        $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAET0lEQVRogeWa227qOBSG/8QcAoSIUmiFUFVoK1VqL/MmMw+132a/CTe9qFQqUbhD4kzakOaA56ZkkmCbBALtnvnviLWc9bGW7WXHEqUU/wVljtRvnH9HSvOFaYGEHO90OjsNdF2Pwh4EJh2YWr5xHOd50nU9+HMvoH1BKHCY8zwFoBIByQnfQ3FEiEi//rviKElEjgrAUpLoxI3ISSEURcHNzQ1s2w6+/xcAlWcTJyInhSCE4PHxEdlsltX8G8DfrIZd068QolQqQdM0FAoFFAoFEEJACAGlFJ7nwXVdrFYrrFYrGIYB0zR3glQqFR4EAPwFoAJgngSECSHLMi4uLlCv15HL5bjGhBDkcjkUi0X/mW3bmM/nGI1GsCyLaSfq80szMMYML7WYENVqFVdXV8hkDl9HJ5MJ+v3+1vPz83O0Wq04XYRguIM9CtFqtdBut1OBAMCNyGKxgOM4zLbJZMJNc5ZXoRBJkoS7uztompbMU4EopRiPx8w213XR7XbRbDZRKpVACIFt25jNZhgOh1E//aiwUosGqa+vr1Gr1VKDAIDZbIZer3dQH19rDBckBFGtVtFut4UdUkqxWCwwm81gmiZc14UkSchms/6spmkaZPnfLH59fcVyuTwIJArDTXhZltFsNoUdWZaFfr+Pj4+PrTbHcWCaJkajETKZDGq1mh/ZNCCiCoKEQrNrev38/ES32+UOzKBc18VwOMRwONw5vaqqivv7e2ab4zh4enqKPqYApNCsFUyrer3OfRmlFL1eLxZEVIGy42AF/WVOv6qqIp/PczsYj8exVulTigmya6odjUZHceYQbUBCs5WqcotMv3b6KfrymzIjoigK15A1Q/0EbYHIsiyqPn9UNILaAtlVS7muezRnDhEzIiL9MSB/qrZAPM8TG+yI2HcpMUha+5G0tQWyXq8hOpAQTc3fqQ2IFDy25O3eAKBQKBzZpWTalPLMhH9/f+caqqr6I8cJ0yPR6i3LMqrV6tEc2lchkE16GYYhHCeNRuNHRCU4HILe+Ptf27axWCy4HeRyubhHNqeQBAgWxF2l+tnZGW5vb4V1WVSKoqDRaODy8jK2TVxFFwVJ13Xa6XSwXC5hGAbK5TLXuFKpoFwuYzqdYrlcYrVa+YcPhBDk83koioJSqYRyuexDp7GfiZ6iMFc3XdfR6XTw9vaGh4cH4SJICEG9XhdujdNW5AsXAHZq+ZSO42AwGAgH/jcq3pHphno+n6Pf72O9Xh/Zr3hiRQPgg0hBo+l0ipeXl2/fVAUmlq3TeNFiEIIxTRPPz88YDAbCEkYkz/MwmUy4574xxfwMt/cXq2KxCE3TUCwWoSgKstksZFmGJElYr9fwPA+O48CyLFiWBcMwYu33RQd0AIYAGvuCcGFOobgfROPWGaE0O5WSfNVNemEglZsOu7TPTYiklZ+EI0cnEoXYtx/+93dRotrndtCWL4c4kBZIVCe/r/UPIRXXJIR8Is0AAAAASUVORK5CYII=';
         $avatar = new \Laravolt\Avatar\Avatar();
-        $result = $avatar->create('Citra')->setDimension(5, 5)->__toString();
+        $result = $avatar->create('Citra')->setDimension(50, 50)->__toString();
 
         $this->assertEquals($expected, $result);
     }
