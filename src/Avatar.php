@@ -22,6 +22,7 @@ class Avatar
     protected $availableForegrounds;
     protected $fonts;
     protected $fontSize;
+    protected $fontFamily;
     protected $borderSize = 0;
     protected $borderColor;
     protected $ascii = false;
@@ -175,11 +176,16 @@ class Avatar
                 .'" fill="'.$this->background.'" />';
         }
 
-        $svg .= '<text x="'.$center.'" y="'.$center
-            .'" font-size="'.$this->fontSize
-            .'" fill="'.$this->foreground.'" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">'
-            .$this->getInitial()
-            .'</text>';
+        $svg .= '<text x="'.$center.'" y="'.$center;
+        $svg .= '" font-size="'.$this->fontSize;
+
+        if ($this->fontFamily) {
+            $svg .= '" font-family="'.$this->fontFamily;
+        }
+
+        $svg .= '" fill="'.$this->foreground.'" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">';
+        $svg .= $this->getInitial();
+        $svg .= '</text>';
 
         $svg .= '</svg>';
 
@@ -214,6 +220,13 @@ class Avatar
     public function setFontSize($size)
     {
         $this->fontSize = $size;
+
+        return $this;
+    }
+
+    public function setFontFamily($font)
+    {
+        $this->fontFamily = $font;
 
         return $this;
     }
