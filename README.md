@@ -16,7 +16,7 @@ This package originally built for Laravel, but can also be used in any PHP proje
 
 [Read more about integration with PHP project here.](#integration-with-other-php-project)
 
-### Laravel 5.2/5.3/5.4/5.5:
+### Laravel >= 5.2:
 ``` bash
 $ composer require laravolt/avatar
 ```
