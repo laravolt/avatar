@@ -176,7 +176,7 @@ class Avatar
                 .'" fill="'.$this->background.'" />';
         }
 
-        $svg .= '<text x="'.$center.'" y="'.$center;
+        $svg .= '<text x="'.$center.'" y="'.($center+4);
         $svg .= '" font-size="'.$this->fontSize;
 
         if ($this->fontFamily) {
