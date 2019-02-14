@@ -1,10 +1,11 @@
 {
     "name": "laravolt/avatar",
-    "description": "Turn name, email, and any other string into beautiful, initial-based avatar.",
+    "description": "Turn name, email, and any other string into initial-based avatar or gravatar.",
     "keywords": [
         "laravel",
         "laravolt",
-        "avatar"
+        "avatar",
+        "gravatar"
     ],
     "homepage": "https://github.com/laravolt/avatar",
     "license": "MIT",
