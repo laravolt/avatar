@@ -242,6 +242,82 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_generate_gravatar()
+    {
+        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $url = $avatar
+            ->setDimension(null)
+            ->create('uyab.exe@gmail.com')
+            ->toGravatar();
+
+        $this->assertEquals($expected, $url);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_gravatar_with_size()
+    {
+        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=100';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $url = $avatar->create('uyab.exe@gmail.com')
+            ->setDimension(100)
+            ->toGravatar();
+
+        $this->assertEquals($expected, $url);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_gravatar_with_default()
+    {
+        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?d=identicon&s=100';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $url = $avatar->create('uyab.exe@gmail.com')
+            ->setDimension(100)
+            ->toGravatar(['d' => 'identicon']);
+
+        $this->assertEquals($expected, $url);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_gravatar_with_default_and_rating()
+    {
+        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?d=identicon&r=pg&s=100';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $url = $avatar->create('uyab.exe@gmail.com')
+            ->setDimension(100)
+            ->toGravatar(['d' => 'identicon', 'r' => 'pg']);
+
+        $this->assertEquals($expected, $url);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_generate_gravatar_with_size_overriden()
+    {
+        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=300';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $url = $avatar->create('uyab.exe@gmail.com')
+            ->setDimension(100)
+            ->toGravatar(['s' => 300]);
+
+        $this->assertEquals($expected, $url);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_set_background()
     {
         $hex = '#ffffff';

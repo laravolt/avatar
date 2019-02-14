@@ -192,6 +192,34 @@ class Avatar
         return $svg;
     }
 
+    public function toGravatar(array $param = null)
+    {
+        // Hash generation taken from https://en.gravatar.com/site/implement/images/php/
+        $hash = md5(strtolower(trim($this->name)));
+
+        $attributes = [];
+        if ($this->width) {
+            $attributes['s'] = $this->width;
+        }
+
+        if (!empty($param)) {
+            $attributes = $param + $attributes;
+        }
+
+        $url = sprintf('https://www.gravatar.com/avatar/%s', $hash);
+
+        if (!empty($attributes)) {
+            $url .= '?';
+            ksort($attributes);
+            foreach ($attributes as $key => $value) {
+                $url .= "$key=$value&";
+            }
+            $url = substr($url, 0, -1);
+        }
+
+        return $url;
+    }
+
     public function setBackground($hex)
     {
         $this->background = $hex;

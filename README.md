@@ -67,6 +67,16 @@ Avatar::create('Susilo Bambang Yudhoyono')->save('sample.png');
 Avatar::create('Susilo Bambang Yudhoyono')->save('sample.jpg', 100); // quality = 100
 ```
 
+### Output As Gravatar
+```php
+Avatar::create('uyab@example.net')->toGravatar();
+// Output: http://gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879
+
+Avatar::create('uyab@example.net')->toGravatar(['d' => 'identicon', 'r' => 'pg', 's' => 100]);
+// Output: http://gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?d=identicon&r=pg&s=100
+```
+Gravatar parameter reference: https://en.gravatar.com/site/implement/images/
+
 ### Output As SVG
 ```php
 Avatar::create('Susilo Bambang Yudhoyono')->toSvg();
