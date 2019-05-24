@@ -273,6 +273,13 @@ class Avatar
 
         return $this;
     }
+    
+    public function setChars($chars)
+    {
+        $this->chars = $chars;
+
+        return $this;
+    }
 
     public function getInitial()
     {
