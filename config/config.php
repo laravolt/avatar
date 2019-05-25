@@ -16,10 +16,13 @@ return [
     | Supported: "gd", "imagick"
     |
     */
-    'driver'    => 'gd',
+    'driver'    => 'imagick',
 
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
+
+    // Theme implementation
+    'decorator' => \Laravolt\Avatar\Theme\Decorator::class,
 
     // Whether all characters supplied must be replaced with their closest ASCII counterparts
     'ascii'    => false,
@@ -79,4 +82,24 @@ return [
         // or any valid hex ('#aabbcc')
         'color' => 'foreground',
     ],
+
+    'default_theme' => 'grayscale',
+    'themes' => [
+        'primary' => [
+            'backgrounds' => ['#FF0000', '#00FF00', '#0000FF'],
+            'foregrounds' => ['#FFFFFF'],
+            'border' => [
+                'size'  => 2,
+                'color' => '#000000',
+            ],
+        ],
+        'grayscale' => [
+            'backgrounds' => ['#CCCCCC', '#BBBBBB', '#AAAAAA'],
+            'foregrounds' => ['#FFFFFF'],
+            'border' => [
+                'size'  => 1,
+                'color' => 'background',
+            ],
+        ]
+    ]
 ];
