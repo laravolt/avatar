@@ -24,15 +24,23 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->bind('avatar', function (Application $app) {
             $cache = $app->make('cache.store');
             $config = $app['config']->get('laravolt.avatar');
-            $theme = $app['config']->get('laravolt.avatar.default_theme');
-
-            if ($theme) {
-                $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$theme, []);
-                $config = $themeConfig + $config;
-            }
 
             $avatar = new Avatar($config, $cache);
             $avatar->setGenerator($app['avatar.generator']);
+
+            $theme = $app['config']->get('laravolt.avatar.theme');
+
+            if ($theme) {
+                if (is_string($theme)) {
+                    $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$theme, []);
+                    $avatar->setTheme($themeConfig);
+                } elseif (is_array($theme)) {
+                    foreach ($theme as $name) {
+                        $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$name, []);
+                        $avatar->addTheme($name, $themeConfig);
+                    }
+                }
+            }
 
             return $avatar;
         });
@@ -74,7 +82,7 @@ class ServiceProvider extends BaseServiceProvider
     /**
      * Loads a path relative to the package base directory.
      *
-     * @param string $path
+     * @param  string  $path
      * @return string
      */
     protected function packagePath($path = '')

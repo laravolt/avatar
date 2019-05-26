@@ -44,6 +44,8 @@ class Avatar
 
     protected $defaultFont = __DIR__.'/../fonts/OpenSans-Bold.ttf';
 
+    protected $themes;
+
     /**
      * Avatar constructor.
      *
@@ -52,46 +54,10 @@ class Avatar
      */
     public function __construct(array $config = [], Repository $cache = null)
     {
-        $default = [
-            'driver'      => 'gd',
-            'shape'       => 'circle',
-            'chars'       => 2,
-            'backgrounds' => [$this->background],
-            'foregrounds' => [$this->foreground],
-            'fonts'       => [$this->defaultFont],
-            'fontSize'    => 48,
-            'width'       => 100,
-            'height'      => 100,
-            'ascii'       => false,
-            'uppercase'   => false,
-            'border'      => [
-                'size'  => 1,
-                'color' => 'foreground',
-            ],
-        ];
+        $this->cache = $cache ?? new ArrayStore();
+        $this->driver = $config['driver'] ?? 'gd';
 
-        $config += $default;
-
-        $this->driver = $config['driver'];
-        $this->shape = $config['shape'];
-        $this->chars = $config['chars'];
-        $this->availableBackgrounds = $config['backgrounds'];
-        $this->availableForegrounds = $config['foregrounds'];
-        $this->fonts = $config['fonts'];
-        $this->font = $this->defaultFont;
-        $this->fontSize = $config['fontSize'];
-        $this->width = $config['width'];
-        $this->height = $config['height'];
-        $this->ascii = $config['ascii'];
-        $this->uppercase = $config['uppercase'];
-        $this->borderSize = $config['border']['size'];
-        $this->borderColor = $config['border']['color'];
-
-        if (\is_null($cache)) {
-            $cache = new ArrayStore();
-        }
-
-        $this->cache = $cache;
+        $this->setTheme($config);
     }
 
     /**
@@ -111,10 +77,48 @@ class Avatar
     {
         $this->name = $name;
 
+        if (is_array($this->themes)) {
+            $config = $this->getRandomElement($this->themes, []);
+            $this->setTheme($config);
+        }
+
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
         return $this;
+    }
+
+    public function setTheme(array $config)
+    {
+        $config = $this->validateConfig($config);
+
+        $this->shape = $config['shape'];
+        $this->chars = $config['chars'];
+        $this->availableBackgrounds = $config['backgrounds'];
+        $this->availableForegrounds = $config['foregrounds'];
+        $this->fonts = $config['fonts'];
+        $this->font = $this->defaultFont;
+        $this->fontSize = $config['fontSize'];
+        $this->width = $config['width'];
+        $this->height = $config['height'];
+        $this->ascii = $config['ascii'];
+        $this->uppercase = $config['uppercase'];
+        $this->borderSize = $config['border']['size'];
+        $this->borderColor = $config['border']['color'];
+    }
+
+    public function addTheme(string $name, array $config)
+    {
+        $this->themes[$name] = $this->validateConfig($config);
+
+        return $this;
+    }
+
+    public function useTheme(string $name)
+    {
+        if (array_key_exists($name, $this->themes)) {
+            $this->setTheme($this->themes[$name]);
+        }
     }
 
     public function setFont($font)
@@ -273,7 +277,7 @@ class Avatar
 
         return $this;
     }
-    
+
     public function setChars($chars)
     {
         $this->chars = $chars;
@@ -422,6 +426,9 @@ class Avatar
 
     protected function getRandomElement($array, $default)
     {
+        // Make it work for associative array
+        $array = array_values($array);
+
         if (strlen($this->name) == 0 || count($array) == 0) {
             return $default;
         }
@@ -445,5 +452,27 @@ class Avatar
         }
 
         $this->initials = $this->initialGenerator->make($this->name, $this->chars, $this->uppercase, $this->ascii);
+    }
+
+    protected function validateConfig($config)
+    {
+        $default = [
+            'shape'       => 'circle',
+            'chars'       => 2,
+            'backgrounds' => [$this->background],
+            'foregrounds' => [$this->foreground],
+            'fonts'       => [$this->defaultFont],
+            'fontSize'    => 48,
+            'width'       => 100,
+            'height'      => 100,
+            'ascii'       => false,
+            'uppercase'   => false,
+            'border'      => [
+                'size'  => 1,
+                'color' => 'foreground',
+            ],
+        ];
+
+        return $config + $default;
     }
 }

@@ -83,13 +83,14 @@ return [
         'color' => 'foreground',
     ],
 
-    'default_theme' => 'grayscale',
+    'theme' => ['primary', 'grayscale'],
+
     'themes' => [
         'primary' => [
             'backgrounds' => ['#FF0000', '#00FF00', '#0000FF'],
             'foregrounds' => ['#FFFFFF'],
             'border' => [
-                'size'  => 2,
+                'size'  => 1,
                 'color' => '#000000',
             ],
         ],
