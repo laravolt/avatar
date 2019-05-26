@@ -32,8 +32,16 @@ class ServiceProvider extends BaseServiceProvider
 
             if ($theme) {
                 if (is_string($theme)) {
-                    $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$theme, []);
-                    $avatar->setTheme($themeConfig);
+                    if ($theme === '*') {
+                        $theme = array_keys($app['config']->get('laravolt.avatar.themes', []));
+                        foreach ($theme as $name) {
+                            $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$name, []);
+                            $avatar->addTheme($name, $themeConfig);
+                        }
+                    } else {
+                        $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$theme, []);
+                        $avatar->setTheme($themeConfig);
+                    }
                 } elseif (is_array($theme)) {
                     foreach ($theme as $name) {
                         $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$name, []);
