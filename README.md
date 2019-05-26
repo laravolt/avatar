@@ -205,7 +205,45 @@ return [
         // 'background' (same as background color)
         // or any valid hex ('#aabbcc')
         'color' => 'foreground'
-    ]
+    ],
+    
+    // List of theme name to be used when rendering avatar
+    // Possible values are:
+    // 1. Theme name as string: 'colorful'
+    // 2. Or array of string name: ['grayscale-light', 'grayscale-dark']
+    // 3. Or wildcard "*" to use all defined themes
+    'theme' => '*',
+
+    'themes' => [
+        'grayscale-light' => [
+            'backgrounds' => ['#edf2f7', '#e2e8f0', '#cbd5e0'],
+            'foregrounds' => ['#a0aec0'],
+        ],
+        'grayscale-dark' => [
+            'backgrounds' => ['#2d3748', '#4a5568', '#718096'],
+            'foregrounds' => ['#e2e8f0'],
+        ],
+        'colorful' => [
+            'backgrounds' => [
+                '#f44336',
+                '#E91E63',
+                '#9C27B0',
+                '#673AB7',
+                '#3F51B5',
+                '#2196F3',
+                '#03A9F4',
+                '#00BCD4',
+                '#009688',
+                '#4CAF50',
+                '#8BC34A',
+                '#CDDC39',
+                '#FFC107',
+                '#FF9800',
+                '#FF5722',
+            ],
+            'foregrounds' => ['#FFFFFF'],
+        ],
+    ]    
 ];
 
 ```
@@ -222,6 +260,7 @@ Avatar::create('Soekarno')->setFontSize(72);
 Avatar::create('Soekarno')->setFont('/path/to/font.ttf');
 Avatar::create('Soekarno')->setBorder(1, '#aabbcc'); // size = 1, color = #aabbcc
 Avatar::create('Soekarno')->setShape('square');
+Avatar::create('Soekarno')->useTheme('colorful');
 
 // chaining
 Avatar::create('Habibie')->setDimension(50)->setFontSize(18)->toBase64();
