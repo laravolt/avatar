@@ -46,6 +46,8 @@ class Avatar
 
     protected $themes;
 
+    protected $defaultTheme = [];
+
     /**
      * Avatar constructor.
      *
@@ -57,7 +59,7 @@ class Avatar
         $this->cache = $cache ?? new ArrayStore();
         $this->driver = $config['driver'] ?? 'gd';
 
-        $this->setTheme($config);
+        $this->defaultTheme = $this->setTheme($config);
     }
 
     /**
@@ -105,6 +107,8 @@ class Avatar
         $this->uppercase = $config['uppercase'];
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
+
+        return $config;
     }
 
     public function addTheme(string $name, array $config)
@@ -118,7 +122,11 @@ class Avatar
     {
         if (array_key_exists($name, $this->themes)) {
             $this->setTheme($this->themes[$name]);
+            $this->setForeground($this->getRandomForeground());
+            $this->setBackground($this->getRandomBackground());
         }
+
+        return $this;
     }
 
     public function setFont($font)
@@ -456,7 +464,7 @@ class Avatar
 
     protected function validateConfig($config)
     {
-        $default = [
+        $fallback = [
             'shape'       => 'circle',
             'chars'       => 2,
             'backgrounds' => [$this->background],
@@ -473,6 +481,6 @@ class Avatar
             ],
         ];
 
-        return $config + $default;
+        return $config + $this->defaultTheme + $fallback;
     }
 }
