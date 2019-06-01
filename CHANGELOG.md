@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.2.1
-* Add `setChars()` #75
+* Add `setChars()` [#75](https://github.com/laravolt/avatar/pull/75)
 
 ## 2.2.0
 * Add gravatar support
