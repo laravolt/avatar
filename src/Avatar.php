@@ -83,8 +83,11 @@ class Avatar
         // Apply fallback themes found in config file
         $this->applyTheme($config);
 
-        // Load any additional themes
-        $this->loadThemes($config);
+        // Add any additional themes for further use
+        $themes = $this->resolveTheme($this->theme, $config['themes'] ?? []);
+        foreach ($themes as $name => $config) {
+            $this->addTheme($name, $config);
+        }
     }
 
     /**
@@ -108,18 +111,6 @@ class Avatar
         $this->setBackground($this->getRandomBackground());
 
         return $this;
-    }
-
-    public function loadThemes($config)
-    {
-        $config = collect($config);
-
-        $theme = $config->get('theme');
-
-        $themes = $this->resolveTheme($theme, $config->get('themes', []));
-        foreach ($themes as $name => $config) {
-            $this->addTheme($name, $config);
-        }
     }
 
     public function applyTheme(array $config)
@@ -160,7 +151,7 @@ class Avatar
         return $this;
     }
 
-    protected function chooseTheme()
+    protected function setRandomTheme()
     {
         $themes = $this->resolveTheme($this->theme, $this->themes);
         if (!empty($themes)) {
@@ -397,8 +388,8 @@ class Avatar
     public function buildAvatar()
     {
         $this->buildInitial();
-
-        $this->chooseTheme();
+        $this->setRandomTheme();
+        $this->setRandomFont();
 
         $x = $this->width / 2;
         $y = $this->height / 2;
@@ -407,8 +398,6 @@ class Avatar
         $this->image = $manager->canvas($this->width, $this->height);
 
         $this->createShape();
-
-        $this->setRandomFont();
 
         $this->image->text(
             $this->initials,

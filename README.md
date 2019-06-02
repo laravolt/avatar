@@ -260,7 +260,7 @@ Avatar::create('Soekarno')->setFontSize(72);
 Avatar::create('Soekarno')->setFont('/path/to/font.ttf');
 Avatar::create('Soekarno')->setBorder(1, '#aabbcc'); // size = 1, color = #aabbcc
 Avatar::create('Soekarno')->setShape('square');
-Avatar::create('Soekarno')->useTheme('colorful');
+Avatar::create('Soekarno')->setTheme('colorful');
 
 // chaining
 Avatar::create('Habibie')->setDimension(50)->setFontSize(18)->toBase64();
