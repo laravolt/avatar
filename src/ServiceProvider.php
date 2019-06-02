@@ -28,28 +28,6 @@ class ServiceProvider extends BaseServiceProvider
             $avatar = new Avatar($config, $cache);
             $avatar->setGenerator($app['avatar.generator']);
 
-            $theme = $app['config']->get('laravolt.avatar.theme');
-
-            if ($theme) {
-                if (is_string($theme)) {
-                    if ($theme === '*') {
-                        $theme = array_keys($app['config']->get('laravolt.avatar.themes', []));
-                        foreach ($theme as $name) {
-                            $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$name, []);
-                            $avatar->addTheme($name, $themeConfig);
-                        }
-                    } else {
-                        $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$theme, []);
-                        $avatar->setTheme($themeConfig);
-                    }
-                } elseif (is_array($theme)) {
-                    foreach ($theme as $name) {
-                        $themeConfig = $app['config']->get('laravolt.avatar.themes.'.$name, []);
-                        $avatar->addTheme($name, $themeConfig);
-                    }
-                }
-            }
-
             return $avatar;
         });
 

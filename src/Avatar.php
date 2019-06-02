@@ -15,51 +15,76 @@ class Avatar
     protected $name;
 
     protected $chars;
+
     protected $shape;
+
     protected $width;
+
     protected $height;
+
     protected $availableBackgrounds;
+
     protected $availableForegrounds;
+
     protected $fonts;
+
     protected $fontSize;
+
     protected $fontFamily;
+
     protected $borderSize = 0;
+
     protected $borderColor;
+
     protected $ascii = false;
+
     protected $uppercase = false;
 
     /**
      * @var \Intervention\Image\Image
      */
     protected $image;
+
     protected $font = null;
+
     protected $background = '#cccccc';
+
     protected $foreground = '#ffffff';
+
     protected $initials = '';
 
     protected $cache;
+
     protected $driver;
 
     protected $initialGenerator;
 
     protected $defaultFont = __DIR__.'/../fonts/OpenSans-Bold.ttf';
 
-    protected $themes;
+    protected $themes = [];
+
+    protected $theme;
 
     protected $defaultTheme = [];
 
     /**
      * Avatar constructor.
      *
-     * @param array      $config
-     * @param Repository $cache
+     * @param  array  $config
+     * @param  Repository  $cache
      */
     public function __construct(array $config = [], Repository $cache = null)
     {
         $this->cache = $cache ?? new ArrayStore();
         $this->driver = $config['driver'] ?? 'gd';
+        $this->theme = $config['theme'] ?? null;
+        $this->defaultTheme = $this->validateConfig($config);
 
-        $this->defaultTheme = $this->setTheme($config);
+        // Apply fallback themes found in config file
+        $this->applyTheme($config);
+
+        // Load any additional themes
+        $this->loadThemes($config);
     }
 
     /**
@@ -67,7 +92,7 @@ class Avatar
      */
     public function __toString()
     {
-        return (string)$this->toBase64();
+        return (string) $this->toBase64();
     }
 
     public function setGenerator(GeneratorInterface $generator)
@@ -79,18 +104,25 @@ class Avatar
     {
         $this->name = $name;
 
-        if (is_array($this->themes)) {
-            $config = $this->getRandomElement($this->themes, []);
-            $this->setTheme($config);
-        }
-
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
 
         return $this;
     }
 
-    public function setTheme(array $config)
+    public function loadThemes($config)
+    {
+        $config = collect($config);
+
+        $theme = $config->get('theme');
+
+        $themes = $this->resolveTheme($theme, $config->get('themes', []));
+        foreach ($themes as $name => $config) {
+            $this->addTheme($name, $config);
+        }
+    }
+
+    public function applyTheme(array $config)
     {
         $config = $this->validateConfig($config);
 
@@ -108,7 +140,8 @@ class Avatar
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
 
-        return $config;
+        $this->setForeground($this->getRandomForeground());
+        $this->setBackground($this->getRandomBackground());
     }
 
     public function addTheme(string $name, array $config)
@@ -118,15 +151,42 @@ class Avatar
         return $this;
     }
 
-    public function useTheme(string $name)
+    public function setTheme($theme)
     {
-        if (array_key_exists($name, $this->themes)) {
-            $this->setTheme($this->themes[$name]);
-            $this->setForeground($this->getRandomForeground());
-            $this->setBackground($this->getRandomBackground());
+        if (is_string($theme) || is_array($theme)) {
+            $this->theme = $theme;
         }
 
         return $this;
+    }
+
+    protected function chooseTheme()
+    {
+        $themes = $this->resolveTheme($this->theme, $this->themes);
+        if (!empty($themes)) {
+            $this->applyTheme($this->getRandomElement($themes, []));
+        }
+    }
+
+    protected function resolveTheme($theme, $config)
+    {
+        $config = collect($config);
+        $themes = [];
+
+        foreach ((array) $theme as $themeName) {
+            if (!is_string($themeName)) {
+                continue;
+            }
+            if ($themeName === '*') {
+                foreach ($config as $name => $themeConfig) {
+                    $themes[$name] = $themeConfig;
+                }
+            } else {
+                $themes[$themeName] = $config->get($themeName, []);
+            }
+        }
+
+        return $themes;
     }
 
     public function setFont($font)
@@ -337,6 +397,8 @@ class Avatar
     public function buildAvatar()
     {
         $this->buildInitial();
+
+        $this->chooseTheme();
 
         $x = $this->width / 2;
         $y = $this->height / 2;
