@@ -207,6 +207,7 @@ return [
         'color' => 'foreground'
     ],
     
+    // Note: Theme are available since 3.0.0
     // List of theme name to be used when rendering avatar
     // Possible values are:
     // 1. Theme name as string: 'colorful'
@@ -260,12 +261,15 @@ Avatar::create('Soekarno')->setFontSize(72);
 Avatar::create('Soekarno')->setFont('/path/to/font.ttf');
 Avatar::create('Soekarno')->setBorder(1, '#aabbcc'); // size = 1, color = #aabbcc
 Avatar::create('Soekarno')->setShape('square');
-Avatar::create('Soekarno')->setTheme('colorful');
+
+// Available since 3.0.0
+Avatar::create('Soekarno')->setTheme('colorful'); // set exact theme
+Avatar::create('Soekarno')->setTheme(['grayscale-light', 'grayscale-dark']); // theme will be randomized from these two options
 
 // chaining
 Avatar::create('Habibie')->setDimension(50)->setFontSize(18)->toBase64();
 
-``` 
+```
 
 ## Integration With Other PHP Project
 ```php
