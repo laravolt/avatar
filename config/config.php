@@ -90,6 +90,9 @@ return [
     // 3. Or wildcard "*" to use all defined themes
     'theme' => ['*'],
 
+    // Predefined themes
+    // Available theme attributes are:
+    // shape, chars, backgrounds, foregrounds, fonts, fontSize, width, height, ascii, uppercase, and border.
     'themes' => [
         'grayscale-light' => [
             'backgrounds' => ['#edf2f7', '#e2e8f0', '#cbd5e0'],
