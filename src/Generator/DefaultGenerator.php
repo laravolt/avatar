@@ -3,7 +3,7 @@
 namespace Laravolt\Avatar\Generator;
 
 use Illuminate\Support\Collection;
-use Stringy\Stringy;
+use Illuminate\Support\Str;
 
 class DefaultGenerator implements GeneratorInterface
 {
@@ -17,14 +17,14 @@ class DefaultGenerator implements GeneratorInterface
         if ($words->count() === 1) {
             $initial = (string) $words->first();
 
-            if ($this->name->length() >= $length) {
-                $initial = (string) $this->name->substr(0, $length);
+            if (strlen($this->name) >= $length) {
+                $initial = Str::substr($this->name, 0, $length);
             }
         } else {
             // otherwise, use initial char from each word
             $initials = new Collection();
             $words->each(function ($word) use ($initials) {
-                $initials->push(Stringy::create($word)->substr(0, 1));
+                $initials->push(Str::substr($word, 0, 1));
             });
 
             $initial = $initials->slice(0, $length)->implode('');
@@ -49,15 +49,13 @@ class DefaultGenerator implements GeneratorInterface
             );
         }
 
-        $name = Stringy::create($name)->collapseWhitespace();
-
         if (filter_var($name, FILTER_VALIDATE_EMAIL)) {
             // turn bayu.hendra@gmail.com into "Bayu Hendra"
-            $name = current($name->split('@', 1))->replace('.', ' ');
+            $name = str_replace('.', ' ', Str::before($name, '@'));
         }
 
         if ($ascii) {
-            $name = $name->toAscii();
+            $name = Str::ascii($name);
         }
 
         $this->name = $name;

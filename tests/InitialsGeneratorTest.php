@@ -23,14 +23,6 @@ class InitialGeneratorTest extends TestCase
 
     /**
      * @test
-     */
-    public function it_accept_stringy()
-    {
-        $this->assertEquals('BH', $this->generator->make(new Stringy('Bayu Hendra')));
-    }
-
-    /**
-     * @test
      * @expectedException InvalidArgumentException
      */
     public function it_cannot_accept_array()
