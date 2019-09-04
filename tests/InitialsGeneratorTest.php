@@ -1,6 +1,5 @@
 <?php
 
-use Stringy\Stringy;
 use PHPUnit\Framework\TestCase;
 use Laravolt\Avatar\Generator\DefaultGenerator;
 
