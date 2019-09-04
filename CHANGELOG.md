@@ -1,6 +1,15 @@
 # Changelog
 
+## 3.0.0
+
+- Implement themes [#73](https://github.com/laravolt/avatar/issues/73)
+- Add `setTheme()`
+- Add support for Laravel 6
+- Drop support for Laravel 5.2, 5.3, 5.4, and 5.5
+- Drop support for PHP 7.0
+
 ## 2.2.1
+
 * Add `setChars()` [#75](https://github.com/laravolt/avatar/pull/75)
 
 ## 2.2.0
