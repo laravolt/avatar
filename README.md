@@ -135,15 +135,18 @@ return [
     | Avatar use Intervention Image library to process image.
     | Meanwhile, Intervention Image supports "GD Library" and "Imagick" to process images
     | internally. You may choose one of them according to your PHP
-    | configuration. By default PHP's "GD Library" implementation is used.
+    | configuration. By default PHP's "Imagick" implementation is used.
     |
     | Supported: "gd", "imagick"
     |
     */
-    'driver'    => 'gd',
+    'driver'    => 'imagick',
 
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
+
+    // Theme implementation
+    'decorator' => \Laravolt\Avatar\Theme\Decorator::class,
 
     // Whether all characters supplied must be replaced with their closest ASCII counterparts
     'ascii'    => false,
@@ -163,19 +166,16 @@ return [
     // font size
     'fontSize' => 48,
 
-    // Font family to be used in SVG text
-    'fontFamily' => null,
-
-    // convert initial letter to uppercase
+    // convert initial letter in uppercase
     'uppercase' => false,
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-    'fonts'    => ['path/to/OpenSans-Bold.ttf', 'path/to/rockwell.ttf'],
+    'fonts'    => [__DIR__.'/../fonts/OpenSans-Bold.ttf', __DIR__.'/../fonts/rockwell.ttf'],
 
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds'   => [
-        '#FFFFFF'
+        '#FFFFFF',
     ],
 
     // List of background colors to be used, randomly selected based on name supplied
@@ -199,22 +199,24 @@ return [
 
     'border'    => [
         'size'  => 1,
-        
+
         // border color, available value are:
         // 'foreground' (same as foreground color)
         // 'background' (same as background color)
         // or any valid hex ('#aabbcc')
-        'color' => 'foreground'
+        'color' => 'background',
     ],
-    
-    // Note: Theme are available since 3.0.0
+
     // List of theme name to be used when rendering avatar
     // Possible values are:
     // 1. Theme name as string: 'colorful'
     // 2. Or array of string name: ['grayscale-light', 'grayscale-dark']
     // 3. Or wildcard "*" to use all defined themes
-    'theme' => '*',
+    'theme' => ['*'],
 
+    // Predefined themes
+    // Available theme attributes are:
+    // shape, chars, backgrounds, foregrounds, fonts, fontSize, width, height, ascii, uppercase, and border.
     'themes' => [
         'grayscale-light' => [
             'backgrounds' => ['#edf2f7', '#e2e8f0', '#cbd5e0'],
@@ -244,7 +246,7 @@ return [
             ],
             'foregrounds' => ['#FFFFFF'],
         ],
-    ]    
+    ]
 ];
 
 ```
