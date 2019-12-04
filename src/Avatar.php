@@ -133,6 +133,7 @@ class Avatar
 
         $this->setForeground($this->getRandomForeground());
         $this->setBackground($this->getRandomBackground());
+        $this->setFont($this->getRandomFont());
     }
 
     public function addTheme(string $name, array $config)
@@ -147,6 +148,8 @@ class Avatar
         if (is_string($theme) || is_array($theme)) {
             $this->theme = $theme;
         }
+
+        $this->setRandomTheme();
 
         return $this;
     }
@@ -366,11 +369,9 @@ class Avatar
         return $this->getRandomElement($this->availableForegrounds, $this->foreground);
     }
 
-    protected function setRandomFont()
+    protected function getRandomFont()
     {
-        $randomFont = $this->getRandomElement($this->fonts, $this->defaultFont);
-
-        $this->setFont($randomFont);
+        return $this->getRandomElement($this->fonts, $this->defaultFont);
     }
 
     protected function getBorderColor()
@@ -388,8 +389,6 @@ class Avatar
     public function buildAvatar()
     {
         $this->buildInitial();
-        $this->setRandomTheme();
-        $this->setRandomFont();
 
         $x = $this->width / 2;
         $y = $this->height / 2;
