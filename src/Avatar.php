@@ -224,7 +224,7 @@ class Avatar
         $radius = ($this->width - $this->borderSize) / 2;
         $center = $this->width / 2;
 
-        $svg = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="'.$this->width.'" height="'.$this->height.'">';
+        $svg = '<svg width="'.$this->width.'" height="'.$this->height.'" viewBox="0 0 '.$this->width.' '.$this->height.'">';
 
         if ($this->shape == 'square') {
             $svg .= '<rect x="'.$x

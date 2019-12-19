@@ -174,7 +174,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_circle_svg()
     {
-        $expected = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100" height="100">';
+        $expected = '<svg width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
         $expected .= '<text x="50" y="50" font-size="24" fill="white" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
@@ -197,7 +197,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_rectangle_svg()
     {
-        $expected = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100" height="100">';
+        $expected = '<svg width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<rect x="5" y="5" width="90" height="90" stroke="yellow" stroke-width="10" fill="red" />';
         $expected .= '<text x="50" y="50" font-size="24" fill="white" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
@@ -220,7 +220,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_svg_with_custom_font_family()
     {
-        $expected = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="100" height="100">';
+        $expected = '<svg width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
         $expected .= '<text x="50" y="50" font-size="24" font-family="Lato" fill="white" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
