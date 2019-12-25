@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Set specific configuration variables here
  */
@@ -16,7 +17,7 @@ return [
     | Supported: "gd", "imagick"
     |
     */
-    'driver'    => 'imagick',
+    'driver' => env('IMAGE_DRIVER', 'imagick'),
 
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
@@ -25,19 +26,19 @@ return [
     'decorator' => \Laravolt\Avatar\Theme\Decorator::class,
 
     // Whether all characters supplied must be replaced with their closest ASCII counterparts
-    'ascii'    => false,
+    'ascii' => false,
 
     // Image shape: circle or square
     'shape' => 'circle',
 
     // Image width, in pixel
-    'width'    => 100,
+    'width' => 100,
 
     // Image height, in pixel
-    'height'   => 100,
+    'height' => 100,
 
     // Number of characters used as initials. If name consists of single word, the first N character will be used
-    'chars'    => 2,
+    'chars' => 2,
 
     // font size
     'fontSize' => 48,
@@ -47,15 +48,15 @@ return [
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-    'fonts'    => [__DIR__.'/../fonts/OpenSans-Bold.ttf', __DIR__.'/../fonts/rockwell.ttf'],
+    'fonts' => [__DIR__ . '/../fonts/OpenSans-Bold.ttf', __DIR__ . '/../fonts/rockwell.ttf'],
 
     // List of foreground colors to be used, randomly selected based on name supplied
-    'foregrounds'   => [
+    'foregrounds' => [
         '#FFFFFF',
     ],
 
     // List of background colors to be used, randomly selected based on name supplied
-    'backgrounds'   => [
+    'backgrounds' => [
         '#f44336',
         '#E91E63',
         '#9C27B0',
@@ -73,8 +74,8 @@ return [
         '#FF5722',
     ],
 
-    'border'    => [
-        'size'  => 1,
+    'border' => [
+        'size' => 1,
 
         // border color, available value are:
         // 'foreground' (same as foreground color)
@@ -88,7 +89,7 @@ return [
     // 1. Theme name as string: 'colorful'
     // 2. Or array of string name: ['grayscale-light', 'grayscale-dark']
     // 3. Or wildcard "*" to use all defined themes
-    'theme' => ['*'],
+    'theme' => ['colorful'],
 
     // Predefined themes
     // Available theme attributes are:
@@ -122,5 +123,26 @@ return [
             ],
             'foregrounds' => ['#FFFFFF'],
         ],
-    ]
+        'pastel' => [
+            'backgrounds' => [
+                '#ef9a9a',
+                '#F48FB1',
+                '#CE93D8',
+                '#B39DDB',
+                '#9FA8DA',
+                '#90CAF9',
+                '#81D4FA',
+                '#80DEEA',
+                '#80CBC4',
+                '#A5D6A7',
+                '#E6EE9C',
+                '#FFAB91',
+                '#FFCCBC',
+                '#D7CCC8',
+            ],
+            'foregrounds' => [
+                '#FFF',
+            ],
+        ],
+    ],
 ];
