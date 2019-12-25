@@ -87,7 +87,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setName')->andReturn($name);
         $generator->shouldReceive('setUppercase')->andReturnSelf();
         $generator->shouldReceive('make')->andReturn('A');
-        $avatar->create($name);
+        $avatar->create($name)->buildAvatar();
 
         $this->assertAttributeEquals('#000000', 'background', $avatar);
         $this->assertAttributeEquals('#111111', 'foreground', $avatar);
@@ -108,20 +108,20 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
 
-        $name1 = 'AA';
-        $name2 = 'AAA';
+        $name1 = 'B';
+        $name2 = 'C';
 
         $generator->shouldReceive('setLength')->andReturn(2);
         $generator->shouldReceive('setName')->andReturn($name1);
         $generator->shouldReceive('make')->andReturn('AA');
 
         $avatar1 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
-        $avatar1->create($name1);
+        $avatar1->create($name1)->buildAvatar();
 
         $generator->shouldReceive('setName')->andReturn($name2);
 
         $avatar2 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
-        $avatar2->create($name2);
+        $avatar2->create($name2)->buildAvatar();
 
         $this->assertAttributeEquals('#000000', 'background', $avatar1);
         $this->assertAttributeEquals('#111111', 'background', $avatar2);

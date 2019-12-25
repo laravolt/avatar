@@ -22,11 +22,11 @@ class Avatar
 
     protected $height;
 
-    protected $availableBackgrounds;
+    protected $availableBackgrounds = [];
 
-    protected $availableForegrounds;
+    protected $availableForegrounds = [];
 
-    protected $fonts;
+    protected $fonts = [];
 
     protected $fontSize;
 
@@ -47,9 +47,9 @@ class Avatar
 
     protected $font = null;
 
-    protected $background = '#cccccc';
+    protected $background = '#CCCCCC';
 
-    protected $foreground = '#ffffff';
+    protected $foreground = '#FFFFFF';
 
     protected $initials = '';
 
@@ -79,9 +79,7 @@ class Avatar
         $this->driver = $config['driver'] ?? 'gd';
         $this->theme = $config['theme'] ?? null;
         $this->defaultTheme = $this->validateConfig($config);
-
-        // Apply fallback themes found in config file
-        $this->applyTheme($config);
+        $this->applyTheme($this->defaultTheme);
 
         // Add any additional themes for further use
         $themes = $this->resolveTheme($this->theme, $config['themes'] ?? []);
@@ -107,16 +105,12 @@ class Avatar
     {
         $this->name = $name;
 
-        $this->setForeground($this->getRandomForeground());
-        $this->setBackground($this->getRandomBackground());
-
         return $this;
     }
 
     public function applyTheme(array $config)
     {
         $config = $this->validateConfig($config);
-
         $this->shape = $config['shape'];
         $this->chars = $config['chars'];
         $this->availableBackgrounds = $config['backgrounds'];
@@ -130,10 +124,6 @@ class Avatar
         $this->uppercase = $config['uppercase'];
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
-
-        $this->setForeground($this->getRandomForeground());
-        $this->setBackground($this->getRandomBackground());
-        $this->setFont($this->getRandomFont());
     }
 
     public function addTheme(string $name, array $config)
@@ -389,7 +379,10 @@ class Avatar
     public function buildAvatar()
     {
         $this->buildInitial();
-
+        $this->setRandomTheme();
+        $this->setForeground($this->getRandomForeground());
+        $this->setBackground($this->getRandomBackground());
+        $this->setFont($this->getRandomFont());
         $x = $this->width / 2;
         $y = $this->height / 2;
 

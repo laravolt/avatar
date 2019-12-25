@@ -60,7 +60,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
         $avatar = new \Laravolt\Avatar\Avatar($config);
         $name = 'A';
-        $avatar->create($name);
+        $avatar->create($name)->buildAvatar();
 
         $this->assertAttributeEquals('#000000', 'background', $avatar);
         $this->assertAttributeEquals('#111111', 'foreground', $avatar);
@@ -79,10 +79,10 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $name2 = 'AAA';
 
         $avatar1 = new \Laravolt\Avatar\Avatar($config);
-        $avatar1->create($name1);
+        $avatar1->create($name1)->buildAvatar();
 
         $avatar2 = new \Laravolt\Avatar\Avatar($config);
-        $avatar2->create($name2);
+        $avatar2->create($name2)->buildAvatar();
 
         $this->assertAttributeEquals('#000000', 'background', $avatar1);
         $this->assertAttributeEquals('#111111', 'background', $avatar2);
