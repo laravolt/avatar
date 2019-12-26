@@ -85,7 +85,7 @@ class Avatar
         $this->applyTheme($this->defaultTheme);
 
         // Add any additional themes for further use
-        $themes = $this->resolveTheme($this->theme, $config['themes'] ?? []);
+        $themes = $this->resolveTheme('*', $config['themes'] ?? []);
         foreach ($themes as $name => $config) {
             $this->addTheme($name, $config);
         }
