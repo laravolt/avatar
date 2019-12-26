@@ -7,11 +7,14 @@ use Illuminate\Contracts\Cache\Repository;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
 use Intervention\Image\ImageManager;
+use Laravolt\Avatar\Concerns\AttributeSetter;
 use Laravolt\Avatar\Generator\DefaultGenerator;
 use Laravolt\Avatar\Generator\GeneratorInterface;
 
 class Avatar
 {
+    use AttributeSetter;
+
     protected $name;
 
     protected $chars;
@@ -86,6 +89,8 @@ class Avatar
         foreach ($themes as $name => $config) {
             $this->addTheme($name, $config);
         }
+
+        $this->initTheme();
     }
 
     /**
@@ -104,6 +109,8 @@ class Avatar
     public function create($name)
     {
         $this->name = $name;
+
+        $this->initTheme();
 
         return $this;
     }
@@ -129,17 +136,6 @@ class Avatar
     public function addTheme(string $name, array $config)
     {
         $this->themes[$name] = $this->validateConfig($config);
-
-        return $this;
-    }
-
-    public function setTheme($theme)
-    {
-        if (is_string($theme) || is_array($theme)) {
-            $this->theme = $theme;
-        }
-
-        $this->setRandomTheme();
 
         return $this;
     }
@@ -171,15 +167,6 @@ class Avatar
         }
 
         return $themes;
-    }
-
-    public function setFont($font)
-    {
-        if (is_file($font)) {
-            $this->font = $font;
-        }
-
-        return $this;
     }
 
     public function toBase64()
@@ -276,67 +263,6 @@ class Avatar
         return $url;
     }
 
-    public function setBackground($hex)
-    {
-        $this->background = $hex;
-
-        return $this;
-    }
-
-    public function setForeground($hex)
-    {
-        $this->foreground = $hex;
-
-        return $this;
-    }
-
-    public function setDimension($width, $height = null)
-    {
-        if (!$height) {
-            $height = $width;
-        }
-        $this->width = $width;
-        $this->height = $height;
-
-        return $this;
-    }
-
-    public function setFontSize($size)
-    {
-        $this->fontSize = $size;
-
-        return $this;
-    }
-
-    public function setFontFamily($font)
-    {
-        $this->fontFamily = $font;
-
-        return $this;
-    }
-
-    public function setBorder($size, $color)
-    {
-        $this->borderSize = $size;
-        $this->borderColor = $color;
-
-        return $this;
-    }
-
-    public function setShape($shape)
-    {
-        $this->shape = $shape;
-
-        return $this;
-    }
-
-    public function setChars($chars)
-    {
-        $this->chars = $chars;
-
-        return $this;
-    }
-
     public function getInitial()
     {
         return $this->initials;
@@ -379,10 +305,7 @@ class Avatar
     public function buildAvatar()
     {
         $this->buildInitial();
-        $this->setRandomTheme();
-        $this->setForeground($this->getRandomForeground());
-        $this->setBackground($this->getRandomBackground());
-        $this->setFont($this->getRandomFont());
+
         $x = $this->width / 2;
         $y = $this->height / 2;
 
@@ -480,15 +403,20 @@ class Avatar
         // Make it work for associative array
         $array = array_values($array);
 
-        if (strlen($this->name) == 0 || count($array) == 0) {
+        $name = $this->name;
+        if (strlen($name) === 0) {
+            $name = chr(rand(65, 90));
+        }
+
+        if (count($array) == 0) {
             return $default;
         }
 
-        $number = ord($this->name[0]);
+        $number = ord($name[0]);
         $i = 1;
-        $charLength = strlen($this->name);
+        $charLength = strlen($name);
         while ($i < $charLength) {
-            $number += ord($this->name[$i]);
+            $number += ord($name[$i]);
             $i++;
         }
 
@@ -525,5 +453,13 @@ class Avatar
         ];
 
         return $config + $this->defaultTheme + $fallback;
+    }
+
+    protected function initTheme()
+    {
+        $this->setRandomTheme();
+        $this->setForeground($this->getRandomForeground());
+        $this->setBackground($this->getRandomBackground());
+        $this->setFont($this->getRandomFont());
     }
 }
