@@ -8,11 +8,15 @@ trait AttributeSetter
 {
     public function setTheme($theme)
     {
+        if (!array_key_exists($theme, $this->themes)) {
+            return $this;
+        }
+
         if (is_string($theme) || is_array($theme)) {
             $this->theme = $theme;
         }
 
-        $this->setRandomTheme();
+        $this->initTheme();
 
         return $this;
     }
