@@ -84,6 +84,9 @@ return [
         'color' => 'background',
     ],
 
+    // SVG Border Radius
+    'borderRadius' => 0,
+
     // List of theme name to be used when rendering avatar
     // Possible values are:
     // 1. Theme name as string: 'colorful'

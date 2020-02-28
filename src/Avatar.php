@@ -39,6 +39,8 @@ class Avatar
 
     protected $borderColor;
 
+    protected $borderRadius = 0;
+
     protected $ascii = false;
 
     protected $uppercase = false;
@@ -131,6 +133,7 @@ class Avatar
         $this->uppercase = $config['uppercase'];
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
+        $this->borderRadius = $config['borderRadius'];
     }
 
     public function addTheme(string $name, array $config)
@@ -209,6 +212,7 @@ class Avatar
                 .'" width="'.$width.'" height="'.$height
                 .'" stroke="'.$this->borderColor
                 .'" stroke-width="'.$this->borderSize
+                .'" rx="'.$this->borderRadius
                 .'" fill="'.$this->background.'" />';
         } elseif ($this->shape == 'circle') {
             $svg .= '<circle cx="'.$center
