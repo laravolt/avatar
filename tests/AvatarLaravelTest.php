@@ -18,6 +18,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
             'foregrounds' => ['#FFFFFF'],
             'backgrounds' => ['#000000'],
             'border'      => ['size' => 1, 'color' => '#999999'],
+            'borderRadius'=> 15,
         ];
 
         $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
@@ -39,6 +40,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $this->assertAttributeEquals(48, 'fontSize', $avatar);
         $this->assertAttributeEquals(1, 'borderSize', $avatar);
         $this->assertAttributeEquals('#999999', 'borderColor', $avatar);
+        $this->assertAttributeEquals(15, 'borderRadius', $avatar);
         $this->assertAttributeEquals(false, 'ascii', $avatar);
     }
 
