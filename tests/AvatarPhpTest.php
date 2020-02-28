@@ -209,6 +209,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
                       ->setDimension(100, 100)
                       ->setForeground('white')
                       ->setBorder(10, 'yellow')
+                      ->setBorderRadius(15)
                       ->setBackground('red')
                       ->toSvg();
 
