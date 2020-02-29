@@ -39,6 +39,8 @@ class Avatar
 
     protected $borderColor;
 
+    protected $borderRadius = 0;
+
     protected $ascii = false;
 
     protected $uppercase = false;
@@ -73,8 +75,8 @@ class Avatar
     /**
      * Avatar constructor.
      *
-     * @param  array  $config
-     * @param  Repository  $cache
+     * @param array $config
+     * @param Repository $cache
      */
     public function __construct(array $config = [], Repository $cache = null)
     {
@@ -131,6 +133,7 @@ class Avatar
         $this->uppercase = $config['uppercase'];
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
+        $this->borderRadius = $config['border']['radius'];
     }
 
     public function addTheme(string $name, array $config)
@@ -209,6 +212,7 @@ class Avatar
                 .'" width="'.$width.'" height="'.$height
                 .'" stroke="'.$this->borderColor
                 .'" stroke-width="'.$this->borderSize
+                .'" rx="'.$this->borderRadius
                 .'" fill="'.$this->background.'" />';
         } elseif ($this->shape == 'circle') {
             $svg .= '<circle cx="'.$center
@@ -436,21 +440,25 @@ class Avatar
     protected function validateConfig($config)
     {
         $fallback = [
-            'shape'       => 'circle',
-            'chars'       => 2,
+            'shape' => 'circle',
+            'chars' => 2,
             'backgrounds' => [$this->background],
             'foregrounds' => [$this->foreground],
-            'fonts'       => [$this->defaultFont],
-            'fontSize'    => 48,
-            'width'       => 100,
-            'height'      => 100,
-            'ascii'       => false,
-            'uppercase'   => false,
-            'border'      => [
-                'size'  => 1,
+            'fonts' => [$this->defaultFont],
+            'fontSize' => 48,
+            'width' => 100,
+            'height' => 100,
+            'ascii' => false,
+            'uppercase' => false,
+            'border' => [
+                'size' => 1,
                 'color' => 'foreground',
+                'radius' => 0,
             ],
         ];
+
+        // Handle nested config
+        $config['border'] = ($config['border'] ?? []) + ($this->defaultTheme['border'] ?? []) + $fallback['border'];
 
         return $config + $this->defaultTheme + $fallback;
     }

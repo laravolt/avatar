@@ -8,16 +8,16 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
     public function it_can_override_attributes_when_instantiated()
     {
         $config = [
-            'ascii'       => false,
-            'shape'       => 'circle',
-            'width'       => 100,
-            'height'      => 100,
-            'chars'       => 2,
-            'fontSize'    => 48,
-            'fonts'       => ['arial.ttf'],
+            'ascii' => false,
+            'shape' => 'circle',
+            'width' => 100,
+            'height' => 100,
+            'chars' => 2,
+            'fontSize' => 48,
+            'fonts' => ['arial.ttf'],
             'foregrounds' => ['#FFFFFF'],
             'backgrounds' => ['#000000'],
-            'border'      => ['size' => 1, 'color' => '#999999'],
+            'border' => ['size' => 1, 'color' => '#999999', 'radius' => 15],
         ];
 
         $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
@@ -39,7 +39,29 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $this->assertAttributeEquals(48, 'fontSize', $avatar);
         $this->assertAttributeEquals(1, 'borderSize', $avatar);
         $this->assertAttributeEquals('#999999', 'borderColor', $avatar);
+        $this->assertAttributeEquals(15, 'borderRadius', $avatar);
         $this->assertAttributeEquals(false, 'ascii', $avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function it_have_no_border_radius_as_default()
+    {
+        $config = [
+            'border' => ['size' => 1, 'color' => '#999999'],
+        ];
+
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
+
+        $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
+        $generator->shouldReceive('make')->andReturn('AB');
+        $generator->shouldReceive('setUppercase');
+        $generator->shouldReceive('setAscii');
+
+        $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+
+        $this->assertAttributeEquals(0, 'borderRadius', $avatar);
     }
 
     /**
