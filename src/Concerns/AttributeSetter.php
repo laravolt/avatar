@@ -69,6 +69,13 @@ trait AttributeSetter
         return $this;
     }
 
+    public function setBorderRadius($radius)
+    {
+        $this->borderRadius = $radius;
+
+        return $this;
+    }
+
     public function setShape($shape)
     {
         $this->shape = $shape;

@@ -17,7 +17,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
             'fonts'       => ['arial.ttf'],
             'foregrounds' => ['#FFFFFF'],
             'backgrounds' => ['#000000'],
-            'border'      => ['size' => 1, 'color' => '#999999'],
+            'border'      => ['size' => 1, 'color' => '#999999', 'radius' => 15],
         ];
 
         $avatar = new \Laravolt\Avatar\Avatar($config);
@@ -32,6 +32,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertAttributeEquals(48, 'fontSize', $avatar);
         $this->assertAttributeEquals(1, 'borderSize', $avatar);
         $this->assertAttributeEquals('#999999', 'borderColor', $avatar);
+        $this->assertAttributeEquals(15, 'borderRadius', $avatar);
         $this->assertAttributeEquals(false, 'ascii', $avatar);
     }
 
@@ -198,7 +199,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     public function it_can_generate_rectangle_svg()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
-        $expected .= '<rect x="5" y="5" width="90" height="90" stroke="yellow" stroke-width="10" fill="red" />';
+        $expected .= '<rect x="5" y="5" width="90" height="90" stroke="yellow" stroke-width="10" rx="15" fill="red" />';
         $expected .= '<text x="50" y="50" font-size="24" fill="white" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
@@ -209,6 +210,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
                       ->setDimension(100, 100)
                       ->setForeground('white')
                       ->setBorder(10, 'yellow')
+                      ->setBorderRadius(15)
                       ->setBackground('red')
                       ->toSvg();
 
