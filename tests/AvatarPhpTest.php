@@ -397,6 +397,25 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
             $this->assertAttributeEquals($borderSize, 'borderSize', $avatar);
             $this->assertAttributeEquals($color, 'borderColor', $avatar);
+            $this->assertAttributeEquals(0, 'borderRadius', $avatar);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_border_radius()
+    {
+        $borderSize = 1;
+        $borderColors = ['#ffffff', 'foreground', 'background'];
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        foreach ($borderColors as $color) {
+            $avatar->setBorder($borderSize, $color, 10)->buildAvatar();
+
+            $this->assertAttributeEquals($borderSize, 'borderSize', $avatar);
+            $this->assertAttributeEquals($color, 'borderColor', $avatar);
+            $this->assertAttributeEquals(10, 'borderRadius', $avatar);
         }
     }
 

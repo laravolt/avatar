@@ -60,10 +60,11 @@ trait AttributeSetter
         return $this;
     }
 
-    public function setBorder($size, $color)
+    public function setBorder($size, $color, $radius = 0)
     {
         $this->borderSize = $size;
         $this->borderColor = $color;
+        $this->borderRadius = $radius;
 
         return $this;
     }
