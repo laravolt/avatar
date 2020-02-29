@@ -17,8 +17,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
             'fonts'       => ['arial.ttf'],
             'foregrounds' => ['#FFFFFF'],
             'backgrounds' => ['#000000'],
-            'border'      => ['size' => 1, 'color' => '#999999'],
-            'borderRadius'=> 15,
+            'border'      => ['size' => 1, 'color' => '#999999', 'radius' => 15],
         ];
 
         $avatar = new \Laravolt\Avatar\Avatar($config);

@@ -82,10 +82,10 @@ return [
         // 'background' (same as background color)
         // or any valid hex ('#aabbcc')
         'color' => 'background',
-    ],
 
-    // SVG Border Radius
-    'borderRadius' => 0,
+        // border radius, currently only work for SVG
+        'radius' => 0,
+    ],
 
     // List of theme name to be used when rendering avatar
     // Possible values are:
