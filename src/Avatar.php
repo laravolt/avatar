@@ -454,6 +454,7 @@ class Avatar
                 'size'  => 1,
                 'color' => 'foreground',
             ],
+            'borderRadius' => 0
         ];
 
         return $config + $this->defaultTheme + $fallback;
