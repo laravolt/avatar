@@ -119,7 +119,24 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar1->setTheme('light')->buildAvatar();
         $this->assertAttributeEquals('#FFFFFF', 'background', $avatar1);
         $this->assertAttributeEquals('#000000', 'foreground', $avatar1);
+    }
 
+    /**
+     * @test
+     */
+    public function it_cannot_set_non_existant_theme()
+    {
+        $config = [
+            'foregrounds' => ['#000000', '#111111'],
+            'backgrounds' => ['#111111', '#000000'],
+        ];
+
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $name = 'A';
+        $avatar->create($name)->setTheme('zombie')->buildAvatar();
+
+        $this->assertAttributeEquals('#000000', 'background', $avatar);
+        $this->assertAttributeEquals('#111111', 'foreground', $avatar);
     }
 
     /**
