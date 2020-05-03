@@ -23,7 +23,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->bind('avatar', function (Application $app) {
             $cache = $app->make('cache.store');
-            $config = $app['config']->get('laravolt.avatar');
+            $config = $app['config']->get('laravolt.avatar', []);
 
             $avatar = new Avatar($config, $cache);
             $avatar->setGenerator($app['avatar.generator']);
