@@ -119,7 +119,6 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar1->setTheme('light')->buildAvatar();
         $this->assertAttributeEquals('#FFFFFF', 'background', $avatar1);
         $this->assertAttributeEquals('#000000', 'foreground', $avatar1);
-
     }
 
     /**
