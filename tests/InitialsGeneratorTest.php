@@ -99,6 +99,14 @@ class InitialGeneratorTest extends TestCase
     /**
      * @test
      */
+    public function it_can_convert_to_uppercase()
+    {
+        $this->assertEquals('SA', (string)$this->generator->make('sabil', 2, true));
+    }
+
+    /**
+     * @test
+     */
     public function it_can_generate_initials_from_email()
     {
         $this->assertEquals('ab', $this->generator->make('adi.budi@laravolt.com'));
