@@ -13,7 +13,7 @@
         {
             "name": "Bayu Hendra Winata",
             "email": "uyab.exe@gmail.com",
-            "homepage": "http://id-laravel.com",
+            "homepage": "https://laravolt.dev",
             "role": "Developer"
         }
     ],
@@ -25,7 +25,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0",
-        "mockery/mockery": "^0.9.1",
+        "mockery/mockery": "~1.3",
         "php-coveralls/php-coveralls": "^2.1"
     },
     "autoload": {
@@ -43,7 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "4.0-dev"
         },
         "laravel": {
             "providers": [
