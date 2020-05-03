@@ -92,6 +92,39 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_resolve_random_themes_and_then_overrides()
+    {
+        $config = [
+            'theme' => '*',
+            'themes' => [
+                'dark' => [
+                    'backgrounds' => ['#000000', '#111111'],
+                    'foregrounds' => ['#EEEEEE', '#FFFFFF'],
+                ],
+                'light' => [
+                    'backgrounds' => ['#FFFFFF', '#EEEEEE'],
+                    'foregrounds' => ['#000000', '#111111'],
+                ],
+            ]
+        ];
+
+        $name1 = 'Bay';
+
+        $avatar1 = new \Laravolt\Avatar\Avatar($config);
+        $avatar1->create($name1)->buildAvatar();
+
+        $this->assertAttributeEquals('#000000', 'background', $avatar1);
+        $this->assertAttributeEquals('#EEEEEE', 'foreground', $avatar1);
+
+        $avatar1->setTheme('light')->buildAvatar();
+        $this->assertAttributeEquals('#FFFFFF', 'background', $avatar1);
+        $this->assertAttributeEquals('#000000', 'foreground', $avatar1);
+
+    }
+
+    /**
+     * @test
+     */
     public function it_can_create_initials_from_name()
     {
         $avatar = new \Laravolt\Avatar\Avatar();
