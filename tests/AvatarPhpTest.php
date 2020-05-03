@@ -154,6 +154,20 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_set_chars_length()
+    {
+        $avatar = new \Laravolt\Avatar\Avatar();
+
+        $avatar->create('Bayu Hendra Winata')->setChars(1)->buildAvatar();
+        $this->assertAttributeEquals('B', 'initials', $avatar);
+
+        $avatar->create('Bayu Hendra Winata')->setChars(3)->buildAvatar();
+        $this->assertAttributeEquals('BHW', 'initials', $avatar);
+    }
+
+    /**
+     * @test
+     */
     public function it_accept_valid_font_file()
     {
         $font = __DIR__.'/fonts/rockwell.ttf';
