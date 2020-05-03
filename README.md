@@ -145,9 +145,6 @@ return [
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
 
-    // Theme implementation
-    'decorator' => \Laravolt\Avatar\Theme\Decorator::class,
-
     // Whether all characters supplied must be replaced with their closest ASCII counterparts
     'ascii'    => false,
 
