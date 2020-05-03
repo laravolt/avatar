@@ -124,7 +124,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function it_cannot_set_non_existant_theme()
+    public function it_can_handle_invalid_theme()
     {
         $config = [
             'foregrounds' => ['#000000', '#111111'],
@@ -137,6 +137,9 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
         $this->assertAttributeEquals('#000000', 'background', $avatar);
         $this->assertAttributeEquals('#111111', 'foreground', $avatar);
+
+        $avatar->setTheme(new stdClass())->buildAvatar();
+        $avatar->setTheme(['satu', 'dua'])->buildAvatar();
     }
 
     /**
