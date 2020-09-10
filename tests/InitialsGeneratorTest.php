@@ -7,7 +7,7 @@ class InitialGeneratorTest extends TestCase
 {
     protected $generator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->generator = new DefaultGenerator();
     }
@@ -22,19 +22,19 @@ class InitialGeneratorTest extends TestCase
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function it_cannot_accept_array()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->generator->make(['Bayu', 'Hendra']);
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function it_cannot_accept_object_without_to_string_function()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->generator->make(new DefaultGenerator(new stdClass()));
     }
 

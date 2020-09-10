@@ -29,18 +29,18 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
 
         $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
 
-        $this->assertAttributeEquals(2, 'chars', $avatar);
-        $this->assertAttributeEquals('circle', 'shape', $avatar);
-        $this->assertAttributeEquals(100, 'width', $avatar);
-        $this->assertAttributeEquals(100, 'height', $avatar);
-        $this->assertAttributeEquals(['#000000'], 'availableBackgrounds', $avatar);
-        $this->assertAttributeEquals(['#FFFFFF'], 'availableForegrounds', $avatar);
-        $this->assertAttributeEquals(['arial.ttf'], 'fonts', $avatar);
-        $this->assertAttributeEquals(48, 'fontSize', $avatar);
-        $this->assertAttributeEquals(1, 'borderSize', $avatar);
-        $this->assertAttributeEquals('#999999', 'borderColor', $avatar);
-        $this->assertAttributeEquals(15, 'borderRadius', $avatar);
-        $this->assertAttributeEquals(false, 'ascii', $avatar);
+        $this->assertEquals(2, $avatar->getAttribute('chars'));
+        $this->assertEquals('circle', $avatar->getAttribute('shape'));
+        $this->assertEquals(100, $avatar->getAttribute('width'));
+        $this->assertEquals(100, $avatar->getAttribute('height'));
+        $this->assertEquals(['#000000'], $avatar->getAttribute('availableBackgrounds'));
+        $this->assertEquals(['#FFFFFF'], $avatar->getAttribute('availableForegrounds'));
+        $this->assertEquals(['arial.ttf'], $avatar->getAttribute('fonts'));
+        $this->assertEquals(48, $avatar->getAttribute('fontSize'));
+        $this->assertEquals(1, $avatar->getAttribute('borderSize'));
+        $this->assertEquals('#999999', $avatar->getAttribute('borderColor'));
+        $this->assertEquals(15, $avatar->getAttribute('borderRadius'));
+        $this->assertEquals(false, $avatar->getAttribute('ascii'));
     }
 
     /**
@@ -61,7 +61,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
 
         $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
 
-        $this->assertAttributeEquals(0, 'borderRadius', $avatar);
+        $this->assertEquals(0, $avatar->getAttribute('borderRadius'));
     }
 
     /**
@@ -82,7 +82,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
         $avatar->create('A');
 
-        $this->assertAttributeEquals('#FFFFFF', 'foreground', $avatar);
+        $this->assertEquals('#FFFFFF', $avatar->getAttribute('foreground'));
     }
 
     /**
@@ -111,8 +111,8 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('make')->andReturn('A');
         $avatar->create($name)->buildAvatar();
 
-        $this->assertAttributeEquals('#000000', 'background', $avatar);
-        $this->assertAttributeEquals('#111111', 'foreground', $avatar);
+        $this->assertEquals('#000000', $avatar->getAttribute('background'));
+        $this->assertEquals('#111111', $avatar->getAttribute('foreground'));
     }
 
     /**
@@ -145,7 +145,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $avatar2 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
         $avatar2->create($name2)->buildAvatar();
 
-        $this->assertAttributeEquals('#000000', 'background', $avatar1);
-        $this->assertAttributeEquals('#111111', 'background', $avatar2);
+        $this->assertEquals('#000000', $avatar1->getAttribute('background'));
+        $this->assertEquals('#111111', $avatar2->getAttribute('background'));
     }
 }
