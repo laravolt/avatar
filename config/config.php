@@ -17,7 +17,7 @@ return [
     | Supported: "gd", "imagick"
     |
     */
-    'driver' => env('IMAGE_DRIVER', 'imagick'),
+    'driver' => env('IMAGE_DRIVER', 'gd'),
 
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
