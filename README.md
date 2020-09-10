@@ -18,7 +18,7 @@ This package originally built for Laravel, but can also be used in any PHP proje
 
 ### Laravel >= 5.2:
 ``` bash
-$ composer require laravolt/avatar
+composer require laravolt/avatar
 ```
 
 ### Laravel 5.1:
