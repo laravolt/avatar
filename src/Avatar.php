@@ -318,6 +318,10 @@ class Avatar
 
         $this->createShape();
 
+        if (empty($this->initials)) {
+            return $this;
+        }
+
         $this->image->text(
             $this->initials,
             $x,
