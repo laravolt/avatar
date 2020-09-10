@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.0
+- Change default image driver to `gd`.
+- Add public method `getAttribute($attribute)`
+- Add support for Laravel 8
+- Drop support for Laravel 5.6, 5.7, and 5.8
+- Drop support for PHP 7.1 and 7.2
+
 ## 3.0.0
 
 - Implement themes [#73](https://github.com/laravolt/avatar/issues/73)

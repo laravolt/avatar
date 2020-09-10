@@ -140,7 +140,7 @@ return [
     | Supported: "gd", "imagick"
     |
     */
-    'driver'    => 'imagick',
+    'driver'    => 'gd',
 
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
