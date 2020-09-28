@@ -212,7 +212,7 @@ class Avatar
             $svg .= '<rect x="'.$x
                 .'" y="'.$y
                 .'" width="'.$width.'" height="'.$height
-                .'" stroke="'.$this->borderColor
+                .'" stroke="'.$this->getBorderColor()
                 .'" stroke-width="'.$this->borderSize
                 .'" rx="'.$this->borderRadius
                 .'" fill="'.$this->background.'" />';
@@ -220,7 +220,7 @@ class Avatar
             $svg .= '<circle cx="'.$center
                 .'" cy="'.$center
                 .'" r="'.$radius
-                .'" stroke="'.$this->borderColor
+                .'" stroke="'.$this->getBorderColor()
                 .'" stroke-width="'.$this->borderSize
                 .'" fill="'.$this->background.'" />';
         }
