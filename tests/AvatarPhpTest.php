@@ -23,7 +23,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar = new \Laravolt\Avatar\Avatar($config);
 
         $this->assertEquals(2, $avatar->getAttribute('chars'));
-        $this->assertEquals('circle',$avatar->getAttribute('shape'));
+        $this->assertEquals('circle', $avatar->getAttribute('shape'));
         $this->assertEquals(200, $avatar->getAttribute('width'));
         $this->assertEquals(200, $avatar->getAttribute('height'));
         $this->assertEquals(['#000000'], $avatar->getAttribute('availableBackgrounds'));
