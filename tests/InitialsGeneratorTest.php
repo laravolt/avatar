@@ -109,7 +109,10 @@ class InitialGeneratorTest extends TestCase
      */
     public function it_can_generate_rtl_text()
     {
-        $this->assertEquals('sa', (string)$this->generator->make('sabil', 2, false, false, true));
+        $this->assertEquals('as', (string)$this->generator->make('sabil', 2, false, false, true));
+        $this->assertEquals('ks', (string)$this->generator->make('sabil karim', 2, false, false, true));
+        $this->assertEquals('عع', (string)$this->generator->make('عبدالله عبدالعزيز', 2, false, false, true));
+        // $this->assertEquals('ال', (string)$this->generator->make('الله', 2, false, false, true));
     }
 
     /**

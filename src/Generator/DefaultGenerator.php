@@ -29,16 +29,15 @@ class DefaultGenerator implements GeneratorInterface
                 $initials->push(Str::substr($word, 0, 1));
             });
 
-            $initials = $initials->slice(0, $length);
-            if ($rtl) {
-                $initials = $initials->reverse();
-            }
-
-            $initial = $initials->implode('');
+            $initial = $initials->slice(0, $length)->implode('');
         }
 
         if ($uppercase) {
             $initial = strtoupper($initial);
+        }
+
+        if ($rtl) {
+            $initial = collect(mb_str_split($initial))->reverse()->implode('');
         }
 
         return $initial;
