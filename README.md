@@ -166,6 +166,9 @@ return [
     // convert initial letter in uppercase
     'uppercase' => false,
 
+    // Right to Left (RTL)
+    'rtl' => false,
+
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
     'fonts'    => [__DIR__.'/../fonts/OpenSans-Bold.ttf', __DIR__.'/../fonts/rockwell.ttf'],
