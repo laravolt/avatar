@@ -17,27 +17,28 @@ This package originally built for Laravel, but can also be used in any PHP proje
 [Read more about integration with PHP project here.](#integration-with-other-php-project)
 
 ### Laravel >= 5.2:
-``` bash
+```bash
 composer require laravolt/avatar
 ```
 
 ### Laravel 5.1:
-``` bash
+```bash
 composer require laravolt/avatar ~0.3
 ```
 
 ## Service Provider & Facade
 **Note: only for Laravel 5.4 and below, because since Laravel 5.5 we use package auto-discovery.**
 
-``` php
+```php
 Laravolt\Avatar\ServiceProvider::class,
 
 ...
 
 'Avatar'    => Laravolt\Avatar\Facade::class,
 ```
-## Publish Config (Optional)
-``` php
+
+## Publish Config (optional)
+```php
 php artisan vendor:publish --provider="Laravolt\Avatar\ServiceProvider"
 ```
 This will create config file located in `config/laravolt/avatar.php`.
@@ -50,7 +51,7 @@ $app->register(Laravolt\Avatar\LumenServiceProvider);
 
 ## Usage
 
-### Output As Base64
+### Output as base64
 ```php
 //this will output data-uri (base64 image data)
 //something like data:image/png;base64,iVBORw0KGg....
@@ -61,13 +62,13 @@ Avatar::create('Joko Widodo')->toBase64();
 <img src="{{ Avatar::create('Joko Widodo')->toBase64() }}" />
 ```
 
-### Save As File
+### Save as file
 ```php
 Avatar::create('Susilo Bambang Yudhoyono')->save('sample.png');
 Avatar::create('Susilo Bambang Yudhoyono')->save('sample.jpg', 100); // quality = 100
 ```
 
-### Output As Gravatar
+### Output as Gravatar
 ```php
 Avatar::create('uyab@example.net')->toGravatar();
 // Output: http://gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879
@@ -77,7 +78,7 @@ Avatar::create('uyab@example.net')->toGravatar(['d' => 'identicon', 'r' => 'pg',
 ```
 Gravatar parameter reference: https://en.gravatar.com/site/implement/images/
 
-### Output As SVG
+### Output as SVG
 ```php
 Avatar::create('Susilo Bambang Yudhoyono')->toSvg();
 ```
@@ -96,14 +97,13 @@ You may specify custom font-family for your SVG text.
         font-family: Laravolt;
         src: url({{ asset('fonts/laravolt.woff')) }});
     }
-</style>
+    </style>
 </head>
 ```
 
 ```php
 Avatar::create('Susilo Bambang Yudhoyono')->setFontFamily('Laravolt')->toSvg();
 ```
-
 
 ## Get underlying Intervention image object
 ```php
@@ -116,12 +116,12 @@ By default, this package will try to output any initials letter as it is. If the
 
 Alternatively, we can convert all non-ascii to their closest ASCII counterparts. If no closest coutnerparts found, those characters are removed. Thanks to [Stringy](https://github.com/danielstjules/Stringy) for providing such useful functions. What we need is just change one line in `config/avatar.php`:
 
-``` php
+```php
     'ascii'    => true,
 ```
 
 ## Configuration
-``` php
+```php
 <?php
 /*
  * Set specific configuration variables here
@@ -248,13 +248,12 @@ return [
         ],
     ]
 ];
-
 ```
 
 ## Overriding config at runtime
 We can overriding configuration at runtime by using following functions:
 
-``` php
+```php
 Avatar::create('Soekarno')->setDimension(100);//width = height = 100 pixel
 Avatar::create('Soekarno')->setDimension(100, 200); // width = 100, height = 200
 Avatar::create('Soekarno')->setBackground('#001122');
@@ -271,10 +270,9 @@ Avatar::create('Soekarno')->setTheme(['grayscale-light', 'grayscale-dark']); // 
 
 // chaining
 Avatar::create('Habibie')->setDimension(50)->setFontSize(18)->toBase64();
-
 ```
 
-## Integration With Other PHP Project
+## Integration with other PHP project
 ```php
 // include composer autoload
 require 'vendor/autoload.php';
