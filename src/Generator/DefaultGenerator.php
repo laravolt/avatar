@@ -7,7 +7,9 @@ use Illuminate\Support\Str;
 
 class DefaultGenerator implements GeneratorInterface
 {
-    public function make($name, $length = 2, $uppercase = false, $ascii = false)
+    protected $name;
+
+    public function make($name, $length = 2, $uppercase = false, $ascii = false, $rtl = false)
     {
         $this->setName($name, $ascii);
 
@@ -27,7 +29,12 @@ class DefaultGenerator implements GeneratorInterface
                 $initials->push(Str::substr($word, 0, 1));
             });
 
-            $initial = $initials->slice(0, $length)->implode('');
+            $initials = $initials->slice(0, $length);
+            if ($rtl) {
+                $initials = $initials->reverse();
+            }
+
+            $initial = $initials->implode('');
         }
 
         if ($uppercase) {

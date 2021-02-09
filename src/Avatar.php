@@ -47,6 +47,8 @@ class Avatar
 
     protected $uppercase = false;
 
+    protected $rtl = false;
+
     /**
      * @var \Intervention\Image\Image
      */
@@ -133,6 +135,7 @@ class Avatar
         $this->height = $config['height'];
         $this->ascii = $config['ascii'];
         $this->uppercase = $config['uppercase'];
+        $this->rtl = $config['rtl'];
         $this->borderSize = $config['border']['size'];
         $this->borderColor = $config['border']['color'];
         $this->borderRadius = $config['border']['radius'];
@@ -440,7 +443,7 @@ class Avatar
             $this->initialGenerator = new DefaultGenerator();
         }
 
-        $this->initials = $this->initialGenerator->make($this->name, $this->chars, $this->uppercase, $this->ascii);
+        $this->initials = $this->initialGenerator->make($this->name, $this->chars, $this->uppercase, $this->ascii, $this->rtl);
     }
 
     protected function validateConfig($config)
@@ -456,6 +459,7 @@ class Avatar
             'height' => 100,
             'ascii' => false,
             'uppercase' => false,
+            'rtl' => false,
             'border' => [
                 'size' => 1,
                 'color' => 'foreground',

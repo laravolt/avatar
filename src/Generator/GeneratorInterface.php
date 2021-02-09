@@ -4,5 +4,5 @@ namespace Laravolt\Avatar\Generator;
 
 interface GeneratorInterface
 {
-    public function make($name, $length, $uppercase, $ascii);
+    public function make($name, $length, $uppercase, $ascii, $rtl);
 }

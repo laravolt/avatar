@@ -572,7 +572,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
 class FooGenerator implements \Laravolt\Avatar\Generator\GeneratorInterface
 {
-    public function make($name, $length, $uppercase, $ascii)
+    public function make($name, $length, $uppercase, $ascii, $rtl)
     {
         return 'foo';
     }

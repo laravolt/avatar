@@ -107,6 +107,14 @@ class InitialGeneratorTest extends TestCase
     /**
      * @test
      */
+    public function it_can_generate_rtl_text()
+    {
+        $this->assertEquals('sa', (string)$this->generator->make('sabil', 2, false, false, true));
+    }
+
+    /**
+     * @test
+     */
     public function it_can_generate_initials_from_email()
     {
         $this->assertEquals('ab', $this->generator->make('adi.budi@laravolt.com'));
