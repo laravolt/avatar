@@ -311,6 +311,50 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_use_the_foreground_color_for_the_svg_border()
+    {
+        $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
+        $expected .= '<circle cx="50" cy="50" r="45" stroke="green" stroke-width="10" fill="red" />';
+        $expected .= '<text x="50" y="50" font-size="24" fill="green" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '</svg>';
+
+        $avatar = new \Laravolt\Avatar\Avatar(['border' => ['size' => 10, 'color' => 'foreground']]);
+        $svg = $avatar->create('Andi Budiman')
+                      ->setShape('circle')
+                      ->setFontSize(24)
+                      ->setDimension(100, 100)
+                      ->setForeground('green')
+                      ->setBackground('red')
+                      ->toSvg();
+
+        $this->assertEquals($expected, $svg);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_use_the_background_color_for_the_svg_border()
+    {
+        $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
+        $expected .= '<circle cx="50" cy="50" r="45" stroke="red" stroke-width="10" fill="red" />';
+        $expected .= '<text x="50" y="50" font-size="24" fill="green" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '</svg>';
+
+        $avatar = new \Laravolt\Avatar\Avatar(['border' => ['size' => 10, 'color' => 'background']]);
+        $svg = $avatar->create('Andi Budiman')
+                      ->setShape('circle')
+                      ->setFontSize(24)
+                      ->setDimension(100, 100)
+                      ->setForeground('green')
+                      ->setBackground('red')
+                      ->toSvg();
+
+        $this->assertEquals($expected, $svg);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_generate_gravatar()
     {
         $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879';
