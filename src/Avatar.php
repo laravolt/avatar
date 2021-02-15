@@ -186,7 +186,7 @@ class Avatar
 
         $this->buildAvatar();
 
-        $base64 = $this->image->encode('data-url');
+        $base64 = (string)$this->image->encode('data-url');
 
         $this->cache->forever($key, $base64);
 
