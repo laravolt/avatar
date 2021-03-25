@@ -116,9 +116,7 @@ class Avatar
     {
         $this->name = $name;
 
-        $this->setForeground($this->getRandomForeground());
-        $this->setBackground($this->getRandomBackground());
-        $this->setFont($this->getRandomFont());
+        $this->initTheme();
 
         return $this;
     }
@@ -420,7 +418,7 @@ class Avatar
 
         $name = $this->name;
         if (strlen($name) === 0) {
-            $name = 'laravolt';
+            $name = chr(rand(65, 90));
         }
 
         if (count($array) == 0) {
