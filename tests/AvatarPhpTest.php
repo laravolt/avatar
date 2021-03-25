@@ -98,12 +98,12 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
             'theme' => '*',
             'themes' => [
                 'dark' => [
-                    'backgrounds' => ['#000000', '#111111'],
-                    'foregrounds' => ['#EEEEEE', '#FFFFFF'],
+                    'backgrounds' => ['#000000'],
+                    'foregrounds' => ['#EEEEEE'],
                 ],
                 'light' => [
-                    'backgrounds' => ['#FFFFFF', '#EEEEEE'],
-                    'foregrounds' => ['#000000', '#111111'],
+                    'backgrounds' => ['#FFFFFF'],
+                    'foregrounds' => ['#000000'],
                 ],
             ]
         ];
@@ -113,8 +113,8 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar1 = new \Laravolt\Avatar\Avatar($config);
         $avatar1->create($name1)->buildAvatar();
 
-        $this->assertEquals('#000000', $avatar1->getAttribute('background'));
-        $this->assertEquals('#EEEEEE', $avatar1->getAttribute('foreground'));
+        $this->assertEquals('#FFFFFF', $avatar1->getAttribute('background'));
+        $this->assertEquals('#000000', $avatar1->getAttribute('foreground'));
 
         $avatar1->setTheme('light')->buildAvatar();
         $this->assertEquals('#FFFFFF', $avatar1->getAttribute('background'));
