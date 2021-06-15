@@ -228,14 +228,13 @@ class Avatar
                 .'" fill="'.$this->background.'" />';
         }
 
-        $svg .= '<text x="'.$center.'" y="'.$center;
-        $svg .= '" font-size="'.$this->fontSize;
+        $svg .= '<text font-size="'.$this->fontSize;
 
         if ($this->fontFamily) {
             $svg .= '" font-family="'.$this->fontFamily;
         }
 
-        $svg .= '" fill="'.$this->foreground.'" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">';
+        $svg .= '" fill="'.$this->foreground.'" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">';
         $svg .= $this->getInitial();
         $svg .= '</text>';
 
