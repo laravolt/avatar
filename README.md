@@ -1,6 +1,7 @@
 # laravolt/avatar
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650/mini.png)](https://insight.sensiolabs.com/projects/d8a4b0d9-8603-406d-85c9-e0f5fa8c5650)
+[![Total Downloads](http://poser.pugx.org/laravolt/avatar/downloads)](https://packagist.org/packages/laravolt/avatar)
+[![Monthly Downloads](http://poser.pugx.org/laravolt/avatar/d/monthly)](https://packagist.org/packages/laravolt/avatar)
 [![Travis](https://img.shields.io/travis/laravolt/avatar.svg)](https://travis-ci.org/laravolt/avatar)
 [![Coverage Status](https://coveralls.io/repos/github/laravolt/avatar/badge.svg?branch=master)](https://coveralls.io/github/laravolt/avatar?branch=master)
 
