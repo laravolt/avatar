@@ -290,3 +290,14 @@ $avatar->create('John Doe')->toBase64();
 $avatar->create('John Doe')->save('path/to/file.png', $quality = 90);
 ```
 `$config` is just an ordinary array with same format as explained above (See [Configuration](#configuration)).
+
+## Support Us
+
+### Buy Me A Coffee
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/uyab)
+
+### Donate Via PayPal
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/bayuhendra)
+
+### Traktir Saya
+<a href="https://trakteer.id/bayuhendra/tip" target="_blank"><img id="wse-buttons-preview" src="https://cdn.trakteer.id/images/embed/trbtn-red-5.png" height="40" style="border:0px;height:40px;" alt="Trakteer Saya"></a>
