@@ -19,8 +19,8 @@
     ],
     "require": {
         "php": ">=7.3",
-        "illuminate/support": "6.* | 7.* | 8.*",
-        "illuminate/cache": "6.* | 7.*| 8.*",
+        "illuminate/support": "6.* | 7.* | 8.*|^9.0",
+        "illuminate/cache": "6.* | 7.*| 8.*|^9.0",
         "intervention/image": "^2.5"
     },
     "require-dev": {
