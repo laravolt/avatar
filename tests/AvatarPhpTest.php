@@ -244,7 +244,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
-        $expected .= '<text x="50" y="50" font-size="24" fill="white" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -267,7 +267,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<rect x="5" y="5" width="90" height="90" stroke="yellow" stroke-width="10" rx="15" fill="red" />';
-        $expected .= '<text x="50" y="50" font-size="24" fill="white" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -291,7 +291,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
-        $expected .= '<text x="50" y="50" font-size="24" font-family="Lato" fill="white" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '<text font-size="24" font-family="Lato" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -315,7 +315,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="green" stroke-width="10" fill="red" />';
-        $expected .= '<text x="50" y="50" font-size="24" fill="green" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '<text font-size="24" fill="green" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar(['border' => ['size' => 10, 'color' => 'foreground']]);
@@ -337,7 +337,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="red" stroke-width="10" fill="red" />';
-        $expected .= '<text x="50" y="50" font-size="24" fill="green" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '<text font-size="24" fill="green" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar(['border' => ['size' => 10, 'color' => 'background']]);
