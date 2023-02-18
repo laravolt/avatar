@@ -19,9 +19,9 @@
     ],
     "require": {
         "php": ">=7.3",
-        "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
-        "illuminate/cache": "^6.0|^7.0|^8.0|^9.0",
-        "intervention/image": "^2.5"
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
+        "illuminate/cache": "^6.0|^7.0|^8.0|^9.0|^10.0",
+        "intervention/image": "^2.7"
     },
     "require-dev": {
         "phpunit/phpunit": "~9.0",

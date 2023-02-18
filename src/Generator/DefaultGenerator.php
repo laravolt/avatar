@@ -13,7 +13,7 @@ class DefaultGenerator implements GeneratorInterface
     {
         $this->setName($name, $ascii);
 
-        $words = new Collection(explode(' ', $this->name));
+        $words = new Collection(explode(' ', (string)$this->name));
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
@@ -61,7 +61,7 @@ class DefaultGenerator implements GeneratorInterface
     {
         $initial = (string)$words->first();
 
-        if (strlen($this->name) >= $length) {
+        if (strlen((string)$this->name) >= $length) {
             $initial = Str::substr($this->name, 0, $length);
         }
 

@@ -6,6 +6,7 @@ use Illuminate\Cache\ArrayStore;
 use Illuminate\Contracts\Cache\Repository;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
+use Intervention\Image\Gd\Color;
 use Intervention\Image\ImageManager;
 use Laravolt\Avatar\Concerns\AttributeGetter;
 use Laravolt\Avatar\Concerns\AttributeSetter;
@@ -328,8 +329,8 @@ class Avatar
 
         $this->image->text(
             $this->initials,
-            $x,
-            $y,
+            (int) $x,
+            (int) $y,
             function (AbstractFont $font) {
                 $font->file($this->font);
                 $font->size($this->fontSize);
@@ -354,19 +355,61 @@ class Avatar
 
     protected function createCircleShape()
     {
-        $circleDiameter = $this->width - $this->borderSize;
-        $x = $this->width / 2;
-        $y = $this->height / 2;
+        $circleDiameter = (int) ($this->width - $this->borderSize);
+        $x = (int) ($this->width / 2);
+        $y = (int) ($this->height / 2);
 
-        $this->image->circle(
-            $circleDiameter,
-            $x,
-            $y,
-            function (AbstractShape $draw) {
-                $draw->background($this->background);
-                $draw->border($this->borderSize, $this->getBorderColor());
+        if ($this->driver === 'gd') {
+            // parse background color
+            $background = new Color($this->background);
+
+            if ($this->borderSize) {
+                // slightly smaller ellipse to keep 1px bordered edges clean
+                imagefilledellipse(
+                    $this->image->getCore(),
+                    $x,
+                    $y,
+                    $this->width - 1,
+                    $this->height - 1,
+                    $background->getInt()
+                );
+
+                $border_color = new Color($this->getBorderColor());
+                imagesetthickness($this->image->getCore(), $this->borderSize);
+
+                // gd's imageellipse doesn't respect imagesetthickness so i use imagearc with 359.9 degrees here
+                imagearc(
+                    $this->image->getCore(),
+                    $x,
+                    $y,
+                    $circleDiameter,
+                    $circleDiameter,
+                    0,
+                    (int) 359.99,
+                    $border_color->getInt()
+                );
+            } else {
+                imagefilledellipse(
+                    $this->image->getCore(),
+                    $x,
+                    $y,
+                    $circleDiameter,
+                    $circleDiameter,
+                    $background->getInt()
+                );
             }
-        );
+        } else {
+            $this->image->circle(
+                $circleDiameter,
+                $x,
+                $y,
+                function (AbstractShape $draw) {
+                    // $draw->background($this->background);
+                    $draw->border($this->borderSize, $this->getBorderColor());
+                }
+            );
+        }
+
     }
 
     protected function createSquareShape()
