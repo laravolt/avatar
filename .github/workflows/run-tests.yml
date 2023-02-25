@@ -38,8 +38,3 @@ jobs:
       - name: Execute tests
         run: |
           vendor/bin/phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
-
-      - name: Upload coverage results to Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.REPO_TOKEN }}
