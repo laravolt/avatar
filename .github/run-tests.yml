@@ -1,0 +1,24 @@
+name: run-tests
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        php: [ 8.2, 8.1, 8.0, 7.4, 7.3 ]
+    steps:
+      - uses: actions/checkout@v2
+      - run: travis_retry composer self-update
+      - run: printf "\n" | pecl install imagick
+      - run: travis_retry composer install --prefer-source --no-interaction;
+      - run: >-
+          ./vendor/bin/phpunit -c phpunit.xml --coverage-clover
+          build/logs/clover.xml;
+      - run: ./vendor/bin/php-coveralls -v;
