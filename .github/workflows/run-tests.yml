@@ -37,5 +37,4 @@ jobs:
 
       - name: Execute tests
         run: |
-          vendor/bin/phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
-          vendor/bin/php-coveralls -v
+          vendor/bin/phpunit -c phpunit.xml
