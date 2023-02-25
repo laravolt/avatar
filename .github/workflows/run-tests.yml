@@ -13,12 +13,29 @@ jobs:
       matrix:
         os: [ubuntu-18.04]
         php: [ 8.2, 8.1, 8.0, 7.4, 7.3 ]
+        dependency-version: [ prefer-lowest, prefer-stable ]
     steps:
-      - uses: actions/checkout@v2
-      - run: travis_retry composer self-update
-      - run: printf "\n" | pecl install imagick
-      - run: travis_retry composer install --prefer-source --no-interaction;
-      - run: >-
-          ./vendor/bin/phpunit -c phpunit.xml --coverage-clover
-          build/logs/clover.xml;
-      - run: ./vendor/bin/php-coveralls -v;
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: ${{ matrix.php }}
+            extensions: dom, curl, libxml, mbstring, zip, pcntl, bcmath, soap, intl, gd, exif, iconv, imagick
+            coverage: none
+
+      - name: Install dependencies
+        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+
+      - name: Execute tests
+        run: |
+          vendor/bin/phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
+          vendor/bin/php-coveralls -v
