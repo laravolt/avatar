@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-18.04]
-        php: [ 8.2, 8.1, 8.0, 7.4, 7.3 ]
+        php: [ 8.2, 8.1, 8.0]
         dependency-version: [ prefer-lowest, prefer-stable ]
     steps:
       - name: Checkout code
