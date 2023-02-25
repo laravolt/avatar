@@ -409,7 +409,6 @@ class Avatar
                 }
             );
         }
-
     }
 
     protected function createSquareShape()
