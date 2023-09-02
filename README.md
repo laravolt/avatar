@@ -11,6 +11,8 @@ Display unique avatar for any user based on their (initials) name.
 
 ## Preview
 ![Preview](https://cloud.githubusercontent.com/assets/149716/26735022/6dbd77e2-47ea-11e7-8a05-7772465309c5.png)
+## :film_strip: Video Tutorial 
+[<img src="https://img.youtube.com/vi/jD0wu88c5kw/0.jpg" width="250">](https://youtu.be/jD0wu88c5kw)
 
 ## Installation
 This package originally built for Laravel, but can also be used in any PHP project.
