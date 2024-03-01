@@ -19,12 +19,12 @@
     ],
     "require": {
         "php": ">=8.0",
-        "illuminate/support": "^8.0|^9.0|^10.0",
-        "illuminate/cache": "^8.0|^9.0|^10.0",
-        "intervention/image": "^2.7"
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/cache": "^8.0|^9.0|^10.0|^11.0",
+        "intervention/image": "^2.7|^3.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "~9.0",
+        "phpunit/phpunit": "~9.0|^10.5",
         "mockery/mockery": "~1.3",
         "php-coveralls/php-coveralls": "^2.1"
     },
