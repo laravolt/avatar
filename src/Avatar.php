@@ -91,8 +91,16 @@ class Avatar
         $this->defaultTheme = $this->validateConfig($config);
         $this->applyTheme($this->defaultTheme);
 
+        //get initial themes list from config
+        $this->themes = (isset($config['themes'])  && is_array($config['themes'])) ? $config['themes'] : config('laravolt.avatar.themes', []);
+
+        //applying default theme
+        if($this->theme == null){
+            $this->theme = config('laravolt.avatar.theme', null);
+        }
+
         // Add any additional themes for further use
-        $themes = $this->resolveTheme('*', $config['themes'] ?? []);
+        $themes = $this->resolveTheme('*', $this->themes ?? []);
         foreach ($themes as $name => $config) {
             $this->addTheme($name, $config);
         }
