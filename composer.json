@@ -19,8 +19,8 @@
     ],
     "require": {
         "php": ">=8.0",
-        "illuminate/support": "^8.0|^9.0|^10.0",
-        "illuminate/cache": "^8.0|^9.0|^10.0",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/cache": "^8.0|^9.0|^10.0|^11.0",
         "intervention/image": "^2.7"
     },
     "require-dev": {
