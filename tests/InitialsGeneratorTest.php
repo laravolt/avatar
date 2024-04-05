@@ -7,7 +7,7 @@ class InitialGeneratorTest extends TestCase
 {
     protected $generator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->generator = new DefaultGenerator();
     }
