@@ -6,8 +6,11 @@ use Illuminate\Cache\ArrayStore;
 use Illuminate\Contracts\Cache\Repository;
 use Intervention\Image\AbstractFont;
 use Intervention\Image\AbstractShape;
-use Intervention\Image\Gd\Color;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Geometry\Factories\RectangleFactory;
 use Intervention\Image\ImageManager;
+use Intervention\Image\Typography\FontFactory;
 use Laravolt\Avatar\Concerns\AttributeGetter;
 use Laravolt\Avatar\Concerns\AttributeSetter;
 use Laravolt\Avatar\Generator\DefaultGenerator;
@@ -50,10 +53,7 @@ class Avatar
 
     protected $rtl = false;
 
-    /**
-     * @var \Intervention\Image\Image
-     */
-    protected $image;
+    protected \Intervention\Image\Image $image;
 
     protected $font = null;
 
@@ -93,8 +93,8 @@ class Avatar
 
         // Add any additional themes for further use
         $themes = $this->resolveTheme('*', $config['themes'] ?? []);
-        foreach ($themes as $name => $config) {
-            $this->addTheme($name, $config);
+        foreach ($themes as $name => $conf) {
+            $this->addTheme($name, $conf);
         }
 
         $this->initTheme();
@@ -187,7 +187,7 @@ class Avatar
 
         $this->buildAvatar();
 
-        $base64 = (string)$this->image->encode('data-url');
+        $base64 = $this->image->toPng()->toDataUri();
 
         $this->cache->forever($key, $base64);
 
@@ -301,10 +301,10 @@ class Avatar
 
     protected function getBorderColor()
     {
-        if ($this->borderColor == 'foreground') {
+        if ($this->borderColor === 'foreground') {
             return $this->foreground;
         }
-        if ($this->borderColor == 'background') {
+        if ($this->borderColor === 'background') {
             return $this->background;
         }
 
@@ -318,8 +318,9 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $manager = new ImageManager(['driver' => $this->driver]);
-        $this->image = $manager->canvas($this->width, $this->height);
+        $driver = $this->driver === 'gd' ? new Driver() : new ImagickDriver();
+        $manager = new ImageManager($driver);
+        $this->image = $manager->create($this->width, $this->height);
 
         $this->createShape();
 
@@ -331,7 +332,7 @@ class Avatar
             $this->initials,
             (int) $x,
             (int) $y,
-            function (AbstractFont $font) {
+            function (FontFactory $font) {
                 $font->file($this->font);
                 $font->size($this->fontSize);
                 $font->color($this->foreground);
@@ -361,43 +362,45 @@ class Avatar
 
         if ($this->driver === 'gd') {
             // parse background color
-            $background = new Color($this->background);
+            $background = hexdec(ltrim($this->background, '#'));
+            foreach ($this->image as  $frame) {
+                if ($this->borderSize) {
+                    // slightly smaller ellipse to keep 1px bordered edges clean
+                    imagefilledellipse(
+                        $frame->native(),
+                        $x,
+                        $y,
+                        $this->width - 1,
+                        $this->height - 1,
+                        $background
+                    );
 
-            if ($this->borderSize) {
-                // slightly smaller ellipse to keep 1px bordered edges clean
-                imagefilledellipse(
-                    $this->image->getCore(),
-                    $x,
-                    $y,
-                    $this->width - 1,
-                    $this->height - 1,
-                    $background->getInt()
-                );
+                    $border_color = hexdec(ltrim($this->getBorderColor(), '#'));
+                    imagesetthickness($frame->native(), $this->borderSize);
 
-                $border_color = new Color($this->getBorderColor());
-                imagesetthickness($this->image->getCore(), $this->borderSize);
-
-                // gd's imageellipse doesn't respect imagesetthickness so i use imagearc with 359.9 degrees here
-                imagearc(
-                    $this->image->getCore(),
-                    $x,
-                    $y,
-                    $circleDiameter,
-                    $circleDiameter,
-                    0,
-                    (int) 359.99,
-                    $border_color->getInt()
-                );
-            } else {
-                imagefilledellipse(
-                    $this->image->getCore(),
-                    $x,
-                    $y,
-                    $circleDiameter,
-                    $circleDiameter,
-                    $background->getInt()
-                );
+                    // gd's imageellipse doesn't respect imagesetthickness so i use imagearc with 359.9 degrees here
+                    imagearc(
+                        $frame->native(),
+                        $x,
+                        $y,
+                        $circleDiameter,
+                        $circleDiameter,
+                        0,
+                        (int) 359.99,
+                        $border_color
+                    );
+                } else {
+                    imagefilledellipse(
+                        $frame->native(),
+                        $x,
+                        $y,
+                        $circleDiameter,
+                        $circleDiameter,
+                        $background
+                    );
+                }
             }
+
         } else {
             $this->image->circle(
                 $circleDiameter,
@@ -418,14 +421,13 @@ class Avatar
         $width = $this->width - $edge;
         $height = $this->height - $edge;
 
-        $this->image->rectangle(
+        $this->image->drawRectangle(
             $x,
             $y,
-            $width,
-            $height,
-            function (AbstractShape $draw) {
+            function (RectangleFactory $draw) use ($width, $height) {
+                $draw->size($width, $height);
                 $draw->background($this->background);
-                $draw->border($this->borderSize, $this->getBorderColor());
+                $draw->border($this->getBorderColor(), $this->borderSize);
             }
         );
     }

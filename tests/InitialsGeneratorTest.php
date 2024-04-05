@@ -1,9 +1,12 @@
 <?php
 
+namespace Laravolt\Avatar\Test;
+
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Laravolt\Avatar\Generator\DefaultGenerator;
 
-class InitialGeneratorTest extends TestCase
+class InitialsGeneratorTest extends TestCase
 {
     protected $generator;
 
@@ -35,7 +38,7 @@ class InitialGeneratorTest extends TestCase
     public function it_cannot_accept_object_without_to_string_function()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->generator->make(new DefaultGenerator(new stdClass()));
+        $this->generator->make(new DefaultGenerator());
     }
 
     /**

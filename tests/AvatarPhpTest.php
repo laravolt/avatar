@@ -1,5 +1,11 @@
 <?php
 
+namespace Laravolt\Avatar\Test;
+
+use InvalidArgumentException;
+use Mockery;
+use stdClass;
+
 class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 {
     /**

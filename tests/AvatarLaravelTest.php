@@ -1,5 +1,9 @@
 <?php
 
+namespace Laravolt\Avatar\Test;
+
+use Mockery;
+
 class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
 {
     /**
