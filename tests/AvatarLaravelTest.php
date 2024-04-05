@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\Attributes\Test;
 
-class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
+final class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
 {
     #[Test]
     public function it_can_override_attributes_when_instantiated(): void
