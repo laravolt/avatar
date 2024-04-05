@@ -5,7 +5,7 @@ use PHPUnit\Framework\Attributes\Test;
 class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
 {
     #[Test]
-    public function it_can_override_attributes_when_instantiated()
+    public function it_can_override_attributes_when_instantiated(): void
     {
         $config = [
             'ascii' => false,
@@ -44,7 +44,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
-    public function it_have_no_border_radius_as_default()
+    public function it_have_no_border_radius_as_default(): void
     {
         $config = [
             'border' => ['size' => 1, 'color' => '#999999'],
@@ -63,7 +63,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
-    public function it_can_override_attributes_after_set_name()
+    public function it_can_override_attributes_after_set_name(): void
     {
         $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
@@ -82,7 +82,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
-    public function it_has_correct_random_background()
+    public function it_has_correct_random_background(): void
     {
         $config = [
             'foregrounds' => ['#000000', '#111111'],
@@ -110,7 +110,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
-    public function it_has_different_random_background()
+    public function it_has_different_random_background(): void
     {
         $config = [
             'backgrounds' => ['#000000', '#111111'],
