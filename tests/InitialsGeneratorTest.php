@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Laravolt\Avatar\Generator\DefaultGenerator;
 
@@ -12,51 +13,39 @@ class InitialGeneratorTest extends TestCase
         $this->generator = new DefaultGenerator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_accept_string()
     {
         $this->assertEquals('BH', $this->generator->make('Bayu Hendra'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_cannot_accept_array()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->generator->make(['Bayu', 'Hendra']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_cannot_accept_object_without_to_string_function()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->generator->make(new DefaultGenerator(new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_initials_from_single_word_name()
     {
         $this->assertEquals('Fu', (string)$this->generator->make('Fulan'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_initials_from_multi_word_name()
     {
         $this->assertEquals('FD', (string)$this->generator->make('Fulan Doe'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_initials_if_name_shorter_than_expected_length()
     {
         $generator = new DefaultGenerator('Joe');
@@ -64,49 +53,37 @@ class InitialGeneratorTest extends TestCase
         $this->assertEquals('Joe', (string)$generator->make('Joe', 4));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_initials_if_name_longer_than_expected_length()
     {
         $this->assertEquals('FJ', (string)$this->generator->make('Fulan John Doe', 2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_handle_empty_name()
     {
         $this->assertEquals('', (string)$this->generator->make(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_allow_non_ascii()
     {
         $this->assertEquals('Bā', (string)$this->generator->make('Bāyu'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_convert_to_ascii()
     {
         $this->assertEquals('Ba', (string)$this->generator->make('Bāyu', 2, false, true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_convert_to_uppercase()
     {
         $this->assertEquals('SA', (string)$this->generator->make('sabil', 2, true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_rtl_text()
     {
         $this->assertEquals('as', (string)$this->generator->make('sabil', 2, false, false, true));
@@ -115,9 +92,7 @@ class InitialGeneratorTest extends TestCase
         // $this->assertEquals('ال', (string)$this->generator->make('الله', 2, false, false, true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_initials_from_email()
     {
         $this->assertEquals('ab', $this->generator->make('adi.budi@laravolt.com'));

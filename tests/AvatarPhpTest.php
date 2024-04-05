@@ -1,10 +1,10 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Test;
+
 class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_override_attributes_when_instantiated()
     {
         $config = [
@@ -36,9 +36,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(false, $avatar->getAttribute('ascii'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_override_attributes_after_set_name()
     {
         $config = ['backgrounds' => ['#000000', '#111111'], 'foregrounds' => ['#EEEEEE', '#FFFFFF']];
@@ -49,9 +47,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('#FFFFFF', $avatar->getAttribute('foreground'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_has_correct_random_background()
     {
         $config = [
@@ -67,9 +63,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('#111111', $avatar->getAttribute('foreground'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_has_different_random_background()
     {
         $config = [
@@ -89,9 +83,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('#111111', $avatar2->getAttribute('background'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_resolve_random_themes_and_then_overrides()
     {
         $config = [
@@ -121,9 +113,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('#000000', $avatar1->getAttribute('foreground'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_handle_invalid_theme()
     {
         $config = [
@@ -142,9 +132,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar->setTheme(['satu', 'dua'])->buildAvatar();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_create_initials_from_name()
     {
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -154,9 +142,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('BH', $avatar->getAttribute('initials'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_chars_length()
     {
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -168,9 +154,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('BHW', $avatar->getAttribute('initials'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_accept_valid_font_file()
     {
         $font = __DIR__.'/fonts/rockwell.ttf';
@@ -181,9 +165,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($font, $avatar->getAttribute('font'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_cannot_accept_invalid_font_file()
     {
         $font = __DIR__.'/fonts/invalid-font.ttf';
@@ -194,9 +176,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEquals($font, $avatar->getAttribute('font'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_base64()
     {
         $expected = $this->sampleBase64String();
@@ -206,9 +186,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_base64_from_cache()
     {
         $cachedAvatar = 'data:image/png;base64,iVBO';
@@ -222,9 +200,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($cachedAvatar, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_file()
     {
         $file = __DIR__.'/avatar.png';
@@ -237,9 +213,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         unlink($file);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_circle_svg()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
@@ -260,9 +234,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $svg);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_rectangle_svg()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
@@ -284,9 +256,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $svg);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_svg_with_custom_font_family()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
@@ -308,9 +278,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $svg);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_use_the_foreground_color_for_the_svg_border()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
@@ -330,9 +298,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $svg);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_use_the_background_color_for_the_svg_border()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
@@ -352,9 +318,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $svg);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_gravatar()
     {
         $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879';
@@ -368,9 +332,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_gravatar_with_size()
     {
         $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=100';
@@ -383,9 +345,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_gravatar_with_default()
     {
         $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?d=identicon&s=100';
@@ -398,9 +358,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_gravatar_with_default_and_rating()
     {
         $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?d=identicon&r=pg&s=100';
@@ -413,9 +371,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_generate_gravatar_with_size_overriden()
     {
         $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=300';
@@ -428,9 +384,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_background()
     {
         $hex = '#ffffff';
@@ -441,9 +395,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($hex, $avatar->getAttribute('background'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_foreground()
     {
         $hex = '#ffffff';
@@ -454,9 +406,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($hex, $avatar->getAttribute('foreground'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_dimension()
     {
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -470,9 +420,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(10, $avatar->getAttribute('height'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_font_size()
     {
         $size = 12;
@@ -483,9 +431,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($size, $avatar->getAttribute('fontSize'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_font_family()
     {
         $font = 'Lato';
@@ -496,9 +442,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($font, $avatar->getAttribute('fontFamily'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_border()
     {
         $borderSize = 1;
@@ -514,9 +458,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_border_radius()
     {
         $borderSize = 1;
@@ -532,9 +474,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_accept_valid_shape()
     {
         $shapes = ['circle', 'square'];
@@ -547,9 +487,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_throw_exception_for_invalid_shape()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -559,9 +497,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $avatar->setShape($shape)->buildAvatar();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_get_raw_image_object()
     {
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -570,9 +506,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(\Intervention\Image\Image::class, $imageObject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_get_initial()
     {
         $avatar = new \Laravolt\Avatar\Avatar();
@@ -581,9 +515,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('CK', $avatar->getInitial());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_cast_to_string()
     {
         $expected = $this->sampleBase64String();
@@ -593,9 +525,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_custom_generator()
     {
         $avatar = new \Laravolt\Avatar\Avatar();
