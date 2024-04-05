@@ -400,7 +400,6 @@ class Avatar
                     );
                 }
             }
-
         } else {
             $this->image->circle(
                 $circleDiameter,
