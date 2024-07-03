@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" bootstrap="vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" bootstrap="vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
+  <testsuites>
+    <testsuite name="Avatar Test Suite">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <source>
     <include>
       <directory suffix=".php">src</directory>
     </include>
@@ -8,10 +13,5 @@
       <file>src/ServiceProvider.php</file>
       <file>src/Facade.php</file>
     </exclude>
-  </coverage>
-  <testsuites>
-    <testsuite name="Avatar Test Suite">
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
+  </source>
 </phpunit>

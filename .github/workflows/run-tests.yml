@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
-        php: [ 8.2, 8.1, 8.0]
+        php: [ 8.3, 8.2, 8.1]
         dependency-version: [ prefer-lowest, prefer-stable ]
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
         with:
             php-version: ${{ matrix.php }}
             extensions: dom, curl, libxml, mbstring, zip, pcntl, bcmath, soap, intl, gd, exif, iconv, imagick
-            coverage: none
+            coverage: pcov
 
       - name: Install dependencies
         run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
