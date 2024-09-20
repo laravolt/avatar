@@ -4,10 +4,9 @@ namespace Laravolt\Avatar;
 
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Contracts\Cache\Repository;
-use Intervention\Image\AbstractFont;
-use Intervention\Image\AbstractShape;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Geometry\Factories\CircleFactory;
 use Intervention\Image\Geometry\Factories\RectangleFactory;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Typography\FontFactory;
@@ -401,13 +400,13 @@ class Avatar
                 }
             }
         } else {
-            $this->image->circle(
-                $circleDiameter,
+            $this->image->drawCircle(
                 $x,
                 $y,
-                function (AbstractShape $draw) {
-                    // $draw->background($this->background);
-                    $draw->border($this->borderSize, $this->getBorderColor());
+                function (CircleFactory $circle) use ($circleDiameter) {
+                    $circle->diameter($circleDiameter);
+                    $circle->border($this->getBorderColor(), $this->borderSize);
+                    $circle->background($this->background);
                 }
             );
         }
