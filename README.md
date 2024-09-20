@@ -1,9 +1,9 @@
 # laravolt/avatar
 
-[![Total Downloads](http://poser.pugx.org/laravolt/avatar/downloads)](https://packagist.org/packages/laravolt/avatar)
-[![Monthly Downloads](http://poser.pugx.org/laravolt/avatar/d/monthly)](https://packagist.org/packages/laravolt/avatar)
+[![Total Downloads](https://img.shields.io/packagist/dt/laravolt/avatar.svg?style=flat)](https://packagist.org/packages/laravolt/avatar)
+[![Monthly Downloads](https://img.shields.io/packagist/dm/laravolt/avatar.svg?style=flat)](https://packagist.org/packages/laravolt/avatar)
+[![Daily Downloads](https://img.shields.io/packagist/dd/laravolt/avatar.svg?style=flat)](https://packagist.org/packages/laravolt/avatar)
 [![Run Tests](https://github.com/laravolt/avatar/workflows/run-tests/badge.svg)](https://github.com/laravolt/avatar/workflows/run-tests/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/laravolt/avatar/badge.svg?branch=master)](https://coveralls.io/github/laravolt/avatar?branch=master)
 
 ![Preview](https://user-images.githubusercontent.com/149716/29503524-840ccd0c-8662-11e7-92f9-9ec3ed8a24af.png)
 
