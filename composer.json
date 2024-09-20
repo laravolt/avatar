@@ -24,8 +24,8 @@
         "intervention/image": "^3.4"
     },
     "suggest": {
-        "ext-gd": "Neede to support image manipulation",
-        "ext-imagick": "Neede to support image manipulation, better than GD"
+        "ext-gd": "Needed to support image manipulation",
+        "ext-imagick": "Needed to support image manipulation, better than GD"
     },
 
     "require-dev": {
@@ -51,7 +51,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.0-dev"
+            "dev-master": "6.0-dev"
         },
         "laravel": {
             "providers": [
