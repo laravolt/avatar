@@ -361,6 +361,29 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_handle_html_entities()
+    {
+        $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
+        $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
+        $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">A&</text>';
+        $expected .= '</svg>';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $svg = $avatar->create('Andi & Budiman')
+            ->setShape('circle')
+            ->setFontSize(24)
+            ->setDimension(100, 100)
+            ->setForeground('white')
+            ->setBorder(10, 'yellow')
+            ->setBackground('red')
+            ->toSvg();
+
+        $this->assertEquals($expected, $svg);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_generate_gravatar()
     {
         $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879';
