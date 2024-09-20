@@ -359,57 +359,15 @@ class Avatar
         $x = (int) ($this->width / 2);
         $y = (int) ($this->height / 2);
 
-        if ($this->driver === 'gd') {
-            // parse background color
-            $background = hexdec(ltrim($this->background, '#'));
-            foreach ($this->image as  $frame) {
-                if ($this->borderSize) {
-                    // slightly smaller ellipse to keep 1px bordered edges clean
-                    imagefilledellipse(
-                        $frame->native(),
-                        $x,
-                        $y,
-                        $this->width - 1,
-                        $this->height - 1,
-                        $background
-                    );
-
-                    $border_color = hexdec(ltrim($this->getBorderColor(), '#'));
-                    imagesetthickness($frame->native(), $this->borderSize);
-
-                    // gd's imageellipse doesn't respect imagesetthickness so i use imagearc with 359.9 degrees here
-                    imagearc(
-                        $frame->native(),
-                        $x,
-                        $y,
-                        $circleDiameter,
-                        $circleDiameter,
-                        0,
-                        (int) 359.99,
-                        $border_color
-                    );
-                } else {
-                    imagefilledellipse(
-                        $frame->native(),
-                        $x,
-                        $y,
-                        $circleDiameter,
-                        $circleDiameter,
-                        $background
-                    );
-                }
+        $this->image->drawCircle(
+            $x,
+            $y,
+            function (CircleFactory $circle) use ($circleDiameter) {
+                $circle->diameter($circleDiameter);
+                $circle->border($this->getBorderColor(), $this->borderSize);
+                $circle->background($this->background);
             }
-        } else {
-            $this->image->drawCircle(
-                $x,
-                $y,
-                function (CircleFactory $circle) use ($circleDiameter) {
-                    $circle->diameter($circleDiameter);
-                    $circle->border($this->getBorderColor(), $this->borderSize);
-                    $circle->background($this->background);
-                }
-            );
-        }
+        );
     }
 
     protected function createSquareShape()
@@ -459,7 +417,7 @@ class Avatar
 
         $name = $this->name;
         if ($name === null || strlen($name) === 0) {
-            $name = chr(rand(65, 90));
+            $name = chr(random_int(65, 90));
         }
 
         if (count($array) == 0) {
