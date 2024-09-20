@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 
 class DefaultGenerator implements GeneratorInterface
 {
-    protected $name;
+    protected ?string $name;
 
-    public function make($name, $length = 2, $uppercase = false, $ascii = false, $rtl = false)
+    public function make(?string $name, int $length = 2, bool $uppercase = false, bool $ascii = false, bool $rtl = false): string
     {
         $this->setName($name, $ascii);
 
@@ -33,13 +33,15 @@ class DefaultGenerator implements GeneratorInterface
         return $initial;
     }
 
-    protected function setName($name, $ascii)
+    protected function setName(?string $name, bool $ascii): void
     {
         if (is_array($name)) {
             throw new \InvalidArgumentException(
                 'Passed value cannot be an array'
             );
-        } elseif (is_object($name) && !method_exists($name, '__toString')) {
+        }
+
+        if (is_object($name) && !method_exists($name, '__toString')) {
             throw new \InvalidArgumentException(
                 'Passed object must have a __toString method'
             );
@@ -57,7 +59,7 @@ class DefaultGenerator implements GeneratorInterface
         $this->name = $name;
     }
 
-    protected function getInitialFromOneWord($words, $length)
+    protected function getInitialFromOneWord(Collection $words, int $length): string
     {
         $initial = (string)$words->first();
 
@@ -68,18 +70,18 @@ class DefaultGenerator implements GeneratorInterface
         return $initial;
     }
 
-    protected function getInitialFromMultipleWords($words, $length)
+    protected function getInitialFromMultipleWords(Collection $words, int $length): string
     {
         // otherwise, use initial char from each word
         $initials = new Collection();
-        $words->each(function ($word) use ($initials) {
+        $words->each(function (string $word) use ($initials) {
             $initials->push(Str::substr($word, 0, 1));
         });
 
         return $this->selectInitialFromMultipleInitials($initials, $length);
     }
 
-    protected function selectInitialFromMultipleInitials($initials, $length)
+    protected function selectInitialFromMultipleInitials(Collection $initials, int $length): string
     {
         return $initials->slice(0, $length)->implode('');
     }

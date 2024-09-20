@@ -386,11 +386,11 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_gravatar()
     {
-        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879';
+        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=88';
 
         $avatar = new \Laravolt\Avatar\Avatar();
         $url = $avatar
-            ->setDimension(null)
+            ->setDimension(88)
             ->create('uyab.exe@gmail.com')
             ->toGravatar();
 
@@ -637,15 +637,15 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         if (version_compare(phpversion(), '7.2', '>=')) {
             return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
-        } else {
-            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
         }
+
+        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
     }
 }
 
 class FooGenerator implements \Laravolt\Avatar\Generator\GeneratorInterface
 {
-    public function make($name, $length, $uppercase, $ascii, $rtl)
+    public function make(?string $name, int $length = 2, bool $uppercase = false, bool $ascii = false, bool $rtl = false): string
     {
         return 'foo';
     }

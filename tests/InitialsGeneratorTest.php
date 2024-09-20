@@ -2,9 +2,10 @@
 
 namespace Laravolt\Avatar\Test;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Laravolt\Avatar\Generator\DefaultGenerator;
+use Stringable;
+use TypeError;
 
 class InitialsGeneratorTest extends TestCase
 {
@@ -26,9 +27,17 @@ class InitialsGeneratorTest extends TestCase
     /**
      * @test
      */
+    public function it_accept_stringable_object()
+    {
+        $this->assertEquals('HE', $this->generator->make(new Hello()));
+    }
+
+    /**
+     * @test
+     */
     public function it_cannot_accept_array()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
         $this->generator->make(['Bayu', 'Hendra']);
     }
 
@@ -37,7 +46,7 @@ class InitialsGeneratorTest extends TestCase
      */
     public function it_cannot_accept_object_without_to_string_function()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
         $this->generator->make(new DefaultGenerator());
     }
 
@@ -126,5 +135,13 @@ class InitialsGeneratorTest extends TestCase
         $this->assertEquals('ab', $this->generator->make('adi.budi@laravolt.com'));
         $this->assertEquals('ci', $this->generator->make('citra@laravolt.com'));
         $this->assertEquals('DA', $this->generator->make('DANI@laravolt.com'));
+    }
+}
+
+class Hello implements Stringable
+{
+    public function __toString()
+    {
+        return "HELLO";
     }
 }

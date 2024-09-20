@@ -32,7 +32,9 @@
         "roave/security-advisories": "dev-latest",
         "phpunit/phpunit": "^10.5",
         "mockery/mockery": "~1.3",
-        "php-coveralls/php-coveralls": "^2.1"
+        "php-coveralls/php-coveralls": "^2.1",
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-type-coverage": "^2.8"
     },
     "autoload": {
         "psr-4": {
@@ -58,6 +60,11 @@
             "aliases": {
                 "Avatar": "Laravolt\\Avatar\\Facade"
             }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }
