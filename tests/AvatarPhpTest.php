@@ -386,7 +386,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_gravatar()
     {
-        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=88';
+        $expected = 'https://www.gravatar.com/avatar/0c5cbf5a8762d91d930795a6107b2ce5814a6ab26e60c7ec6b75bc81c7dfe3ee?s=88';
 
         $avatar = new \Laravolt\Avatar\Avatar();
         $url = $avatar
@@ -402,7 +402,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_gravatar_with_size()
     {
-        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=100';
+        $expected = 'https://www.gravatar.com/avatar/0c5cbf5a8762d91d930795a6107b2ce5814a6ab26e60c7ec6b75bc81c7dfe3ee?s=100';
 
         $avatar = new \Laravolt\Avatar\Avatar();
         $url = $avatar->create('uyab.exe@gmail.com')
@@ -417,7 +417,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_gravatar_with_default()
     {
-        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?d=identicon&s=100';
+        $expected = 'https://www.gravatar.com/avatar/0c5cbf5a8762d91d930795a6107b2ce5814a6ab26e60c7ec6b75bc81c7dfe3ee?d=identicon&s=100';
 
         $avatar = new \Laravolt\Avatar\Avatar();
         $url = $avatar->create('uyab.exe@gmail.com')
@@ -432,7 +432,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_gravatar_with_default_and_rating()
     {
-        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?d=identicon&r=pg&s=100';
+        $expected = 'https://www.gravatar.com/avatar/0c5cbf5a8762d91d930795a6107b2ce5814a6ab26e60c7ec6b75bc81c7dfe3ee?d=identicon&r=pg&s=100';
 
         $avatar = new \Laravolt\Avatar\Avatar();
         $url = $avatar->create('uyab.exe@gmail.com')
@@ -447,7 +447,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_generate_gravatar_with_size_overriden()
     {
-        $expected = 'https://www.gravatar.com/avatar/0dcae7d6d76f9a3b14588e9671c45879?s=300';
+        $expected = 'https://www.gravatar.com/avatar/0c5cbf5a8762d91d930795a6107b2ce5814a6ab26e60c7ec6b75bc81c7dfe3ee?s=300';
 
         $avatar = new \Laravolt\Avatar\Avatar();
         $url = $avatar->create('uyab.exe@gmail.com')

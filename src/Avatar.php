@@ -246,8 +246,8 @@ class Avatar
 
     public function toGravatar(array $param = null): string
     {
-        // Hash generation taken from https://en.gravatar.com/site/implement/images/php/
-        $hash = md5(strtolower(trim($this->name)));
+        // Hash generation taken from https://docs.gravatar.com/api/avatars/php/
+        $hash = hash('sha256',strtolower(trim($this->name)));
 
         $attributes = [];
         if ($this->width) {
