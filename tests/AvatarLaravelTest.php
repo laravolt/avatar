@@ -29,7 +29,8 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
 
-        $avatar = new \Laravolt\Avatar\Avatar($config, $generator);
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
 
         $this->assertEquals(2, $avatar->getAttribute('chars'));
         $this->assertEquals('circle', $avatar->getAttribute('shape'));
@@ -60,6 +61,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setAscii');
 
         $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
 
         $this->assertEquals(0, $avatar->getAttribute('borderRadius'));
     }
@@ -78,7 +80,8 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('base_path');
         $config = ['backgrounds' => ['#000000', '#111111'], 'foregrounds' => ['#EEEEEE', '#FFFFFF']];
 
-        $avatar = new \Laravolt\Avatar\Avatar($config, $generator);
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
         $avatar->create('A');
 
         $this->assertEquals('#FFFFFF', $avatar->getAttribute('foreground'));
@@ -98,7 +101,8 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
 
-        $avatar = new \Laravolt\Avatar\Avatar($config, $generator);
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
 
         $name = 'A';
 
@@ -132,12 +136,14 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setName')->andReturn($name1);
         $generator->shouldReceive('make')->andReturn('AA');
 
-        $avatar1 = new \Laravolt\Avatar\Avatar($config, $generator);
+        $avatar1 = new \Laravolt\Avatar\Avatar($config);
+        $avatar1->setGenerator($generator);
         $avatar1->create($name1)->buildAvatar();
 
         $generator->shouldReceive('setName')->andReturn($name2);
 
-        $avatar2 = new \Laravolt\Avatar\Avatar($config, $generator);
+        $avatar2 = new \Laravolt\Avatar\Avatar($config);
+        $avatar2->setGenerator($generator);
         $avatar2->create($name2)->buildAvatar();
 
         $this->assertEquals('#000000', $avatar1->getAttribute('background'));
