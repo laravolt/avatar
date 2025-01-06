@@ -62,8 +62,6 @@ class Avatar
 
     protected string $initials = '';
 
-    protected Repository|ArrayStore $cache;
-
     protected mixed $driver;
 
     protected GeneratorInterface $initialGenerator;
@@ -80,11 +78,9 @@ class Avatar
      * Avatar constructor.
      *
      * @param array $config
-     * @param Repository $cache
      */
-    public function __construct(array $config = [], Repository $cache = null)
+    public function __construct(array $config = [])
     {
-        $this->cache = $cache ?? new ArrayStore();
         $this->driver = $config['driver'] ?? 'gd';
         $this->theme = $config['theme'] ?? null;
         $this->defaultTheme = $this->validateConfig($config);
@@ -180,16 +176,9 @@ class Avatar
 
     public function toBase64(): string
     {
-        $key = $this->cacheKey();
-        if ($base64 = $this->cache->get($key)) {
-            return $base64;
-        }
-
         $this->buildAvatar();
 
         $base64 = $this->image->toPng()->toDataUri();
-
-        $this->cache->forever($key, $base64);
 
         return $base64;
     }
@@ -387,28 +376,6 @@ class Avatar
                 $draw->border($this->getBorderColor(), $this->borderSize);
             }
         );
-    }
-
-    protected function cacheKey(): string
-    {
-        $keys = [];
-        $attributes = [
-            'name',
-            'initials',
-            'shape',
-            'chars',
-            'font',
-            'fontSize',
-            'width',
-            'height',
-            'borderSize',
-            'borderColor',
-        ];
-        foreach ($attributes as $attr) {
-            $keys[] = $this->$attr;
-        }
-
-        return md5(implode('-', $keys));
     }
 
     /**
