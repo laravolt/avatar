@@ -293,6 +293,31 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function it_can_generate_responsive_svg()
+    {
+        $expected = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">';
+        $expected .= '<rect x="5" y="5" width="90" height="90" stroke="yellow" stroke-width="10" rx="15" fill="red" />';
+        $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
+        $expected .= '</svg>';
+
+        $avatar = new \Laravolt\Avatar\Avatar();
+        $svg = $avatar->create('Andi Budiman')
+                      ->setShape('square')
+                      ->setFontSize(24)
+                      ->setDimension(100, 100)
+                      ->setForeground('white')
+                      ->setBorder(10, 'yellow')
+                      ->setBorderRadius(15)
+                      ->setBackground('red')
+                      ->setResponsive(true)
+                      ->toSvg();
+
+        $this->assertEquals($expected, $svg);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_generate_svg_with_custom_font_family()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';

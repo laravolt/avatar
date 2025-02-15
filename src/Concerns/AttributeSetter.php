@@ -45,6 +45,13 @@ trait AttributeSetter
 
         return $this;
     }
+    
+    public function setResponsive($responsive): static
+    {
+        $this->responsive = $responsive;
+
+        return $this;
+    }
 
     public function setFontSize($size): static
     {

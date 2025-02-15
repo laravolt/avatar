@@ -34,6 +34,9 @@ return [
     // Image height, in pixel
     'height' => 100,
 
+    // Responsive SVG, height and width attributes are not added when true
+    'responsive' => false,
+
     // Number of characters used as initials. If name consists of single word, the first N character will be used
     'chars' => 2,
 
