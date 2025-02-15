@@ -136,6 +136,7 @@ class Avatar
         $this->fontSize = $config['fontSize'];
         $this->width = $config['width'];
         $this->height = $config['height'];
+        $this->responsive = $config['responsive'];
         $this->ascii = $config['ascii'];
         $this->uppercase = $config['uppercase'];
         $this->rtl = $config['rtl'];
