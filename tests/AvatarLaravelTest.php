@@ -25,14 +25,13 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
             'border' => ['size' => 1, 'color' => '#999999', 'radius' => 15],
         ];
 
-        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
-
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('make')->andReturn('AB');
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
 
-        $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
 
         $this->assertEquals(2, $avatar->getAttribute('chars'));
         $this->assertEquals('circle', $avatar->getAttribute('shape'));
@@ -58,14 +57,13 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
             'border' => ['size' => 1, 'color' => '#999999'],
         ];
 
-        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
-
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('make')->andReturn('AB');
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
 
-        $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
 
         $this->assertEquals(0, $avatar->getAttribute('borderRadius'));
     }
@@ -75,7 +73,6 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
      */
     public function it_can_override_attributes_after_set_name()
     {
-        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('setName')->andReturnSelf();
         $generator->shouldReceive('setLength');
@@ -85,7 +82,8 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('base_path');
         $config = ['backgrounds' => ['#000000', '#111111'], 'foregrounds' => ['#EEEEEE', '#FFFFFF']];
 
-        $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
         $avatar->create('A');
 
         $this->assertEquals('#FFFFFF', $avatar->getAttribute('foreground'));
@@ -101,13 +99,12 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
             'backgrounds' => ['#111111', '#000000'],
         ];
 
-        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
-
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
 
-        $avatar = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar = new \Laravolt\Avatar\Avatar($config);
+        $avatar->setGenerator($generator);
 
         $name = 'A';
 
@@ -130,8 +127,6 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
             'backgrounds' => ['#000000', '#111111'],
         ];
 
-        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
-
         $generator = Mockery::mock('Laravolt\Avatar\InitialGenerator');
         $generator->shouldReceive('setUppercase');
         $generator->shouldReceive('setAscii');
@@ -143,12 +138,14 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $generator->shouldReceive('setName')->andReturn($name1);
         $generator->shouldReceive('make')->andReturn('AA');
 
-        $avatar1 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar1 = new \Laravolt\Avatar\Avatar($config);
+        $avatar1->setGenerator($generator);
         $avatar1->create($name1)->buildAvatar();
 
         $generator->shouldReceive('setName')->andReturn($name2);
 
-        $avatar2 = new \Laravolt\Avatar\Avatar($config, $cache, $generator);
+        $avatar2 = new \Laravolt\Avatar\Avatar($config);
+        $avatar2->setGenerator($generator);
         $avatar2->create($name2)->buildAvatar();
 
         $this->assertEquals('#000000', $avatar1->getAttribute('background'));

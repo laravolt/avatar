@@ -23,9 +23,8 @@ class LumenServiceProvider extends BaseServiceProvider
     {
         $this->app->bind('avatar', function (Application $app) {
             $config = $app->make('config');
-            $cache = $app->make('cache.store');
 
-            $avatar = new Avatar($config->get('laravolt.avatar'), $cache);
+            $avatar = new Avatar($config->get('laravolt.avatar'));
             $avatar->setGenerator($app['avatar.generator']);
 
             return $avatar;
