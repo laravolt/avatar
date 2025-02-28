@@ -16,6 +16,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
             'shape' => 'circle',
             'width' => 100,
             'height' => 100,
+            'responsive' => true,
             'chars' => 2,
             'fontSize' => 48,
             'fonts' => ['arial.ttf'],
@@ -37,6 +38,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('circle', $avatar->getAttribute('shape'));
         $this->assertEquals(100, $avatar->getAttribute('width'));
         $this->assertEquals(100, $avatar->getAttribute('height'));
+        $this->assertEquals(true, $avatar->getAttribute('responsive'));
         $this->assertEquals(['#000000'], $avatar->getAttribute('availableBackgrounds'));
         $this->assertEquals(['#FFFFFF'], $avatar->getAttribute('availableForegrounds'));
         $this->assertEquals(['arial.ttf'], $avatar->getAttribute('fonts'));

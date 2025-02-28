@@ -30,6 +30,8 @@ class Avatar
 
     protected int $height;
 
+    protected bool $responsive = false;
+
     protected array $availableBackgrounds = [];
 
     protected array $availableForegrounds = [];
@@ -134,6 +136,7 @@ class Avatar
         $this->fontSize = $config['fontSize'];
         $this->width = $config['width'];
         $this->height = $config['height'];
+        $this->responsive = $config['responsive'];
         $this->ascii = $config['ascii'];
         $this->uppercase = $config['uppercase'];
         $this->rtl = $config['rtl'];
@@ -210,7 +213,11 @@ class Avatar
         $radius = ($this->width - $this->borderSize) / 2;
         $center = $this->width / 2;
 
-        $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="'.$this->width.'" height="'.$this->height.'" viewBox="0 0 '.$this->width.' '.$this->height.'">';
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg"';
+        if (! $this->responsive) {
+            $svg .= ' width="'.$this->width.'" height="'.$this->height.'"';
+        }
+        $svg .= ' viewBox="0 0 '.$this->width.' '.$this->height.'">';
 
         if ($this->shape === 'square') {
             $svg .= '<rect x="'.$x
@@ -455,6 +462,7 @@ class Avatar
             'fontSize' => 48,
             'width' => 100,
             'height' => 100,
+            'responsive' => false,
             'ascii' => false,
             'uppercase' => false,
             'rtl' => false,

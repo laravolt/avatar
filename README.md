@@ -108,6 +108,11 @@ You may specify custom font-family for your SVG text.
 Avatar::create('Susilo Bambang Yudhoyono')->setFontFamily('Laravolt')->toSvg();
 ```
 
+You may make the SVG responsive. This excludes the height and width attributes.
+```php
+Avatar::create('Susilo Bambang Yudhoyono')->setResponsive()->toSvg();
+```
+
 ## Get underlying Intervention image object
 ```php
 Avatar::create('Abdul Somad')->getImageObject();
