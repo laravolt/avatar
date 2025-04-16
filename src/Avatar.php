@@ -78,6 +78,11 @@ class Avatar
 
     protected array $defaultTheme = [];
 
+    // Cache configuration properties
+    protected bool $cacheEnabled = true;
+    protected string $cacheKeyPrefix = 'avatar_';
+    protected ?int $cacheDuration = 86400; // 24 hours by default
+
     /**
      * Avatar constructor.
      *
@@ -92,6 +97,13 @@ class Avatar
         $this->defaultTheme = $this->validateConfig($config);
         $this->applyTheme($this->defaultTheme);
         $this->initialGenerator = new DefaultGenerator();
+
+        // Set up cache configuration
+        if (isset($config['cache'])) {
+            $this->cacheEnabled = $config['cache']['enabled'] ?? true;
+            $this->cacheKeyPrefix = $config['cache']['key_prefix'] ?? 'avatar_';
+            $this->cacheDuration = $config['cache']['duration'] ?? 86400; // 24 hours by default
+        }
 
         // Add any additional themes for further use
         $themes = $this->resolveTheme('*', $config['themes'] ?? []);
@@ -183,16 +195,31 @@ class Avatar
 
     public function toBase64(): string
     {
-        $key = $this->cacheKey();
+        if (!$this->cacheEnabled) {
+            // Skip cache if it's disabled
+            $this->buildAvatar();
+            return $this->image->toPng()->toDataUri();
+        }
+
+        $key = $this->cacheKeyPrefix . $this->cacheKey();
+
+        // Check if the image is in the cache
         if ($base64 = $this->cache->get($key)) {
             return $base64;
         }
 
+        // Generate the avatar
         $this->buildAvatar();
-
         $base64 = $this->image->toPng()->toDataUri();
 
-        $this->cache->forever($key, $base64);
+        // Store in cache based on configured duration
+        if ($this->cacheDuration === null) {
+            // Cache forever
+            $this->cache->forever($key, $base64);
+        } else {
+            // Cache for specified duration (in seconds)
+            $this->cache->put($key, $base64, $this->cacheDuration);
+        }
 
         return $base64;
     }
