@@ -19,6 +19,26 @@ return [
     */
     'driver' => env('IMAGE_DRIVER', 'gd'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Configuration
+    |--------------------------------------------------------------------------
+    | Control caching behavior for avatars
+    |
+    */
+    'cache' => [
+        // Set to true to enable caching, false to disable
+        'enabled' => env('AVATAR_CACHE_ENABLED', true),
+
+        // Cache prefix to avoid conflicts with other cached items
+        'key_prefix' => 'avatar_',
+
+        // Cache duration in seconds
+        // Set to null to cache forever, 0 to disable cache
+        // Default: 86400 (24 hours)
+        'duration' => env('AVATAR_CACHE_DURATION', 86400),
+    ],
+
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
 
