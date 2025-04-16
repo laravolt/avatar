@@ -3,12 +3,11 @@
 namespace Laravolt\Avatar\Test;
 
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 
 class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_override_attributes_when_instantiated()
     {
         $config = [
@@ -49,9 +48,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(false, $avatar->getAttribute('ascii'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_have_no_border_radius_as_default()
     {
         $config = [
@@ -70,9 +67,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(0, $avatar->getAttribute('borderRadius'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_override_attributes_after_set_name()
     {
         $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
@@ -91,9 +86,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('#FFFFFF', $avatar->getAttribute('foreground'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_has_correct_random_background()
     {
         $config = [
@@ -121,9 +114,7 @@ class AvatarLaravelTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('#111111', $avatar->getAttribute('foreground'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_has_different_random_background()
     {
         $config = [
