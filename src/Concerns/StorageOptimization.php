@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 /**
  * Storage Optimization Trait
- * 
+ *
  * Provides storage management, compression, and caching functionality
  */
 trait StorageOptimization
@@ -293,7 +293,7 @@ trait StorageOptimization
         }
         
         // Sort by size (largest first)
-        usort($files, fn($a, $b) => $b['size'] <=> $a['size']);
+        usort($files, fn ($a, $b) => $b['size'] <=> $a['size']);
         
         return $files;
     }

@@ -12,7 +12,7 @@ use Laravolt\Avatar\Avatar;
 
 /**
  * HD Avatar Response Class
- * 
+ *
  * Provides high-definition avatar generation with enhanced performance
  * through image export and storage optimization.
  */

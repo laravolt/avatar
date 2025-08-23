@@ -140,7 +140,7 @@ return [
             'height' => 1024,
             'fontSize' => 384,
             'backgrounds' => [
-                '#667eea', '#764ba2', '#f093fb', '#f5576c', 
+                '#667eea', '#764ba2', '#f093fb', '#f5576c',
                 '#4facfe', '#00f2fe', '#43e97b', '#38f9d7',
                 '#ffecd2', '#fcb69f', '#a8edea', '#fed6e3',
             ],

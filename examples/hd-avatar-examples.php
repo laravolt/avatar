@@ -2,7 +2,7 @@
 
 /**
  * HD Avatar Usage Examples
- * 
+ *
  * This file demonstrates how to use the HD Avatar functionality
  * for high-performance avatar generation with export and storage optimization.
  */

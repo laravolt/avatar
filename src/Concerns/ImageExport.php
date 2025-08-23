@@ -9,7 +9,7 @@ use Intervention\Image\Interfaces\ImageInterface;
 
 /**
  * Image Export Trait
- * 
+ *
  * Provides high-quality image export functionality with various optimizations
  */
 trait ImageExport

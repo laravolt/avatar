@@ -8,7 +8,7 @@ use Laravolt\Avatar\Concerns\StorageOptimization;
 
 /**
  * HD Avatar Class
- * 
+ *
  * Enhanced avatar class that combines HDAvatarResponse with export and storage traits
  * for complete HD avatar functionality with performance optimization.
  */
@@ -281,7 +281,7 @@ class HDAvatar extends HDAvatarResponse
         }
         
         // Overall status
-        $failedChecks = array_filter($health['checks'], fn($check) => !$check);
+        $failedChecks = array_filter($health['checks'], fn ($check) => !$check);
         if (!empty($failedChecks)) {
             $health['status'] = 'degraded';
         }
