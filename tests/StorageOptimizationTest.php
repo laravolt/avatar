@@ -2,12 +2,12 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Laravolt\Avatar\Avatar;
 use Laravolt\Avatar\Concerns\StorageOptimization;
-use PHPUnit\Framework\TestCase;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 
 class StorageOptimizationTest extends TestCase
 {
@@ -22,7 +22,8 @@ class StorageOptimizationTest extends TestCase
         $this->mockCache();
 
         // Create a test avatar class with StorageOptimization trait
-        $this->avatar = new class extends Avatar {
+        $this->avatar = new class extends Avatar
+        {
             use StorageOptimization;
 
             public function __construct()
@@ -71,7 +72,7 @@ class StorageOptimizationTest extends TestCase
         Cache::swap($cacheMock);
     }
 
-    public function testStorageConfiguration()
+    public function test_storage_configuration()
     {
         $this->assertEquals('local', $this->avatar->getStorageDisk());
         $this->assertEquals('test-avatars', $this->avatar->getStorageDirectory());
@@ -79,7 +80,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertEquals(7, $this->avatar->getMaxFileAge());
     }
 
-    public function testConfigureStorage()
+    public function test_configure_storage()
     {
         $result = $this->avatar->configureStorage('s3', 'avatars', 500);
 
@@ -89,7 +90,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertEquals(500, $this->avatar->getMaxStorageSize());
     }
 
-    public function testSetCompressionEnabled()
+    public function test_set_compression_enabled()
     {
         $result = $this->avatar->setCompressionEnabled(false);
 
@@ -100,7 +101,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertTrue($this->avatar->getCompressionEnabled());
     }
 
-    public function testSetMaxFileAge()
+    public function test_set_max_file_age()
     {
         $result = $this->avatar->setMaxFileAge(30);
 
@@ -108,7 +109,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertEquals(30, $this->avatar->getMaxFileAge());
     }
 
-    public function testGenerateOptimizedFilename()
+    public function test_generate_optimized_filename()
     {
         $this->avatar->create('John Doe');
 
@@ -123,7 +124,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $filename);
     }
 
-    public function testGenerateCacheKey()
+    public function test_generate_cache_key()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('generateCacheKey');
@@ -143,7 +144,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertStringStartsWith('avatar_url_', $key1);
     }
 
-    public function testGetMetricsCacheKey()
+    public function test_get_metrics_cache_key()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('getMetricsCacheKey');
@@ -154,7 +155,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertEquals('avatar_storage_metrics', $key);
     }
 
-    public function testLoadStorageMetrics()
+    public function test_load_storage_metrics()
     {
         // Mock empty metrics initially
         $reflection = new \ReflectionClass($this->avatar);
@@ -170,7 +171,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertArrayHasKey('last_updated', $this->avatar->getStorageMetrics());
     }
 
-    public function testGetStorageStatistics()
+    public function test_get_storage_statistics()
     {
         $stats = $this->avatar->getStorageStatistics();
 
@@ -190,7 +191,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertEquals(100, $stats['storage_limit_mb']);
     }
 
-    public function testApplyCompressionPNG()
+    public function test_apply_compression_png()
     {
         $this->avatar->setDimension(1024, 1024); // Large size to trigger compression
 
@@ -207,7 +208,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertTrue(true); // Test passes if no exceptions thrown
     }
 
-    public function testApplyCompressionJPEG()
+    public function test_apply_compression_jpeg()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('applyCompression');
@@ -219,7 +220,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertTrue(true); // Test passes if no exceptions thrown
     }
 
-    public function testApplyCompressionWebP()
+    public function test_apply_compression_web_p()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('applyCompression');
@@ -230,7 +231,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertTrue(true); // Test passes if no exceptions thrown
     }
 
-    public function testCompressionDisabled()
+    public function test_compression_disabled()
     {
         $this->avatar->setCompressionEnabled(false);
 
@@ -244,19 +245,19 @@ class StorageOptimizationTest extends TestCase
         $this->assertTrue(true); // Test passes if no exceptions thrown
     }
 
-    public function testGetFilesSortedBySize()
+    public function test_get_files_sorted_by_size()
     {
         // This test would require actual files in a real Laravel environment
         $this->markTestIncomplete('Requires actual file system setup');
     }
 
-    public function testCleanupOldFiles()
+    public function test_cleanup_old_files()
     {
         // This test would require actual files in a real Laravel environment
         $this->markTestIncomplete('Requires actual file system setup');
     }
 
-    public function testPerformCleanup()
+    public function test_perform_cleanup()
     {
         $result = $this->avatar->performCleanup();
 
@@ -266,7 +267,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertArrayHasKey('duplicate_files', $result);
     }
 
-    public function testLogBatchMetrics()
+    public function test_log_batch_metrics()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('logBatchMetrics');
@@ -278,7 +279,7 @@ class StorageOptimizationTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testUpdateStorageMetrics()
+    public function test_update_storage_metrics()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('updateStorageMetrics');
@@ -297,7 +298,7 @@ class StorageOptimizationTest extends TestCase
     /**
      * Test trait integration
      */
-    public function testTraitIntegration()
+    public function test_trait_integration()
     {
         $this->assertTrue(method_exists($this->avatar, 'storeOptimized'));
         $this->assertTrue(method_exists($this->avatar, 'getCachedOrGenerate'));
@@ -310,7 +311,7 @@ class StorageOptimizationTest extends TestCase
     /**
      * Test storage limits validation
      */
-    public function testStorageLimitsValidation()
+    public function test_storage_limits_validation()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('checkStorageLimits');

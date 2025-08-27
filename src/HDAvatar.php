@@ -60,7 +60,7 @@ class HDAvatar extends HDAvatarResponse
         ];
 
         // Generate responsive sizes if configured
-        if (!empty($this->responsiveSizes)) {
+        if (! empty($this->responsiveSizes)) {
             foreach ($this->responsiveSizes as $size => $dimensions) {
                 $this->setDimension($dimensions['width'], $dimensions['height']);
                 $this->setFontSize($dimensions['fontSize']);
@@ -126,7 +126,7 @@ class HDAvatar extends HDAvatarResponse
         $this->createHD($name);
 
         $filename = $this->generateOptimizedFilename("{$name}_sprite", $format);
-        $path = $this->storageDirectory . '/' . $filename;
+        $path = $this->storageDirectory.'/'.$filename;
         $fullPath = Storage::disk($this->storageDisk)->path($path);
 
         $this->exportSpriteSheet($variations, $fullPath, $format);
@@ -272,7 +272,7 @@ class HDAvatar extends HDAvatarResponse
         ];
 
         // Add warnings based on checks
-        if (!$health['checks']['within_storage_limits']) {
+        if (! $health['checks']['within_storage_limits']) {
             $health['warnings'][] = "Storage usage is at {$stats['usage_percentage']}% - cleanup recommended";
         }
 
@@ -281,8 +281,8 @@ class HDAvatar extends HDAvatarResponse
         }
 
         // Overall status
-        $failedChecks = array_filter($health['checks'], fn ($check) => !$check);
-        if (!empty($failedChecks)) {
+        $failedChecks = array_filter($health['checks'], fn ($check) => ! $check);
+        if (! empty($failedChecks)) {
             $health['status'] = 'degraded';
         }
 

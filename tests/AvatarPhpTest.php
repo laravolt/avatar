@@ -13,16 +13,16 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     public function it_can_override_attributes_when_instantiated()
     {
         $config = [
-            'ascii'       => false,
-            'shape'       => 'circle',
-            'width'       => 200,
-            'height'      => 200,
-            'chars'       => 2,
-            'fontSize'    => 48,
-            'fonts'       => ['arial.ttf'],
+            'ascii' => false,
+            'shape' => 'circle',
+            'width' => 200,
+            'height' => 200,
+            'chars' => 2,
+            'fontSize' => 48,
+            'fonts' => ['arial.ttf'],
             'foregrounds' => ['#FFFFFF'],
             'backgrounds' => ['#000000'],
-            'border'      => ['size' => 1, 'color' => '#999999', 'radius' => 15],
+            'border' => ['size' => 1, 'color' => '#999999', 'radius' => 15],
         ];
 
         $avatar = new \Laravolt\Avatar\Avatar($config);
@@ -102,7 +102,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
                     'backgrounds' => ['#FFFFFF', '#EEEEEE'],
                     'foregrounds' => ['#000000', '#111111'],
                 ],
-            ]
+            ],
         ];
 
         $name1 = 'Bay';
@@ -133,14 +133,14 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('#000000', $avatar->getAttribute('background'));
         $this->assertEquals('#111111', $avatar->getAttribute('foreground'));
 
-        $avatar->setTheme(new stdClass())->buildAvatar();
+        $avatar->setTheme(new stdClass)->buildAvatar();
         $avatar->setTheme(['satu', 'dua'])->buildAvatar();
     }
 
     #[Test]
     public function it_can_create_initials_from_name()
     {
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->create('Bayu Hendra')->buildAvatar();
 
         $this->assertEquals('Bayu Hendra', $avatar->getAttribute('name'));
@@ -150,7 +150,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     #[Test]
     public function it_can_set_chars_length()
     {
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
 
         $avatar->create('Bayu Hendra Winata')->setChars(1)->buildAvatar();
         $this->assertEquals('B', $avatar->getAttribute('initials'));
@@ -164,7 +164,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $font = __DIR__.'/fonts/rockwell.ttf';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->setFont($font);
 
         $this->assertEquals($font, $avatar->getAttribute('font'));
@@ -175,7 +175,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $font = __DIR__.'/fonts/invalid-font.ttf';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->setFont($font);
 
         $this->assertNotEquals($font, $avatar->getAttribute('font'));
@@ -185,8 +185,8 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     public function it_can_generate_base64()
     {
         $expected = $this->sampleBase64String();
-        $avatar = new \Laravolt\Avatar\Avatar();
-        $result = (string)$avatar->create('Citra')->setDimension(5, 5)->toBase64();
+        $avatar = new \Laravolt\Avatar\Avatar;
+        $result = (string) $avatar->create('Citra')->setDimension(5, 5)->toBase64();
 
         $this->assertEquals($expected, $result);
     }
@@ -200,7 +200,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $cache->shouldReceive('get')->andReturn($cachedAvatar);
 
         $avatar = new \Laravolt\Avatar\Avatar([], $cache);
-        $result = (string)$avatar->create('Citra')->setDimension(5, 5)->toBase64();
+        $result = (string) $avatar->create('Citra')->setDimension(5, 5)->toBase64();
 
         $this->assertEquals($cachedAvatar, $result);
     }
@@ -210,7 +210,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $file = __DIR__.'/avatar.png';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->create('Citra')->setDimension(5, 5)->save($file);
 
         $this->assertFileExists($file);
@@ -226,15 +226,15 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $svg = $avatar->create('Andi Budiman')
-                      ->setShape('circle')
-                      ->setFontSize(24)
-                      ->setDimension(100, 100)
-                      ->setForeground('white')
-                      ->setBorder(10, 'yellow')
-                      ->setBackground('red')
-                      ->toSvg();
+            ->setShape('circle')
+            ->setFontSize(24)
+            ->setDimension(100, 100)
+            ->setForeground('white')
+            ->setBorder(10, 'yellow')
+            ->setBackground('red')
+            ->toSvg();
 
         $this->assertEquals($expected, $svg);
     }
@@ -247,16 +247,16 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $svg = $avatar->create('Andi Budiman')
-                      ->setShape('square')
-                      ->setFontSize(24)
-                      ->setDimension(100, 100)
-                      ->setForeground('white')
-                      ->setBorder(10, 'yellow')
-                      ->setBorderRadius(15)
-                      ->setBackground('red')
-                      ->toSvg();
+            ->setShape('square')
+            ->setFontSize(24)
+            ->setDimension(100, 100)
+            ->setForeground('white')
+            ->setBorder(10, 'yellow')
+            ->setBorderRadius(15)
+            ->setBackground('red')
+            ->toSvg();
 
         $this->assertEquals($expected, $svg);
     }
@@ -269,17 +269,17 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $svg = $avatar->create('Andi Budiman')
-                      ->setShape('square')
-                      ->setFontSize(24)
-                      ->setDimension(100, 100)
-                      ->setForeground('white')
-                      ->setBorder(10, 'yellow')
-                      ->setBorderRadius(15)
-                      ->setBackground('red')
-                      ->setResponsive(true)
-                      ->toSvg();
+            ->setShape('square')
+            ->setFontSize(24)
+            ->setDimension(100, 100)
+            ->setForeground('white')
+            ->setBorder(10, 'yellow')
+            ->setBorderRadius(15)
+            ->setBackground('red')
+            ->setResponsive(true)
+            ->toSvg();
 
         $this->assertEquals($expected, $svg);
     }
@@ -292,16 +292,16 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $expected .= '<text font-size="24" font-family="Lato" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">AB</text>';
         $expected .= '</svg>';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $svg = $avatar->create('Andi Budiman')
-                      ->setShape('circle')
-                      ->setFontSize(24)
-                      ->setFontFamily('Lato')
-                      ->setDimension(100, 100)
-                      ->setForeground('white')
-                      ->setBorder(10, 'yellow')
-                      ->setBackground('red')
-                      ->toSvg();
+            ->setShape('circle')
+            ->setFontSize(24)
+            ->setFontFamily('Lato')
+            ->setDimension(100, 100)
+            ->setForeground('white')
+            ->setBorder(10, 'yellow')
+            ->setBackground('red')
+            ->toSvg();
 
         $this->assertEquals($expected, $svg);
     }
@@ -316,12 +316,12 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
         $avatar = new \Laravolt\Avatar\Avatar(['border' => ['size' => 10, 'color' => 'foreground']]);
         $svg = $avatar->create('Andi Budiman')
-                      ->setShape('circle')
-                      ->setFontSize(24)
-                      ->setDimension(100, 100)
-                      ->setForeground('green')
-                      ->setBackground('red')
-                      ->toSvg();
+            ->setShape('circle')
+            ->setFontSize(24)
+            ->setDimension(100, 100)
+            ->setForeground('green')
+            ->setBackground('red')
+            ->toSvg();
 
         $this->assertEquals($expected, $svg);
     }
@@ -336,12 +336,12 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
 
         $avatar = new \Laravolt\Avatar\Avatar(['border' => ['size' => 10, 'color' => 'background']]);
         $svg = $avatar->create('Andi Budiman')
-                      ->setShape('circle')
-                      ->setFontSize(24)
-                      ->setDimension(100, 100)
-                      ->setForeground('green')
-                      ->setBackground('red')
-                      ->toSvg();
+            ->setShape('circle')
+            ->setFontSize(24)
+            ->setDimension(100, 100)
+            ->setForeground('green')
+            ->setBackground('red')
+            ->toSvg();
 
         $this->assertEquals($expected, $svg);
     }
@@ -354,7 +354,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">A&</text>';
         $expected .= '</svg>';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $svg = $avatar->create('Andi & Budiman')
             ->setShape('circle')
             ->setFontSize(24)
@@ -372,7 +372,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = 'https://www.gravatar.com/avatar/db6f5ab11fb203026beb0e298930cc5a07080022e7cbb4c597b97321585df61b?s=88';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $url = $avatar
             ->setDimension(88)
             ->create('uyab.exe@gmail.com')
@@ -386,7 +386,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = 'https://www.gravatar.com/avatar/db6f5ab11fb203026beb0e298930cc5a07080022e7cbb4c597b97321585df61b?s=100';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $url = $avatar->create('uyab.exe@gmail.com')
             ->setDimension(100)
             ->toGravatar();
@@ -399,7 +399,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = 'https://www.gravatar.com/avatar/db6f5ab11fb203026beb0e298930cc5a07080022e7cbb4c597b97321585df61b?d=identicon&s=100';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $url = $avatar->create('uyab.exe@gmail.com')
             ->setDimension(100)
             ->toGravatar(['d' => 'identicon']);
@@ -412,7 +412,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = 'https://www.gravatar.com/avatar/db6f5ab11fb203026beb0e298930cc5a07080022e7cbb4c597b97321585df61b?d=identicon&r=pg&s=100';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $url = $avatar->create('uyab.exe@gmail.com')
             ->setDimension(100)
             ->toGravatar(['d' => 'identicon', 'r' => 'pg']);
@@ -425,7 +425,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $expected = 'https://www.gravatar.com/avatar/db6f5ab11fb203026beb0e298930cc5a07080022e7cbb4c597b97321585df61b?s=300';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $url = $avatar->create('uyab.exe@gmail.com')
             ->setDimension(100)
             ->toGravatar(['s' => 300]);
@@ -438,7 +438,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $hex = '#ffffff';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->setBackground($hex);
 
         $this->assertEquals($hex, $avatar->getAttribute('background'));
@@ -449,7 +449,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $hex = '#ffffff';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->setForeground($hex);
 
         $this->assertEquals($hex, $avatar->getAttribute('foreground'));
@@ -458,7 +458,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     #[Test]
     public function it_can_set_dimension()
     {
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
 
         $avatar->setDimension(4, 5);
         $this->assertEquals(4, $avatar->getAttribute('width'));
@@ -474,7 +474,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $size = 12;
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->setFontSize($size);
 
         $this->assertEquals($size, $avatar->getAttribute('fontSize'));
@@ -485,7 +485,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $font = 'Lato';
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->setFontFamily($font);
 
         $this->assertEquals($font, $avatar->getAttribute('fontFamily'));
@@ -497,7 +497,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $borderSize = 1;
         $borderColors = ['#ffffff', 'foreground', 'background'];
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         foreach ($borderColors as $color) {
             $avatar->setBorder($borderSize, $color)->buildAvatar();
 
@@ -513,7 +513,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $borderSize = 1;
         $borderColors = ['#ffffff', 'foreground', 'background'];
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         foreach ($borderColors as $color) {
             $avatar->setBorder($borderSize, $color, 10)->buildAvatar();
 
@@ -528,7 +528,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     {
         $shapes = ['circle', 'square'];
 
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
 
         foreach ($shapes as $shape) {
             $avatar->setShape($shape)->buildAvatar();
@@ -542,14 +542,14 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $shape = 'triangle';
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->setShape($shape)->buildAvatar();
     }
 
     #[Test]
     public function it_can_get_raw_image_object()
     {
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $imageObject = $avatar->buildAvatar()->getImageObject();
 
         $this->assertInstanceOf(\Intervention\Image\Image::class, $imageObject);
@@ -558,7 +558,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     #[Test]
     public function it_can_get_initial()
     {
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $avatar->create('Citra Kirana')->buildAvatar();
 
         $this->assertEquals('CK', $avatar->getInitial());
@@ -568,7 +568,7 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     public function it_can_cast_to_string()
     {
         $expected = $this->sampleBase64String();
-        $avatar = new \Laravolt\Avatar\Avatar();
+        $avatar = new \Laravolt\Avatar\Avatar;
         $result = $avatar->create('Citra')->setDimension(5, 5)->__toString();
 
         $this->assertEquals($expected, $result);
@@ -577,8 +577,8 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     #[Test]
     public function it_can_set_custom_generator()
     {
-        $avatar = new \Laravolt\Avatar\Avatar();
-        $avatar->setGenerator(new FooGenerator());
+        $avatar = new \Laravolt\Avatar\Avatar;
+        $avatar->setGenerator(new FooGenerator);
 
         $this->assertEquals('foo', $avatar->buildAvatar()->getInitial());
     }

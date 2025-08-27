@@ -1,13 +1,13 @@
 <?php
 
 /**
-  * HD Avatar Usage Examples
-  *
-  * This file demonstrates how to use the HD Avatar functionality
-  * for high-performance avatar generation with export and storage optimization.
-  */
+ * HD Avatar Usage Examples
+ *
+ * This file demonstrates how to use the HD Avatar functionality
+ * for high-performance avatar generation with export and storage optimization.
+ */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Laravolt\Avatar\HDAvatar;
 use Laravolt\Avatar\HDAvatarResponse;
@@ -17,7 +17,7 @@ use Laravolt\Avatar\HDAvatarResponse;
 // =============================================================================
 
 // Load HD configuration
-$hdConfig = require __DIR__ . '/../config/hd-avatar.php';
+$hdConfig = require __DIR__.'/../config/hd-avatar.php';
 
 // Create HD Avatar instance
 $hdAvatar = new HDAvatar($hdConfig);
@@ -25,8 +25,8 @@ $hdAvatar = new HDAvatar($hdConfig);
 // Create and export a single avatar
 echo "=== Basic HD Avatar Creation ===\n";
 $result = $hdAvatar->createAndExport('John Doe', 'png');
-echo "Avatar URL: " . $result['url'] . "\n";
-echo "Avatar Hash: " . $result['metadata']['hash'] . "\n";
+echo 'Avatar URL: '.$result['url']."\n";
+echo 'Avatar Hash: '.$result['metadata']['hash']."\n";
 echo "Dimensions: {$result['metadata']['width']}x{$result['metadata']['height']}\n\n";
 
 // =============================================================================
@@ -174,7 +174,7 @@ foreach ($health['checks'] as $check => $status) {
     echo "- {$check}: {$statusText}\n";
 }
 
-if (!empty($health['warnings'])) {
+if (! empty($health['warnings'])) {
     echo "Warnings:\n";
     foreach ($health['warnings'] as $warning) {
         echo "- {$warning}\n";
@@ -195,8 +195,8 @@ echo "- Initials: {$avatarInfo['initials']}\n";
 echo "- Dimensions: {$avatarInfo['dimensions']['width']}x{$avatarInfo['dimensions']['height']}\n";
 echo "- Background: {$avatarInfo['styling']['background']}\n";
 echo "- Foreground: {$avatarInfo['styling']['foreground']}\n";
-echo "- HD Enabled: " . ($avatarInfo['configuration']['hd_enabled'] ? 'Yes' : 'No') . "\n";
-echo "- Cache Enabled: " . ($avatarInfo['performance']['cache_enabled'] ? 'Yes' : 'No') . "\n";
+echo '- HD Enabled: '.($avatarInfo['configuration']['hd_enabled'] ? 'Yes' : 'No')."\n";
+echo '- Cache Enabled: '.($avatarInfo['performance']['cache_enabled'] ? 'Yes' : 'No')."\n";
 
 echo "\nEstimated File Sizes:\n";
 foreach ($avatarInfo['estimated_file_sizes'] as $format => $size) {
@@ -211,8 +211,8 @@ echo "\n";
 echo "=== Placeholder Generation ===\n";
 
 $placeholder = $hdAvatar->createHD('Lazy User')->toPlaceholder(32, 32);
-echo "Placeholder Data URI: " . substr($placeholder, 0, 50) . "...\n";
-echo "Placeholder Length: " . strlen($placeholder) . " characters\n\n";
+echo 'Placeholder Data URI: '.substr($placeholder, 0, 50)."...\n";
+echo 'Placeholder Length: '.strlen($placeholder)." characters\n\n";
 
 // =============================================================================
 // Sprite Sheet Generation

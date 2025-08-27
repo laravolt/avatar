@@ -5,7 +5,6 @@ namespace Tests;
 use Laravolt\Avatar\Avatar;
 use Laravolt\Avatar\Concerns\ImageExport;
 use PHPUnit\Framework\TestCase;
-use Illuminate\Support\Facades\Storage;
 
 class ImageExportTest extends TestCase
 {
@@ -16,7 +15,8 @@ class ImageExportTest extends TestCase
         parent::setUp();
 
         // Create a test avatar class with ImageExport trait
-        $this->avatar = new class extends Avatar {
+        $this->avatar = new class extends Avatar
+        {
             use ImageExport;
 
             public function __construct()
@@ -32,7 +32,7 @@ class ImageExportTest extends TestCase
         };
     }
 
-    public function testExportFormatsValidation()
+    public function test_export_formats_validation()
     {
         $validFormats = ['png', 'jpg', 'jpeg', 'webp'];
 
@@ -41,7 +41,7 @@ class ImageExportTest extends TestCase
         }
     }
 
-    public function testInvalidFormatThrowsException()
+    public function test_invalid_format_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Unsupported format 'bmp'. Supported formats: png, jpg, jpeg, webp");
@@ -52,7 +52,7 @@ class ImageExportTest extends TestCase
         $method->invoke($this->avatar, 'bmp');
     }
 
-    public function testGetDefaultExportOptions()
+    public function test_get_default_export_options()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('getDefaultExportOptions');
@@ -72,7 +72,7 @@ class ImageExportTest extends TestCase
         $this->assertFalse($webpOptions['lossless']);
     }
 
-    public function testSanitizeFilename()
+    public function test_sanitize_filename()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('sanitizeFilename');
@@ -94,7 +94,7 @@ class ImageExportTest extends TestCase
         $this->assertEquals(100, strlen($limited));
     }
 
-    public function testCalculateWatermarkPosition()
+    public function test_calculate_watermark_position()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('calculateWatermarkPosition');
@@ -114,7 +114,7 @@ class ImageExportTest extends TestCase
         }
     }
 
-    public function testEstimateFileSizes()
+    public function test_estimate_file_sizes()
     {
         $reflection = new \ReflectionClass($this->avatar);
         $method = $reflection->getMethod('estimateFileSizes');
@@ -132,7 +132,7 @@ class ImageExportTest extends TestCase
         $this->assertStringContainsString('bytes', $estimates['webp']);
     }
 
-    public function testSetExportOptions()
+    public function test_set_export_options()
     {
         $options = [
             'quality' => 95,
@@ -152,7 +152,7 @@ class ImageExportTest extends TestCase
         $this->assertEquals($expected, $this->avatar->getExportOptions());
     }
 
-    public function testGetExportStats()
+    public function test_get_export_stats()
     {
         $stats = $this->avatar->getExportStats();
 
@@ -166,7 +166,7 @@ class ImageExportTest extends TestCase
         $this->assertEquals(256, $stats['image_dimensions']['height']);
     }
 
-    public function testApplyVariation()
+    public function test_apply_variation()
     {
         $originalBackground = $this->avatar->getBackground();
         $originalForeground = $this->avatar->getForeground();
@@ -191,7 +191,7 @@ class ImageExportTest extends TestCase
     /**
      * Test that the ImageExport trait properly extends functionality
      */
-    public function testTraitIntegration()
+    public function test_trait_integration()
     {
         $this->assertTrue(method_exists($this->avatar, 'exportImage'));
         $this->assertTrue(method_exists($this->avatar, 'exportResponsiveSizes'));
@@ -204,7 +204,7 @@ class ImageExportTest extends TestCase
     /**
      * Test responsive sizes export structure
      */
-    public function testResponsiveSizesStructure()
+    public function test_responsive_sizes_structure()
     {
         $sizes = [
             'small' => ['width' => 64, 'height' => 64],

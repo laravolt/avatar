@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Laravolt\Avatar\Concerns;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Image;
 
 /**
  * Storage Optimization Trait
@@ -16,10 +17,15 @@ use Illuminate\Support\Carbon;
 trait StorageOptimization
 {
     protected string $storageDisk = 'local';
+
     protected string $storageDirectory = 'avatars';
+
     protected int $maxStorageSize = 500; // MB
+
     protected int $maxFileAge = 30; // days
+
     protected bool $compressionEnabled = true;
+
     protected array $storageMetrics = [];
 
     /**
@@ -36,7 +42,7 @@ trait StorageOptimization
      */
     protected function ensureStorageDirectory(): void
     {
-        if (!Storage::disk($this->storageDisk)->exists($this->storageDirectory)) {
+        if (! Storage::disk($this->storageDisk)->exists($this->storageDirectory)) {
             Storage::disk($this->storageDisk)->makeDirectory($this->storageDirectory);
         }
     }
@@ -49,17 +55,37 @@ trait StorageOptimization
         $this->buildAvatar();
 
         $filename = $this->generateOptimizedFilename($name, $format);
-        $path = $this->storageDirectory . '/' . $filename;
+        $path = $this->storageDirectory.'/'.$filename;
         $fullPath = Storage::disk($this->storageDisk)->path($path);
 
         // Apply compression based on format and settings
         $this->applyCompression($format, $options);
 
+        $options = match (strtolower($format)) {
+            'png' => [
+                'interlaced' => $options['interlaced'] ?? true,
+                'indexed' => false,
+            ],
+            'jpg', 'jpeg' => [
+                'quality' => $options['quality'] ?? 90,
+                'progressive' => $options['progressive'] ?? true,
+                'strip' => $options['strip'] ?? true,
+            ],
+            'webp' => [
+                'quality' => $options['quality'] ?? 85,
+                'strip' => $options['strip'] ?? true,
+            ],
+            default => [],
+        };
+
+        /** @var Image */
+        $image = $this->image;
+
         // Save the optimized image
         match (strtolower($format)) {
-            'png' => $this->image->toPng($options['png_quality'] ?? 95)->save($fullPath),
-            'jpg', 'jpeg' => $this->image->toJpeg($options['jpg_quality'] ?? 90)->save($fullPath),
-            'webp' => $this->image->toWebp($options['webp_quality'] ?? 85)->save($fullPath),
+            'png' => $image->toPng(...$options)->save($fullPath),
+            'jpg', 'jpeg' => $image->toJpeg(...$options)->save($fullPath),
+            'webp' => $image->toWebp(...$options)->save($fullPath),
         };
 
         // Update storage metrics
@@ -76,19 +102,19 @@ trait StorageOptimization
      */
     protected function applyCompression(string $format, array $options): void
     {
-        if (!$this->compressionEnabled) {
+        if (! $this->compressionEnabled) {
             return;
         }
 
         // Ensure image is built before applying compression
-        if (!isset($this->image)) {
+        if (! isset($this->image)) {
             $this->buildAvatar();
         }
 
         switch (strtolower($format)) {
             case 'png':
                 // PNG compression through color reduction if size is large
-                if ($this->width > 512 && !($options['preserve_quality'] ?? false)) {
+                if ($this->width > 512 && ! ($options['preserve_quality'] ?? false)) {
                     $this->image->reduceColors(256);
                 }
                 break;
@@ -389,7 +415,7 @@ trait StorageOptimization
             'timestamp' => Carbon::now()->toISOString(),
         ];
 
-        Cache::put("avatar_batch_metrics_" . time(), $metrics, Carbon::now()->addDays(7));
+        Cache::put('avatar_batch_metrics_'.time(), $metrics, Carbon::now()->addDays(7));
     }
 
     /**
@@ -405,7 +431,7 @@ trait StorageOptimization
             'options' => $options,
         ];
 
-        return 'avatar_url_' . md5(serialize($data));
+        return 'avatar_url_'.md5(serialize($data));
     }
 
     /**
