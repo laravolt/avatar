@@ -12,7 +12,7 @@ use Laravolt\Avatar\Avatar;
 
 /**
  * HD Avatar Response Class
- * 
+ *
  * Provides high-definition avatar generation with enhanced performance
  * through image export and storage optimization.
  */
@@ -72,37 +72,37 @@ class HDAvatarResponse extends Avatar
     public function export(string $format = 'png', int $quality = 95): string
     {
         $this->buildAvatar();
-        
+
         $filename = $this->generateFilename($format);
         $filepath = $this->exportPath . '/' . $filename;
-        
+
         // Ensure directory exists
         Storage::makeDirectory($this->exportPath);
-        
+
         // Get full storage path
         $fullPath = Storage::path($filepath);
-        
+
         // Apply format-specific optimizations
         switch (strtolower($format)) {
             case 'png':
                 $this->image->toPng($this->hdConfig['quality']['png'] ?? $quality)->save($fullPath);
                 break;
-                
+
             case 'jpg':
             case 'jpeg':
                 $this->image->toJpeg($this->hdConfig['quality']['jpg'] ?? $quality)->save($fullPath);
                 break;
-                
+
             case 'webp':
                 $this->image->toWebp($this->hdConfig['quality']['webp'] ?? $quality)->save($fullPath);
                 break;
-                
+
             default:
                 throw new \InvalidArgumentException("Unsupported format: {$format}");
         }
-        
+
         $this->exportedFiles[] = $filepath;
-        
+
         return $filepath;
     }
 
@@ -112,11 +112,11 @@ class HDAvatarResponse extends Avatar
     public function exportMultiple(array $formats = ['png', 'jpg', 'webp']): array
     {
         $files = [];
-        
+
         foreach ($formats as $format) {
             $files[$format] = $this->export($format);
         }
-        
+
         return $files;
     }
 
@@ -129,19 +129,19 @@ class HDAvatarResponse extends Avatar
         $originalWidth = $this->width;
         $originalHeight = $this->height;
         $originalFontSize = $this->fontSize;
-        
+
         foreach ($this->responsiveSizes as $size => $dimensions) {
             $this->setDimension($dimensions['width'], $dimensions['height']);
             $this->setFontSize($dimensions['fontSize']);
-            
+
             $filename = $this->generateFilename($format, $size);
             $filepath = $this->exportPath . '/' . $filename;
-            
+
             Storage::makeDirectory($this->exportPath);
             $fullPath = Storage::path($filepath);
-            
+
             $this->buildAvatar();
-            
+
             switch (strtolower($format)) {
                 case 'png':
                     $this->image->toPng()->save($fullPath);
@@ -154,14 +154,14 @@ class HDAvatarResponse extends Avatar
                     $this->image->toWebp()->save($fullPath);
                     break;
             }
-            
+
             $files[$size] = $filepath;
         }
-        
+
         // Restore original dimensions
         $this->setDimension($originalWidth, $originalHeight);
         $this->setFontSize($originalFontSize);
-        
+
         return $files;
     }
 
@@ -171,20 +171,20 @@ class HDAvatarResponse extends Avatar
     public function toResponse(string $format = 'png'): Response
     {
         $this->buildAvatar();
-        
+
         $content = match (strtolower($format)) {
             'png' => $this->image->toPng()->toString(),
             'jpg', 'jpeg' => $this->image->toJpeg()->toString(),
             'webp' => $this->image->toWebp()->toString(),
             default => throw new \InvalidArgumentException("Unsupported format: {$format}")
         };
-        
+
         $mimeType = match (strtolower($format)) {
             'png' => 'image/png',
             'jpg', 'jpeg' => 'image/jpeg',
             'webp' => 'image/webp',
         };
-        
+
         return new Response($content, 200, [
             'Content-Type' => $mimeType,
             'Cache-Control' => 'public, max-age=31536000', // 1 year
@@ -201,21 +201,21 @@ class HDAvatarResponse extends Avatar
     {
         $filename = $this->generateFilename($format, $size);
         $filepath = $this->exportPath . '/' . $filename;
-        
+
         // Check if file exists in storage
         if (Storage::exists($filepath)) {
             return Storage::url($filepath);
         }
-        
+
         // Generate and cache the file
         if (isset($this->responsiveSizes[$size])) {
             $dimensions = $this->responsiveSizes[$size];
             $this->setDimension($dimensions['width'], $dimensions['height']);
             $this->setFontSize($dimensions['fontSize']);
         }
-        
+
         $this->export($format);
-        
+
         return Storage::url($filepath);
     }
 
@@ -227,9 +227,9 @@ class HDAvatarResponse extends Avatar
         $hash = $this->generateContentHash();
         $timestamp = time();
         $initials = $this->getInitial();
-        
+
         $sizeSuffix = $size ? "_{$size}" : '';
-        
+
         return "{$hash}{$sizeSuffix}_{$timestamp}.{$format}";
     }
 
@@ -250,7 +250,7 @@ class HDAvatarResponse extends Avatar
             'borderColor' => $this->borderColor,
             'font' => $this->font,
         ];
-        
+
         return substr(md5(serialize($content)), 0, 8);
     }
 
@@ -261,18 +261,18 @@ class HDAvatarResponse extends Avatar
     {
         $cleaned = [];
         $cutoffTime = time() - ($maxAgeDays * 24 * 60 * 60);
-        
+
         $files = Storage::allFiles($this->exportPath);
-        
+
         foreach ($files as $file) {
             $lastModified = Storage::lastModified($file);
-            
+
             if ($lastModified < $cutoffTime) {
                 Storage::delete($file);
                 $cleaned[] = $file;
             }
         }
-        
+
         return $cleaned;
     }
 
@@ -284,11 +284,11 @@ class HDAvatarResponse extends Avatar
         $files = Storage::allFiles($this->exportPath);
         $totalSize = 0;
         $fileCount = count($files);
-        
+
         foreach ($files as $file) {
             $totalSize += Storage::size($file);
         }
-        
+
         return [
             'file_count' => $fileCount,
             'total_size_bytes' => $totalSize,
@@ -305,21 +305,21 @@ class HDAvatarResponse extends Avatar
         $originalWidth = $this->width;
         $originalHeight = $this->height;
         $originalFontSize = $this->fontSize;
-        
+
         $this->setDimension($width, $height);
         $this->setFontSize($width / 4);
-        
+
         $this->buildAvatar();
-        
+
         // Apply blur effect for placeholder
         $this->image->blur(5);
-        
+
         $placeholder = $this->image->toPng()->toDataUri();
-        
+
         // Restore original dimensions
         $this->setDimension($originalWidth, $originalHeight);
         $this->setFontSize($originalFontSize);
-        
+
         return $placeholder;
     }
 
@@ -329,7 +329,7 @@ class HDAvatarResponse extends Avatar
     public function setQuality(string $format, int $quality): static
     {
         $this->hdConfig['quality'][$format] = $quality;
-        
+
         return $this;
     }
 
@@ -339,7 +339,7 @@ class HDAvatarResponse extends Avatar
     public function setHDMode(bool $enabled): static
     {
         $this->hdEnabled = $enabled;
-        
+
         return $this;
     }
 
@@ -353,7 +353,7 @@ class HDAvatarResponse extends Avatar
             'height' => $height,
             'fontSize' => $fontSize,
         ];
-        
+
         return $this;
     }
 
@@ -363,20 +363,20 @@ class HDAvatarResponse extends Avatar
     public function batchExport(array $names, string $format = 'png', string $size = 'medium'): array
     {
         $results = [];
-        
+
         foreach ($names as $name) {
             $this->create($name);
-            
+
             if (isset($this->responsiveSizes[$size])) {
                 $dimensions = $this->responsiveSizes[$size];
                 $this->setDimension($dimensions['width'], $dimensions['height']);
                 $this->setFontSize($dimensions['fontSize']);
             }
-            
+
             $filepath = $this->export($format);
             $results[$name] = $filepath;
         }
-        
+
         return $results;
     }
 
@@ -394,7 +394,7 @@ class HDAvatarResponse extends Avatar
     public function clearExportedFiles(): static
     {
         $this->exportedFiles = [];
-        
+
         return $this;
     }
 }

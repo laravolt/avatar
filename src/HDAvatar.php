@@ -8,7 +8,7 @@ use Laravolt\Avatar\Concerns\StorageOptimization;
 
 /**
  * HD Avatar Class
- * 
+ *
  * Enhanced avatar class that combines HDAvatarResponse with export and storage traits
  * for complete HD avatar functionality with performance optimization.
  */
@@ -19,10 +19,10 @@ class HDAvatar extends HDAvatarResponse
     public function __construct(array $config = [], ?Repository $cache = null)
     {
         parent::__construct($config, $cache);
-        
+
         // Initialize storage optimization
         $this->initializeStorage();
-        
+
         // Configure storage settings from config
         if (isset($config['storage'])) {
             $storageConfig = $config['storage'];
@@ -31,7 +31,7 @@ class HDAvatar extends HDAvatarResponse
                 $storageConfig['directory'] ?? 'avatars',
                 $storageConfig['max_storage_mb'] ?? 500
             );
-            
+
             $this->setMaxFileAge($storageConfig['max_age_days'] ?? 30);
             $this->setCompressionEnabled($storageConfig['compression'] ?? true);
         }
@@ -43,7 +43,7 @@ class HDAvatar extends HDAvatarResponse
     public function createAndExport(string $name, string $format = 'png', array $options = []): array
     {
         $this->createHD($name);
-        
+
         $exported = [
             'name' => $name,
             'format' => $format,
@@ -58,17 +58,17 @@ class HDAvatar extends HDAvatarResponse
                 'hash' => $this->generateContentHash(),
             ],
         ];
-        
+
         // Generate responsive sizes if configured
         if (!empty($this->responsiveSizes)) {
             foreach ($this->responsiveSizes as $size => $dimensions) {
                 $this->setDimension($dimensions['width'], $dimensions['height']);
                 $this->setFontSize($dimensions['fontSize']);
-                
+
                 $exported['responsive_urls'][$size] = $this->storeOptimized("{$name}_{$size}", $format, $options);
             }
         }
-        
+
         return $exported;
     }
 
@@ -79,13 +79,13 @@ class HDAvatar extends HDAvatarResponse
     {
         $results = [];
         $startTime = microtime(true);
-        
+
         foreach ($names as $name) {
             $results[$name] = $this->createAndExport($name, $format, $options);
         }
-        
+
         $processingTime = microtime(true) - $startTime;
-        
+
         return [
             'avatars' => $results,
             'batch_info' => [
@@ -104,17 +104,17 @@ class HDAvatar extends HDAvatarResponse
     public function exportAllFormats(string $name, array $options = []): array
     {
         $this->createHD($name);
-        
+
         $formats = ['png', 'jpg', 'webp'];
         $exports = [];
-        
+
         foreach ($formats as $format) {
             $exports[$format] = [
                 'url' => $this->storeOptimized($name, $format, $options),
                 'cached_url' => $this->getCachedOrGenerate($name, $format, $options),
             ];
         }
-        
+
         return $exports;
     }
 
@@ -124,13 +124,13 @@ class HDAvatar extends HDAvatarResponse
     public function createSpriteSheet(string $name, array $variations, string $format = 'png'): string
     {
         $this->createHD($name);
-        
+
         $filename = $this->generateOptimizedFilename("{$name}_sprite", $format);
         $path = $this->storageDirectory . '/' . $filename;
         $fullPath = Storage::disk($this->storageDisk)->path($path);
-        
+
         $this->exportSpriteSheet($variations, $fullPath, $format);
-        
+
         return Storage::disk($this->storageDisk)->url($path);
     }
 
@@ -140,7 +140,7 @@ class HDAvatar extends HDAvatarResponse
     public function getAvatarInfo(string $name): array
     {
         $this->createHD($name);
-        
+
         return [
             'name' => $name,
             'initials' => $this->getInitial(),
@@ -182,7 +182,7 @@ class HDAvatar extends HDAvatarResponse
         $beforeStats = $this->getStorageStatistics();
         $cleaned = $this->performCleanup();
         $afterStats = $this->getStorageStatistics();
-        
+
         return [
             'before' => $beforeStats,
             'after' => $afterStats,
@@ -201,14 +201,14 @@ class HDAvatar extends HDAvatarResponse
     public function apiResponse(string $name, string $format = 'png', string $size = 'medium'): array
     {
         $info = $this->getAvatarInfo($name);
-        
+
         // Set appropriate size
         if (isset($this->responsiveSizes[$size])) {
             $dimensions = $this->responsiveSizes[$size];
             $this->setDimension($dimensions['width'], $dimensions['height']);
             $this->setFontSize($dimensions['fontSize']);
         }
-        
+
         return [
             'success' => true,
             'data' => [
@@ -240,11 +240,11 @@ class HDAvatar extends HDAvatarResponse
     protected function generateResponsiveUrls(string $name, string $format): array
     {
         $urls = [];
-        
+
         foreach ($this->responsiveSizes as $size => $dimensions) {
             $urls[$size] = $this->getCachedUrl($format, $size);
         }
-        
+
         return $urls;
     }
 
@@ -255,7 +255,7 @@ class HDAvatar extends HDAvatarResponse
     {
         $stats = $this->getStorageStatistics();
         $exportStats = $this->getExportStats();
-        
+
         $health = [
             'status' => 'healthy',
             'checks' => [
@@ -270,26 +270,26 @@ class HDAvatar extends HDAvatarResponse
                 'export' => $exportStats,
             ],
         ];
-        
+
         // Add warnings based on checks
         if (!$health['checks']['within_storage_limits']) {
             $health['warnings'][] = "Storage usage is at {$stats['usage_percentage']}% - cleanup recommended";
         }
-        
+
         if ($stats['total_files'] > 10000) {
             $health['warnings'][] = "Large number of cached files ({$stats['total_files']}) - consider cleanup";
         }
-        
+
         // Overall status
-        $failedChecks = array_filter($health['checks'], fn($check) => !$check);
+        $failedChecks = array_filter($health['checks'], fn ($check) => !$check);
         if (!empty($failedChecks)) {
             $health['status'] = 'degraded';
         }
-        
+
         if (count($failedChecks) > 2) {
             $health['status'] = 'unhealthy';
         }
-        
+
         return $health;
     }
 }
