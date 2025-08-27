@@ -2,9 +2,9 @@
 
 namespace Laravolt\Avatar\Test;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Laravolt\Avatar\Generator\DefaultGenerator;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use Stringable;
 use TypeError;
 
@@ -12,9 +12,9 @@ class InitialsGeneratorTest extends TestCase
 {
     protected $generator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->generator = new DefaultGenerator();
+        $this->generator = new DefaultGenerator;
     }
 
     #[Test]
@@ -26,7 +26,7 @@ class InitialsGeneratorTest extends TestCase
     #[Test]
     public function it_accept_stringable_object()
     {
-        $this->assertEquals('HE', $this->generator->make(new Hello()));
+        $this->assertEquals('HE', $this->generator->make(new Hello));
     }
 
     #[Test]
@@ -40,19 +40,19 @@ class InitialsGeneratorTest extends TestCase
     public function it_cannot_accept_object_without_to_string_function()
     {
         $this->expectException(TypeError::class);
-        $this->generator->make(new DefaultGenerator());
+        $this->generator->make(new DefaultGenerator);
     }
 
     #[Test]
     public function it_can_generate_initials_from_single_word_name()
     {
-        $this->assertEquals('Fu', (string)$this->generator->make('Fulan'));
+        $this->assertEquals('Fu', (string) $this->generator->make('Fulan'));
     }
 
     #[Test]
     public function it_can_generate_initials_from_multi_word_name()
     {
-        $this->assertEquals('FD', (string)$this->generator->make('Fulan Doe'));
+        $this->assertEquals('FD', (string) $this->generator->make('Fulan Doe'));
     }
 
     #[Test]
@@ -60,45 +60,45 @@ class InitialsGeneratorTest extends TestCase
     {
         $generator = new DefaultGenerator('Joe');
 
-        $this->assertEquals('Joe', (string)$generator->make('Joe', 4));
+        $this->assertEquals('Joe', (string) $generator->make('Joe', 4));
     }
 
     #[Test]
     public function it_can_generate_initials_if_name_longer_than_expected_length()
     {
-        $this->assertEquals('FJ', (string)$this->generator->make('Fulan John Doe', 2));
+        $this->assertEquals('FJ', (string) $this->generator->make('Fulan John Doe', 2));
     }
 
     #[Test]
     public function it_can_handle_empty_name()
     {
-        $this->assertEquals('', (string)$this->generator->make(''));
+        $this->assertEquals('', (string) $this->generator->make(''));
     }
 
     #[Test]
     public function it_allow_non_ascii()
     {
-        $this->assertEquals('Bā', (string)$this->generator->make('Bāyu'));
+        $this->assertEquals('Bā', (string) $this->generator->make('Bāyu'));
     }
 
     #[Test]
     public function it_can_convert_to_ascii()
     {
-        $this->assertEquals('Ba', (string)$this->generator->make('Bāyu', 2, false, true));
+        $this->assertEquals('Ba', (string) $this->generator->make('Bāyu', 2, false, true));
     }
 
     #[Test]
     public function it_can_convert_to_uppercase()
     {
-        $this->assertEquals('SA', (string)$this->generator->make('sabil', 2, true));
+        $this->assertEquals('SA', (string) $this->generator->make('sabil', 2, true));
     }
 
     #[Test]
     public function it_can_generate_rtl_text()
     {
-        $this->assertEquals('as', (string)$this->generator->make('sabil', 2, false, false, true));
-        $this->assertEquals('ks', (string)$this->generator->make('sabil karim', 2, false, false, true));
-        $this->assertEquals('عع', (string)$this->generator->make('عبدالله عبدالعزيز', 2, false, false, true));
+        $this->assertEquals('as', (string) $this->generator->make('sabil', 2, false, false, true));
+        $this->assertEquals('ks', (string) $this->generator->make('sabil karim', 2, false, false, true));
+        $this->assertEquals('عع', (string) $this->generator->make('عبدالله عبدالعزيز', 2, false, false, true));
         // $this->assertEquals('ال', (string)$this->generator->make('الله', 2, false, false, true));
     }
 
@@ -115,6 +115,6 @@ class Hello implements Stringable
 {
     public function __toString()
     {
-        return "HELLO";
+        return 'HELLO';
     }
 }

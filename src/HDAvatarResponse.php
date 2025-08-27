@@ -5,10 +5,6 @@ namespace Laravolt\Avatar;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
-use Intervention\Image\ImageManager;
-use Laravolt\Avatar\Avatar;
 
 /**
  * HD Avatar Response Class
@@ -19,9 +15,13 @@ use Laravolt\Avatar\Avatar;
 class HDAvatarResponse extends Avatar
 {
     protected array $hdConfig = [];
+
     protected string $exportPath = 'avatars';
+
     protected array $responsiveSizes = [];
+
     protected bool $hdEnabled = true;
+
     protected array $exportedFiles = [];
 
     public function __construct(array $config = [], ?Repository $cache = null)
@@ -74,7 +74,7 @@ class HDAvatarResponse extends Avatar
         $this->buildAvatar();
 
         $filename = $this->generateFilename($format);
-        $filepath = $this->exportPath . '/' . $filename;
+        $filepath = $this->exportPath.'/'.$filename;
 
         // Ensure directory exists
         Storage::makeDirectory($this->exportPath);
@@ -135,7 +135,7 @@ class HDAvatarResponse extends Avatar
             $this->setFontSize($dimensions['fontSize']);
 
             $filename = $this->generateFilename($format, $size);
-            $filepath = $this->exportPath . '/' . $filename;
+            $filepath = $this->exportPath.'/'.$filename;
 
             Storage::makeDirectory($this->exportPath);
             $fullPath = Storage::path($filepath);
@@ -188,9 +188,9 @@ class HDAvatarResponse extends Avatar
         return new Response($content, 200, [
             'Content-Type' => $mimeType,
             'Cache-Control' => 'public, max-age=31536000', // 1 year
-            'Expires' => gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT',
-            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
-            'ETag' => '"' . md5($content) . '"',
+            'Expires' => gmdate('D, d M Y H:i:s', time() + 31536000).' GMT',
+            'Last-Modified' => gmdate('D, d M Y H:i:s').' GMT',
+            'ETag' => '"'.md5($content).'"',
         ]);
     }
 
@@ -200,7 +200,7 @@ class HDAvatarResponse extends Avatar
     public function getCachedUrl(string $format = 'png', string $size = 'medium'): string
     {
         $filename = $this->generateFilename($format, $size);
-        $filepath = $this->exportPath . '/' . $filename;
+        $filepath = $this->exportPath.'/'.$filename;
 
         // Check if file exists in storage
         if (Storage::exists($filepath)) {

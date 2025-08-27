@@ -106,8 +106,8 @@ trait ImageExport
 
             // Generate filename with size suffix
             $pathInfo = pathinfo($basePath);
-            $filename = $pathInfo['filename'] . "_" . $sizeName . "." . $format;
-            $fullPath = ($pathInfo['dirname'] !== '.' ? $pathInfo['dirname'] . '/' : '') . $filename;
+            $filename = $pathInfo['filename'].'_'.$sizeName.'.'.$format;
+            $fullPath = ($pathInfo['dirname'] !== '.' ? $pathInfo['dirname'].'/' : '').$filename;
 
             // Export the sized image
             $this->exportImage($fullPath, $format);
@@ -136,8 +136,8 @@ trait ImageExport
 
             // Generate filename
             $sanitizedName = $this->sanitizeFilename($name);
-            $filename = $sanitizedName . '_' . $this->generateContentHash() . '.' . $format;
-            $path = $directory . '/' . $filename;
+            $filename = $sanitizedName.'_'.$this->generateContentHash().'.'.$format;
+            $path = $directory.'/'.$filename;
             $fullPath = Storage::path($path);
 
             // Export the avatar
@@ -216,7 +216,7 @@ trait ImageExport
         $spriteHeight = $this->height;
 
         // Create sprite canvas
-        $driver = $this->driver === 'gd' ? new \Intervention\Image\Drivers\Gd\Driver() : new \Intervention\Image\Drivers\Imagick\Driver();
+        $driver = $this->driver === 'gd' ? new \Intervention\Image\Drivers\Gd\Driver : new \Intervention\Image\Drivers\Imagick\Driver;
         $manager = new \Intervention\Image\ImageManager($driver);
         $sprite = $manager->create($spriteWidth, $spriteHeight);
 
@@ -285,9 +285,9 @@ trait ImageExport
      */
     protected function validateExportFormat(string $format): void
     {
-        if (!in_array($format, $this->exportFormats)) {
+        if (! in_array($format, $this->exportFormats)) {
             throw new \InvalidArgumentException(
-                "Unsupported format '{$format}'. Supported formats: " . implode(', ', $this->exportFormats)
+                "Unsupported format '{$format}'. Supported formats: ".implode(', ', $this->exportFormats)
             );
         }
     }
@@ -343,9 +343,9 @@ trait ImageExport
         $pixelCount = $this->width * $this->height;
 
         return [
-            'png' => intval($pixelCount * 3.5) . ' bytes (estimated)', // ~3.5 bytes per pixel for PNG
-            'jpg' => intval($pixelCount * 0.5) . ' bytes (estimated)', // ~0.5 bytes per pixel for JPEG
-            'webp' => intval($pixelCount * 0.4) . ' bytes (estimated)', // ~0.4 bytes per pixel for WebP
+            'png' => intval($pixelCount * 3.5).' bytes (estimated)', // ~3.5 bytes per pixel for PNG
+            'jpg' => intval($pixelCount * 0.5).' bytes (estimated)', // ~0.5 bytes per pixel for JPEG
+            'webp' => intval($pixelCount * 0.4).' bytes (estimated)', // ~0.4 bytes per pixel for WebP
         ];
     }
 

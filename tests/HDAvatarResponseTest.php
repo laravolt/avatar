@@ -2,10 +2,9 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\Storage;
 use Laravolt\Avatar\HDAvatarResponse;
 use PHPUnit\Framework\TestCase;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
 
 class HDAvatarResponseTest extends TestCase
 {
@@ -17,7 +16,7 @@ class HDAvatarResponseTest extends TestCase
         parent::setUp();
 
         // Mock Laravel facades
-        if (!class_exists('Storage')) {
+        if (! class_exists('Storage')) {
             $this->markTestSkipped('Laravel Storage facade not available');
         }
 
@@ -47,12 +46,12 @@ class HDAvatarResponseTest extends TestCase
         $this->hdAvatar = new HDAvatarResponse($this->config);
     }
 
-    public function testHDModeEnabled()
+    public function test_hd_mode_enabled()
     {
         $this->assertTrue($this->hdAvatar->hdEnabled);
     }
 
-    public function testCreateHDAvatar()
+    public function test_create_hd_avatar()
     {
         $result = $this->hdAvatar->createHD('John Doe');
 
@@ -60,7 +59,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertEquals('John Doe', $result->name);
     }
 
-    public function testSetHDMode()
+    public function test_set_hd_mode()
     {
         $this->hdAvatar->setHDMode(false);
         $this->assertFalse($this->hdAvatar->hdEnabled);
@@ -69,13 +68,13 @@ class HDAvatarResponseTest extends TestCase
         $this->assertTrue($this->hdAvatar->hdEnabled);
     }
 
-    public function testSetQuality()
+    public function test_set_quality()
     {
         $this->hdAvatar->setQuality('png', 80);
         $this->assertEquals(80, $this->hdAvatar->hdConfig['quality']['png']);
     }
 
-    public function testSetResponsiveSize()
+    public function test_set_responsive_size()
     {
         $this->hdAvatar->setResponsiveSize('custom', 384, 384, 144);
 
@@ -88,7 +87,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertEquals($expectedSize, $this->hdAvatar->responsiveSizes['custom']);
     }
 
-    public function testGenerateContentHash()
+    public function test_generate_content_hash()
     {
         $this->hdAvatar->createHD('Test User');
 
@@ -110,7 +109,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertNotEquals($hash1, $hash3);
     }
 
-    public function testGenerateFilename()
+    public function test_generate_filename()
     {
         $this->hdAvatar->createHD('Test User');
 
@@ -124,7 +123,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertStringEndsWith('.png', $filename);
     }
 
-    public function testApplyHDDefaults()
+    public function test_apply_hd_defaults()
     {
         $config = ['driver' => 'gd'];
 
@@ -140,7 +139,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertEquals('imagick', $result['driver']);
     }
 
-    public function testClearExportedFiles()
+    public function test_clear_exported_files()
     {
         $this->hdAvatar->exportedFiles = ['file1.png', 'file2.jpg'];
         $this->hdAvatar->clearExportedFiles();
@@ -148,7 +147,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertEmpty($this->hdAvatar->getExportedFiles());
     }
 
-    public function testBatchExportNames()
+    public function test_batch_export_names()
     {
         $names = ['John Doe', 'Jane Smith', 'Bob Johnson'];
 
@@ -162,7 +161,7 @@ class HDAvatarResponseTest extends TestCase
         $this->markTestIncomplete('Requires proper Laravel environment and mocking');
     }
 
-    public function testImageFormatValidation()
+    public function test_image_format_validation()
     {
         $validFormats = ['png', 'jpg', 'jpeg', 'webp'];
 
@@ -173,10 +172,10 @@ class HDAvatarResponseTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         // This would trigger in export() method with invalid format
-        throw new \InvalidArgumentException("Unsupported format: invalid");
+        throw new \InvalidArgumentException('Unsupported format: invalid');
     }
 
-    public function testResponsiveSizesConfiguration()
+    public function test_responsive_sizes_configuration()
     {
         $expectedSizes = [
             'small' => ['width' => 128, 'height' => 128, 'fontSize' => 48],
@@ -187,7 +186,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertEquals($expectedSizes, $this->hdAvatar->responsiveSizes);
     }
 
-    public function testHDConfigurationLoading()
+    public function test_hd_configuration_loading()
     {
         $this->assertEquals(512, $this->hdAvatar->hdConfig['width']);
         $this->assertEquals(512, $this->hdAvatar->hdConfig['height']);
@@ -195,7 +194,7 @@ class HDAvatarResponseTest extends TestCase
         $this->assertEquals(95, $this->hdAvatar->hdConfig['quality']['png']);
     }
 
-    public function testExportPathConfiguration()
+    public function test_export_path_configuration()
     {
         $this->assertEquals('test-avatars', $this->hdAvatar->exportPath);
     }
@@ -203,7 +202,7 @@ class HDAvatarResponseTest extends TestCase
     /**
      * Test HD avatar dimensions are properly applied
      */
-    public function testHDDimensions()
+    public function test_hd_dimensions()
     {
         $this->hdAvatar->createHD('Test User');
 
@@ -216,7 +215,7 @@ class HDAvatarResponseTest extends TestCase
     /**
      * Test that non-HD mode works correctly
      */
-    public function testNonHDMode()
+    public function test_non_hd_mode()
     {
         $nonHDConfig = $this->config;
         $nonHDConfig['hd']['enabled'] = false;
@@ -228,7 +227,7 @@ class HDAvatarResponseTest extends TestCase
     /**
      * Test quality settings for different formats
      */
-    public function testQualitySettings()
+    public function test_quality_settings()
     {
         $this->assertEquals(95, $this->hdAvatar->hdConfig['quality']['png']);
         $this->assertEquals(90, $this->hdAvatar->hdConfig['quality']['jpg']);
@@ -242,7 +241,7 @@ class HDAvatarResponseTest extends TestCase
     /**
      * Test responsive size addition
      */
-    public function testResponsiveSizeAddition()
+    public function test_responsive_size_addition()
     {
         $this->hdAvatar->setResponsiveSize('xxl', 1024, 1024, 384);
 

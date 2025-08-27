@@ -9,7 +9,7 @@ trait AttributeSetter
     public function setTheme($theme): static
     {
         if (is_string($theme) || is_array($theme)) {
-            if (is_string($theme) && !array_key_exists($theme, $this->themes)) {
+            if (is_string($theme) && ! array_key_exists($theme, $this->themes)) {
                 return $this;
             }
 
@@ -45,7 +45,7 @@ trait AttributeSetter
 
         return $this;
     }
-    
+
     public function setResponsive($responsive): static
     {
         $this->responsive = $responsive;

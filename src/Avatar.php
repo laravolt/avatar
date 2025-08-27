@@ -20,7 +20,7 @@ class Avatar
     use AttributeGetter;
     use AttributeSetter;
 
-    protected ?string $name = "";
+    protected ?string $name = '';
 
     protected int $chars;
 
@@ -80,23 +80,22 @@ class Avatar
 
     // Cache configuration properties
     protected bool $cacheEnabled = true;
+
     protected string $cacheKeyPrefix = 'avatar_';
+
     protected ?int $cacheDuration = 86400; // 24 hours by default
 
     /**
      * Avatar constructor.
-     *
-     * @param array $config
-     * @param Repository $cache
      */
     public function __construct(array $config = [], ?Repository $cache = null)
     {
-        $this->cache = $cache ?? new ArrayStore();
+        $this->cache = $cache ?? new ArrayStore;
         $this->driver = $config['driver'] ?? 'gd';
         $this->theme = $config['theme'] ?? null;
         $this->defaultTheme = $this->validateConfig($config);
         $this->applyTheme($this->defaultTheme);
-        $this->initialGenerator = new DefaultGenerator();
+        $this->initialGenerator = new DefaultGenerator;
 
         // Set up cache configuration
         if (isset($config['cache'])) {
@@ -167,7 +166,7 @@ class Avatar
     protected function setRandomTheme(): void
     {
         $themes = $this->resolveTheme($this->theme, $this->themes);
-        if (!empty($themes)) {
+        if (! empty($themes)) {
             $this->applyTheme($this->getRandomElement($themes, []));
         }
     }
@@ -178,7 +177,7 @@ class Avatar
         $themes = [];
 
         foreach ((array) $theme as $themeName) {
-            if (!is_string($themeName)) {
+            if (! is_string($themeName)) {
                 continue;
             }
             if ($themeName === '*') {
@@ -195,13 +194,14 @@ class Avatar
 
     public function toBase64(): string
     {
-        if (!$this->cacheEnabled) {
+        if (! $this->cacheEnabled) {
             // Skip cache if it's disabled
             $this->buildAvatar();
+
             return $this->image->toPng()->toDataUri();
         }
 
-        $key = $this->cacheKeyPrefix . $this->cacheKey();
+        $key = $this->cacheKeyPrefix.$this->cacheKey();
 
         // Check if the image is in the cache
         if ($base64 = $this->cache->get($key)) {
@@ -288,13 +288,13 @@ class Avatar
             $attributes['s'] = $this->width;
         }
 
-        if (!empty($param)) {
+        if (! empty($param)) {
             $attributes = $param + $attributes;
         }
 
         $url = sprintf('https://www.gravatar.com/avatar/%s', $hash);
 
-        if (!empty($attributes)) {
+        if (! empty($attributes)) {
             $url .= '?';
             ksort($attributes);
             foreach ($attributes as $key => $value) {
@@ -352,7 +352,7 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $driver = $this->driver === 'gd' ? new Driver() : new ImagickDriver();
+        $driver = $this->driver === 'gd' ? new Driver : new ImagickDriver;
         $manager = new ImageManager($driver);
         $this->image = $manager->create($this->width, $this->height);
 

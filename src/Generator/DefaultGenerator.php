@@ -13,7 +13,7 @@ class DefaultGenerator implements GeneratorInterface
     {
         $this->setName($name, $ascii);
 
-        $words = new Collection(explode(' ', (string)$this->name));
+        $words = new Collection(explode(' ', (string) $this->name));
 
         // if name contains single word, use first N character
         if ($words->count() === 1) {
@@ -41,7 +41,7 @@ class DefaultGenerator implements GeneratorInterface
             );
         }
 
-        if (is_object($name) && !method_exists($name, '__toString')) {
+        if (is_object($name) && ! method_exists($name, '__toString')) {
             throw new \InvalidArgumentException(
                 'Passed object must have a __toString method'
             );
@@ -61,9 +61,9 @@ class DefaultGenerator implements GeneratorInterface
 
     protected function getInitialFromOneWord(Collection $words, int $length): string
     {
-        $initial = (string)$words->first();
+        $initial = (string) $words->first();
 
-        if (strlen((string)$this->name) >= $length) {
+        if (strlen((string) $this->name) >= $length) {
             $initial = Str::substr($this->name, 0, $length);
         }
 
@@ -73,7 +73,7 @@ class DefaultGenerator implements GeneratorInterface
     protected function getInitialFromMultipleWords(Collection $words, int $length): string
     {
         // otherwise, use initial char from each word
-        $initials = new Collection();
+        $initials = new Collection;
         $words->each(function (string $word) use ($initials) {
             $initials->push(Str::substr($word, 0, 1));
         });
