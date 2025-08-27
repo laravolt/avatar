@@ -15,7 +15,6 @@ use Intervention\Image\Interfaces\ImageInterface;
 trait ImageExport
 {
     protected array $exportFormats = ['png', 'jpg', 'jpeg', 'webp'];
-
     protected array $exportOptions = [];
 
     /**

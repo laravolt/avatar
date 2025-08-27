@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 class HDAvatarResponseTest extends TestCase
 {
     protected HDAvatarResponse $hdAvatar;
-
     protected array $config;
 
     protected function setUp(): void
