@@ -300,7 +300,7 @@ trait StorageOptimization
         }
 
         // Sort by size (largest first)
-        usort($files, fn($a, $b) => $b['size'] <=> $a['size']);
+        usort($files, fn ($a, $b) => $b['size'] <=> $a['size']);
 
         return $files;
     }
