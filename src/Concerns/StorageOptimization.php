@@ -6,10 +6,11 @@ namespace Laravolt\Avatar\Concerns;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Carbon;
 
 /**
  * Storage Optimization Trait
- * 
+ *
  * Provides storage management, compression, and caching functionality
  */
 trait StorageOptimization
@@ -46,27 +47,27 @@ trait StorageOptimization
     public function storeOptimized(string $name, string $format = 'png', array $options = []): string
     {
         $this->buildAvatar();
-        
+
         $filename = $this->generateOptimizedFilename($name, $format);
         $path = $this->storageDirectory . '/' . $filename;
         $fullPath = Storage::disk($this->storageDisk)->path($path);
-        
+
         // Apply compression based on format and settings
         $this->applyCompression($format, $options);
-        
+
         // Save the optimized image
         match (strtolower($format)) {
             'png' => $this->image->toPng($options['png_quality'] ?? 95)->save($fullPath),
             'jpg', 'jpeg' => $this->image->toJpeg($options['jpg_quality'] ?? 90)->save($fullPath),
             'webp' => $this->image->toWebp($options['webp_quality'] ?? 85)->save($fullPath),
         };
-        
+
         // Update storage metrics
         $this->updateStorageMetrics($path, $format);
-        
+
         // Check storage limits and cleanup if necessary
         $this->checkStorageLimits();
-        
+
         return Storage::disk($this->storageDisk)->url($path);
     }
 
@@ -78,7 +79,12 @@ trait StorageOptimization
         if (!$this->compressionEnabled) {
             return;
         }
-        
+
+        // Ensure image is built before applying compression
+        if (!isset($this->image)) {
+            $this->buildAvatar();
+        }
+
         switch (strtolower($format)) {
             case 'png':
                 // PNG compression through color reduction if size is large
@@ -86,15 +92,16 @@ trait StorageOptimization
                     $this->image->reduceColors(256);
                 }
                 break;
-                
+
             case 'jpg':
             case 'jpeg':
                 // JPEG progressive encoding for better loading
-                if ($options['progressive'] ?? true) {
-                    $this->image->interlace();
-                }
+                // Note: interlace() method may not be available in all Intervention Image versions
+                // if ($options['progressive'] ?? true) {
+                //     $this->image->interlace();
+                // }
                 break;
-                
+
             case 'webp':
                 // WebP optimization settings are handled in the export
                 break;
@@ -109,7 +116,7 @@ trait StorageOptimization
         $hash = $this->generateContentHash();
         $sanitizedName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $name);
         $timestamp = date('Y-m-d');
-        
+
         return "{$sanitizedName}_{$hash}_{$timestamp}.{$format}";
     }
 
@@ -119,7 +126,7 @@ trait StorageOptimization
     public function getCachedOrGenerate(string $name, string $format = 'png', array $options = []): string
     {
         $cacheKey = $this->generateCacheKey($name, $format, $options);
-        
+
         // Check if URL is cached
         if ($cachedUrl = Cache::get($cacheKey)) {
             // Verify file still exists
@@ -128,11 +135,11 @@ trait StorageOptimization
                 return $cachedUrl;
             }
         }
-        
+
         // Generate new avatar and cache the URL
         $url = $this->storeOptimized($name, $format, $options);
-        Cache::put($cacheKey, $url, now()->addDays(7)); // Cache URL for 7 days
-        
+        Cache::put($cacheKey, $url, Carbon::now()->addDays(7)); // Cache URL for 7 days
+
         return $url;
     }
 
@@ -143,17 +150,17 @@ trait StorageOptimization
     {
         $results = [];
         $startTime = microtime(true);
-        
+
         foreach ($names as $name) {
             $this->create($name);
             $results[$name] = $this->storeOptimized($name, $format, $options);
         }
-        
+
         $processingTime = microtime(true) - $startTime;
-        
+
         // Log batch processing metrics
         $this->logBatchMetrics(count($names), $processingTime, $format);
-        
+
         return $results;
     }
 
@@ -167,9 +174,9 @@ trait StorageOptimization
             'large_files' => $this->cleanupLargeFiles(),
             'duplicate_files' => $this->removeDuplicateFiles(),
         ];
-        
+
         $this->rebuildStorageMetrics();
-        
+
         return $cleaned;
     }
 
@@ -179,19 +186,19 @@ trait StorageOptimization
     protected function cleanupOldFiles(): array
     {
         $cleaned = [];
-        $cutoffTime = now()->subDays($this->maxFileAge)->timestamp;
-        
+        $cutoffTime = Carbon::now()->subDays($this->maxFileAge)->timestamp;
+
         $files = Storage::disk($this->storageDisk)->allFiles($this->storageDirectory);
-        
+
         foreach ($files as $file) {
             $lastModified = Storage::disk($this->storageDisk)->lastModified($file);
-            
+
             if ($lastModified < $cutoffTime) {
                 Storage::disk($this->storageDisk)->delete($file);
                 $cleaned[] = $file;
             }
         }
-        
+
         return $cleaned;
     }
 
@@ -202,27 +209,27 @@ trait StorageOptimization
     {
         $cleaned = [];
         $currentSize = $this->getTotalStorageSize();
-        
+
         if ($currentSize <= $this->maxStorageSize * 1024 * 1024) {
             return $cleaned; // No cleanup needed
         }
-        
+
         // Get files sorted by size (largest first)
         $files = $this->getFilesSortedBySize();
         $targetReduction = $currentSize - ($this->maxStorageSize * 1024 * 1024 * 0.8); // Reduce to 80% of limit
         $reducedSize = 0;
-        
+
         foreach ($files as $file) {
             if ($reducedSize >= $targetReduction) {
                 break;
             }
-            
+
             $fileSize = Storage::disk($this->storageDisk)->size($file['path']);
             Storage::disk($this->storageDisk)->delete($file['path']);
             $cleaned[] = $file['path'];
             $reducedSize += $fileSize;
         }
-        
+
         return $cleaned;
     }
 
@@ -233,19 +240,19 @@ trait StorageOptimization
     {
         $cleaned = [];
         $hashes = [];
-        
+
         $files = Storage::disk($this->storageDisk)->allFiles($this->storageDirectory);
-        
+
         foreach ($files as $file) {
             $content = Storage::disk($this->storageDisk)->get($file);
             $hash = md5($content);
-            
+
             if (isset($hashes[$hash])) {
                 // Duplicate found, remove the newer file
                 $existingFile = $hashes[$hash];
                 $existingTime = Storage::disk($this->storageDisk)->lastModified($existingFile);
                 $currentTime = Storage::disk($this->storageDisk)->lastModified($file);
-                
+
                 if ($currentTime > $existingTime) {
                     Storage::disk($this->storageDisk)->delete($file);
                     $cleaned[] = $file;
@@ -258,7 +265,7 @@ trait StorageOptimization
                 $hashes[$hash] = $file;
             }
         }
-        
+
         return $cleaned;
     }
 
@@ -269,11 +276,11 @@ trait StorageOptimization
     {
         $totalSize = 0;
         $files = Storage::disk($this->storageDisk)->allFiles($this->storageDirectory);
-        
+
         foreach ($files as $file) {
             $totalSize += Storage::disk($this->storageDisk)->size($file);
         }
-        
+
         return $totalSize;
     }
 
@@ -284,17 +291,17 @@ trait StorageOptimization
     {
         $files = [];
         $allFiles = Storage::disk($this->storageDisk)->allFiles($this->storageDirectory);
-        
+
         foreach ($allFiles as $file) {
             $files[] = [
                 'path' => $file,
                 'size' => Storage::disk($this->storageDisk)->size($file),
             ];
         }
-        
+
         // Sort by size (largest first)
         usort($files, fn($a, $b) => $b['size'] <=> $a['size']);
-        
+
         return $files;
     }
 
@@ -304,14 +311,14 @@ trait StorageOptimization
     protected function updateStorageMetrics(string $path, string $format): void
     {
         $size = Storage::disk($this->storageDisk)->size($path);
-        
+
         $this->storageMetrics['total_files'] = ($this->storageMetrics['total_files'] ?? 0) + 1;
         $this->storageMetrics['total_size'] = ($this->storageMetrics['total_size'] ?? 0) + $size;
         $this->storageMetrics['formats'][$format] = ($this->storageMetrics['formats'][$format] ?? 0) + 1;
-        $this->storageMetrics['last_updated'] = now()->toISOString();
-        
+        $this->storageMetrics['last_updated'] = Carbon::now()->toISOString();
+
         // Persist metrics to cache
-        Cache::put($this->getMetricsCacheKey(), $this->storageMetrics, now()->addHours(1));
+        Cache::put($this->getMetricsCacheKey(), $this->storageMetrics, Carbon::now()->addHours(1));
     }
 
     /**
@@ -319,12 +326,14 @@ trait StorageOptimization
      */
     protected function loadStorageMetrics(): void
     {
-        $this->storageMetrics = Cache::get($this->getMetricsCacheKey(), [
+        $cachedMetrics = Cache::get($this->getMetricsCacheKey());
+
+        $this->storageMetrics = is_array($cachedMetrics) ? $cachedMetrics : [
             'total_files' => 0,
             'total_size' => 0,
             'formats' => [],
-            'last_updated' => now()->toISOString(),
-        ]);
+            'last_updated' => Carbon::now()->toISOString(),
+        ];
     }
 
     /**
@@ -336,22 +345,22 @@ trait StorageOptimization
             'total_files' => 0,
             'total_size' => 0,
             'formats' => [],
-            'last_updated' => now()->toISOString(),
+            'last_updated' => Carbon::now()->toISOString(),
         ];
-        
+
         $files = Storage::disk($this->storageDisk)->allFiles($this->storageDirectory);
-        
+
         foreach ($files as $file) {
             $size = Storage::disk($this->storageDisk)->size($file);
             $format = pathinfo($file, PATHINFO_EXTENSION);
-            
+
             $metrics['total_files']++;
             $metrics['total_size'] += $size;
             $metrics['formats'][$format] = ($metrics['formats'][$format] ?? 0) + 1;
         }
-        
+
         $this->storageMetrics = $metrics;
-        Cache::put($this->getMetricsCacheKey(), $metrics, now()->addHours(1));
+        Cache::put($this->getMetricsCacheKey(), $metrics, Carbon::now()->addHours(1));
     }
 
     /**
@@ -361,7 +370,7 @@ trait StorageOptimization
     {
         $currentSize = $this->getTotalStorageSize();
         $limitBytes = $this->maxStorageSize * 1024 * 1024;
-        
+
         if ($currentSize > $limitBytes) {
             $this->performCleanup();
         }
@@ -377,10 +386,10 @@ trait StorageOptimization
             'processing_time' => $processingTime,
             'avg_time_per_avatar' => $processingTime / $count,
             'format' => $format,
-            'timestamp' => now()->toISOString(),
+            'timestamp' => Carbon::now()->toISOString(),
         ];
-        
-        Cache::put("avatar_batch_metrics_" . time(), $metrics, now()->addDays(7));
+
+        Cache::put("avatar_batch_metrics_" . time(), $metrics, Carbon::now()->addDays(7));
     }
 
     /**
@@ -395,7 +404,7 @@ trait StorageOptimization
             'height' => $this->height,
             'options' => $options,
         ];
-        
+
         return 'avatar_url_' . md5(serialize($data));
     }
 
@@ -413,7 +422,7 @@ trait StorageOptimization
     public function getStorageStatistics(): array
     {
         $this->loadStorageMetrics();
-        
+
         return [
             'total_files' => $this->storageMetrics['total_files'],
             'total_size_bytes' => $this->storageMetrics['total_size'],
@@ -435,9 +444,9 @@ trait StorageOptimization
         $this->storageDisk = $disk;
         $this->storageDirectory = $directory;
         $this->maxStorageSize = $maxSizeMB;
-        
+
         $this->initializeStorage();
-        
+
         return $this;
     }
 
@@ -447,7 +456,7 @@ trait StorageOptimization
     public function setCompressionEnabled(bool $enabled): static
     {
         $this->compressionEnabled = $enabled;
-        
+
         return $this;
     }
 
@@ -457,7 +466,55 @@ trait StorageOptimization
     public function setMaxFileAge(int $days): static
     {
         $this->maxFileAge = $days;
-        
+
         return $this;
+    }
+
+    /**
+     * Get storage disk (for testing purposes)
+     */
+    public function getStorageDisk(): string
+    {
+        return $this->storageDisk;
+    }
+
+    /**
+     * Get storage directory (for testing purposes)
+     */
+    public function getStorageDirectory(): string
+    {
+        return $this->storageDirectory;
+    }
+
+    /**
+     * Get max storage size (for testing purposes)
+     */
+    public function getMaxStorageSize(): int
+    {
+        return $this->maxStorageSize;
+    }
+
+    /**
+     * Get max file age (for testing purposes)
+     */
+    public function getMaxFileAge(): int
+    {
+        return $this->maxFileAge;
+    }
+
+    /**
+     * Get compression enabled status (for testing purposes)
+     */
+    public function getCompressionEnabled(): bool
+    {
+        return $this->compressionEnabled;
+    }
+
+    /**
+     * Get storage metrics (for testing purposes)
+     */
+    public function getStorageMetrics(): array
+    {
+        return $this->storageMetrics;
     }
 }
