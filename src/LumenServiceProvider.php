@@ -2,8 +2,8 @@
 
 namespace Laravolt\Avatar;
 
-use Laravel\Lumen\Application;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Laravel\Lumen\Application;
 
 class LumenServiceProvider extends BaseServiceProvider
 {
@@ -68,7 +68,7 @@ class LumenServiceProvider extends BaseServiceProvider
     /**
      * Loads a path relative to the package base directory.
      *
-     * @param string $path
+     * @param  string  $path
      * @return string
      */
     protected function packagePath($path = '')

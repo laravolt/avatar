@@ -247,7 +247,7 @@ return [
         // Response headers
         'headers' => [
             'Cache-Control' => 'public, max-age=31536000', // 1 year
-            'Expires' => gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT',
+            'Expires' => gmdate('D, d M Y H:i:s', time() + 31536000).' GMT',
         ],
     ],
 ];

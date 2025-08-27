@@ -63,6 +63,8 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->mergeConfigFrom($this->packagePath('config/config.php'), 'laravolt.avatar');
         $this->publishes([$this->packagePath('config/config.php') => config_path('laravolt/avatar.php')], 'config');
+        $this->mergeConfigFrom($this->packagePath('config/config-hd.php'), 'laravolt.avatar.hd');
+        $this->publishes([$this->packagePath('config/config-hd.php') => config_path('laravolt/avatar-hd.php')], 'config');
     }
 
     /**
