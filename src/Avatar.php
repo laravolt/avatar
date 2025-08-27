@@ -513,4 +513,25 @@ class Avatar
         $this->setBackground($this->getRandomBackground());
         $this->setFont($this->getRandomFont());
     }
+
+    /**
+     * Generate content-based hash for caching
+     */
+    protected function generateContentHash(): string
+    {
+        $content = [
+            'name' => $this->name,
+            'width' => $this->width,
+            'height' => $this->height,
+            'fontSize' => $this->fontSize,
+            'background' => $this->background,
+            'foreground' => $this->foreground,
+            'shape' => $this->shape,
+            'borderSize' => $this->borderSize,
+            'borderColor' => $this->borderColor,
+            'font' => $this->font,
+        ];
+
+        return substr(md5(serialize($content)), 0, 8);
+    }
 }
