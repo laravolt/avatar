@@ -15,8 +15,7 @@ class ImageExportTest extends TestCase
         parent::setUp();
 
         // Create a test avatar class with ImageExport trait
-        $this->avatar = new class extends Avatar
-        {
+        $this->avatar = new class extends Avatar {
             use ImageExport;
 
             public function __construct()
