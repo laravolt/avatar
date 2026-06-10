@@ -583,6 +583,27 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('foo', $avatar->buildAvatar()->getInitial());
     }
 
+    #[Test]
+    public function it_can_be_called_statically()
+    {
+        $avatar = \Laravolt\Avatar\Avatar::create('John Doe');
+
+        $this->assertInstanceOf(\Laravolt\Avatar\Avatar::class, $avatar);
+        $this->assertEquals('John Doe', $avatar->getAttribute('name'));
+    }
+
+    #[Test]
+    public function it_can_chain_methods_after_static_create()
+    {
+        $svg = \Laravolt\Avatar\Avatar::create('Jane Smith')
+            ->setDimension(100, 100)
+            ->setShape('circle')
+            ->toSvg();
+
+        $this->assertStringContainsString('<svg', $svg);
+        $this->assertStringContainsString('JS', $svg);
+    }
+
     protected function sampleBase64String()
     {
         if (version_compare(phpversion(), '7.2', '>=')) {

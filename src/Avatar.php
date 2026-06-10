@@ -122,12 +122,43 @@ class Avatar
         return (string) $this->toBase64();
     }
 
+    /**
+     * Handle dynamic method calls on the instance.
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args): mixed
+    {
+        if ($method === 'create') {
+            return $this->createAvatar($args[0]);
+        }
+
+        throw new \BadMethodCallException("Method {$method} does not exist.");
+    }
+
+    /**
+     * Handle static method calls to allow static usage of the Avatar class.
+     * This enables calling Avatar::create('Name') without a facade.
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args): mixed
+    {
+        if ($method === 'create') {
+            $instance = new static;
+
+            return $instance->createAvatar($args[0]);
+        }
+
+        throw new \BadMethodCallException("Method {$method} does not exist.");
+    }
+
     public function setGenerator(GeneratorInterface $generator): void
     {
         $this->initialGenerator = $generator;
     }
 
-    public function create(string $name): static
+    public function createAvatar(string $name): static
     {
         $this->name = $name;
 
