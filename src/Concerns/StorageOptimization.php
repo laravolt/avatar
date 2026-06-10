@@ -7,6 +7,7 @@ namespace Laravolt\Avatar\Concerns;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Format;
 use Intervention\Image\Image;
 
 /**
@@ -83,9 +84,9 @@ trait StorageOptimization
 
         // Save the optimized image
         match (strtolower($format)) {
-            'png' => $image->toPng(...$options)->save($fullPath),
-            'jpg', 'jpeg' => $image->toJpeg(...$options)->save($fullPath),
-            'webp' => $image->toWebp(...$options)->save($fullPath),
+            'png' => $image->encodeUsingFormat(Format::PNG, ...$options)->save($fullPath),
+            'jpg', 'jpeg' => $image->encodeUsingFormat(Format::JPEG, ...$options)->save($fullPath),
+            'webp' => $image->encodeUsingFormat(Format::WEBP, ...$options)->save($fullPath),
         };
 
         // Update storage metrics

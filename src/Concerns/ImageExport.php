@@ -5,7 +5,14 @@ declare(strict_types=1);
 namespace Laravolt\Avatar\Concerns;
 
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Color;
+use Intervention\Image\Encoders\JpegEncoder;
+use Intervention\Image\Encoders\PngEncoder;
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\Format;
+use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Typography\FontFactory;
 
 /**
  * Image Export Trait
@@ -42,16 +49,11 @@ trait ImageExport
      */
     protected function exportPNG(string $path, array $options): ImageInterface
     {
-        $quality = $options['quality'] ?? 95;
-        $compression = $options['compression'] ?? 6;
         $interlaced = $options['interlaced'] ?? false;
 
-        // Apply PNG-specific optimizations
-        if ($interlaced) {
-            $this->image->interlace();
-        }
+        $encoder = new PngEncoder($interlaced);
 
-        return $this->image->toPng($quality)->save($path);
+        return $this->image->encode($encoder)->save($path);
     }
 
     /**
@@ -62,12 +64,9 @@ trait ImageExport
         $quality = $options['quality'] ?? 90;
         $progressive = $options['progressive'] ?? true;
 
-        // Apply JPEG-specific optimizations
-        if ($progressive) {
-            $this->image->interlace();
-        }
+        $encoder = new JpegEncoder($quality, $progressive);
 
-        return $this->image->toJpeg($quality)->save($path);
+        return $this->image->encode($encoder)->save($path);
     }
 
     /**
@@ -81,7 +80,9 @@ trait ImageExport
         // Apply WebP-specific optimizations
         $webpQuality = $lossless ? 100 : $quality;
 
-        return $this->image->toWebp($webpQuality)->save($path);
+        $encoder = new WebpEncoder($webpQuality);
+
+        return $this->image->encode($encoder)->save($path);
     }
 
     /**
@@ -174,18 +175,18 @@ trait ImageExport
         // Calculate position coordinates
         [$x, $y] = $this->calculateWatermarkPosition($position, $text, $fontSize);
 
+        $colorObject = Color::parse($color)->withTransparency($opacity);
+
         // Apply watermark
         $this->image->text(
             $text,
             $x,
             $y,
-            function ($font) use ($fontSize, $color, $opacity) {
+            function (FontFactory $font) use ($fontSize, $colorObject) {
                 $font->file($this->font);
                 $font->size($fontSize);
-                $font->color($color);
-                $font->alpha($opacity);
-                $font->align('left');
-                $font->valign('bottom');
+                $font->color($colorObject);
+                $font->align('left', 'bottom');
             }
         );
     }
@@ -217,8 +218,7 @@ trait ImageExport
 
         // Create sprite canvas
         $driver = $this->driver === 'gd' ? new \Intervention\Image\Drivers\Gd\Driver : new \Intervention\Image\Drivers\Imagick\Driver;
-        $manager = new \Intervention\Image\ImageManager($driver);
-        $sprite = $manager->create($spriteWidth, $spriteHeight);
+        $sprite = ImageManager::usingDriver($driver)->createImage($spriteWidth, $spriteHeight);
 
         // Add each variation to the sprite
         $x = 0;
@@ -228,17 +228,21 @@ trait ImageExport
             $this->buildAvatar();
 
             // Copy to sprite at current x position
-            $sprite->place($this->image, 'top-left', $x, 0);
+            $sprite->insert($this->image, $x, 0, 'top-left');
             $x += $this->width;
         }
 
-        // Export sprite sheet
-        return match (strtolower($format)) {
-            'png' => $sprite->toPng()->save($path),
-            'jpg', 'jpeg' => $sprite->toJpeg()->save($path),
-            'webp' => $sprite->toWebp()->save($path),
+        $outputFormat = match (strtolower($format)) {
+            'png' => Format::PNG,
+            'jpg', 'jpeg' => Format::JPEG,
+            'webp' => Format::WEBP,
             default => throw new \InvalidArgumentException("Unsupported format: {$format}")
         };
+
+        // Export sprite sheet
+        $sprite->encodeUsingFormat($outputFormat)->save($path);
+
+        return $sprite;
     }
 
     /**

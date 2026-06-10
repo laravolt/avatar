@@ -4,8 +4,9 @@ namespace Laravolt\Avatar;
 
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Contracts\Cache\Repository;
-use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Format;
 use Intervention\Image\Geometry\Factories\CircleFactory;
 use Intervention\Image\Geometry\Factories\RectangleFactory;
 use Intervention\Image\ImageManager;
@@ -198,7 +199,7 @@ class Avatar
             // Skip cache if it's disabled
             $this->buildAvatar();
 
-            return $this->image->toPng()->toDataUri();
+            return $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
         }
 
         $key = $this->cacheKeyPrefix.$this->cacheKey();
@@ -210,7 +211,7 @@ class Avatar
 
         // Generate the avatar
         $this->buildAvatar();
-        $base64 = $this->image->toPng()->toDataUri();
+        $base64 = $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
 
         // Store in cache based on configured duration
         if ($this->cacheDuration === null) {
@@ -352,9 +353,8 @@ class Avatar
         $x = $this->width / 2;
         $y = $this->height / 2;
 
-        $driver = $this->driver === 'gd' ? new Driver : new ImagickDriver;
-        $manager = new ImageManager($driver);
-        $this->image = $manager->create($this->width, $this->height);
+        $driver = $this->driver === 'gd' ? new GdDriver : new ImagickDriver;
+        $this->image = ImageManager::usingDriver($driver)->createImage($this->width, $this->height);
 
         $this->createShape();
 
@@ -367,11 +367,10 @@ class Avatar
             (int) $x,
             (int) $y,
             function (FontFactory $font) {
-                $font->file($this->font);
+                $font->filepath($this->font);
                 $font->size($this->fontSize);
                 $font->color($this->foreground);
-                $font->align('center');
-                $font->valign('middle');
+                $font->align('center', 'middle');
             }
         );
 
@@ -394,15 +393,12 @@ class Avatar
         $x = (int) ($this->width / 2);
         $y = (int) ($this->height / 2);
 
-        $this->image->drawCircle(
-            $x,
-            $y,
-            function (CircleFactory $circle) use ($circleDiameter) {
-                $circle->diameter($circleDiameter);
-                $circle->border($this->getBorderColor(), $this->borderSize);
-                $circle->background($this->background);
-            }
-        );
+        $this->image->drawCircle(function (CircleFactory $circle) use ($circleDiameter, $x, $y) {
+            $circle->diameter($circleDiameter);
+            $circle->at($x, $y);
+            $circle->border($this->getBorderColor(), $this->borderSize);
+            $circle->background($this->background);
+        });
     }
 
     protected function createSquareShape(): void
@@ -412,15 +408,12 @@ class Avatar
         $width = $this->width - $edge;
         $height = $this->height - $edge;
 
-        $this->image->drawRectangle(
-            $x,
-            $y,
-            function (RectangleFactory $draw) use ($width, $height) {
-                $draw->size($width, $height);
-                $draw->background($this->background);
-                $draw->border($this->getBorderColor(), $this->borderSize);
-            }
-        );
+        $this->image->drawRectangle(function (RectangleFactory $rectangle) use ($x, $y, $width, $height) {
+            $rectangle->at($x, $y);
+            $rectangle->size($width, $height);
+            $rectangle->background($this->background);
+            $rectangle->border($this->getBorderColor(), $this->borderSize);
+        });
     }
 
     protected function cacheKey(): string
