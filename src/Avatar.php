@@ -202,6 +202,8 @@ class Avatar
             return $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
         }
 
+        $this->buildInitial();
+
         $key = $this->cacheKeyPrefix.$this->cacheKey();
 
         // Check if the image is in the cache
