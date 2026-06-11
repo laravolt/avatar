@@ -127,15 +127,20 @@ class Avatar
      *
      * @return mixed
      */
-    public function __call(string $method, array $args): mixed
-    {
-        if ($method === 'create') {
-            if (empty($args) || ! is_string($args[0])) {
-                throw new \InvalidArgumentException('The create() method requires a string name argument.');
-            }
+public function __call(string $method, array $args): mixed
+{
+    if ($method === 'create') {
+        $name = $args['name'] ?? ($args[0] ?? null);
 
-            return $this->createAvatar($args[0]);
+        if (! is_string($name)) {
+            throw new \InvalidArgumentException('The create() method requires a string name argument.');
         }
+
+        return $this->createAvatar($name);
+    }
+
+    throw new \BadMethodCallException("Method {$method} does not exist.");
+}
 
         throw new \BadMethodCallException("Method {$method} does not exist.");
     }
