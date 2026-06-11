@@ -4,6 +4,7 @@ namespace Laravolt\Avatar;
 
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Contracts\Cache\Repository;
+use Intervention\Image\Alignment;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\Format;
@@ -370,7 +371,7 @@ class Avatar
                 $font->filepath($this->font);
                 $font->size($this->fontSize);
                 $font->color($this->foreground);
-                $font->align('center', 'middle');
+                $font->align(Alignment::CENTER, Alignment::CENTER);
             }
         );
 
