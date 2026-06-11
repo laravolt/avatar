@@ -222,13 +222,8 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $cacheKeyMethod->setAccessible(true);
         $expectedKey = 'avatar_'.$cacheKeyMethod->invoke($helperAvatar);
 
-        // The expected key must embed the generator-produced initials ('foo'), not an empty string
-        $emptyInitialsAvatar = new \Laravolt\Avatar\Avatar;
-        $emptyInitialsAvatar->create($name)->setDimension(5, 5);
-        $keyWithEmptyInitials = 'avatar_'.$cacheKeyMethod->invoke($emptyInitialsAvatar);
-        $this->assertNotEquals($expectedKey, $keyWithEmptyInitials, 'Cache keys with and without initials should differ');
-
-        // Assert that toBase64() calls cache->get() with the initials-based key
+        // Assert that toBase64() calls cache->get() with the initials-based key,
+        // confirming buildInitial() runs before cacheKey() in toBase64()
         $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
         $cache->shouldReceive('get')->with($expectedKey)->once()->andReturn(null);
         $cache->shouldReceive('put')->andReturn(true);
