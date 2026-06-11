@@ -151,17 +151,22 @@ public function __call(string $method, array $args): mixed
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args): mixed
-    {
-        if ($method === 'create') {
-            if (empty($args) || ! is_string($args[0])) {
-                throw new \InvalidArgumentException('The create() method requires a string name argument.');
-            }
+public static function __callStatic(string $method, array $args): mixed
+{
+    if ($method === 'create') {
+        $name = $args['name'] ?? ($args[0] ?? null);
 
-            $instance = new static;
-
-            return $instance->createAvatar($args[0]);
+        if (! is_string($name)) {
+            throw new \InvalidArgumentException('The create() method requires a string name argument.');
         }
+
+        $instance = new static;
+
+        return $instance->createAvatar($name);
+    }
+
+    throw new \BadMethodCallException("Method {$method} does not exist.");
+}
 
         throw new \BadMethodCallException("Method {$method} does not exist.");
     }
