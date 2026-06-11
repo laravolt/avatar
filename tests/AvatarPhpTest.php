@@ -206,6 +206,39 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
+    public function it_uses_computed_initials_in_cache_key_for_to_base64()
+    {
+        $name = 'John Doe';
+
+        // Compute the expected cache key by building initials with FooGenerator first
+        $helperAvatar = new \Laravolt\Avatar\Avatar;
+        $helperAvatar->setGenerator(new FooGenerator);
+        $helperAvatar->create($name)->setDimension(5, 5);
+        $reflection = new \ReflectionClass($helperAvatar);
+        $buildInitial = $reflection->getMethod('buildInitial');
+        $buildInitial->setAccessible(true);
+        $buildInitial->invoke($helperAvatar);
+        $cacheKeyMethod = $reflection->getMethod('cacheKey');
+        $cacheKeyMethod->setAccessible(true);
+        $expectedKey = 'avatar_'.$cacheKeyMethod->invoke($helperAvatar);
+
+        // The expected key must embed the generator-produced initials ('foo'), not an empty string
+        $emptyInitialsAvatar = new \Laravolt\Avatar\Avatar;
+        $emptyInitialsAvatar->create($name)->setDimension(5, 5);
+        $keyWithEmptyInitials = 'avatar_'.$cacheKeyMethod->invoke($emptyInitialsAvatar);
+        $this->assertNotEquals($expectedKey, $keyWithEmptyInitials, 'Cache keys with and without initials should differ');
+
+        // Assert that toBase64() calls cache->get() with the initials-based key
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
+        $cache->shouldReceive('get')->with($expectedKey)->once()->andReturn(null);
+        $cache->shouldReceive('put')->andReturn(true);
+
+        $avatar = new \Laravolt\Avatar\Avatar([], $cache);
+        $avatar->setGenerator(new FooGenerator);
+        $avatar->create($name)->setDimension(5, 5)->toBase64();
+    }
+
+    #[Test]
     public function it_can_generate_file()
     {
         $file = __DIR__.'/avatar.png';
