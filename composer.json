@@ -21,7 +21,7 @@
         "php": ">=8.2",
         "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
         "illuminate/cache": "^10.0|^11.0|^12.0|^13.0",
-        "intervention/image": "^4.0"
+        "intervention/image": "^3.11|^4.0"
     },
     "suggest": {
         "ext-gd": "Needed to support image manipulation",
