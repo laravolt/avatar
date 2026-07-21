@@ -203,6 +203,10 @@ class Avatar
             return $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
         }
 
+        // Ensure $initials is populated before computing the cache key,
+        // otherwise every avatar shares an empty-initials key (#182)
+        $this->buildInitial();
+
         $key = $this->cacheKeyPrefix.$this->cacheKey();
 
         // Check if the image is in the cache

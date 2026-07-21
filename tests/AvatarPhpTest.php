@@ -205,6 +205,28 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
+    public function it_uses_distinct_cache_keys_for_different_names()
+    {
+        $keys = [];
+
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
+        $cache->shouldReceive('get')->andReturnUsing(function ($key) use (&$keys) {
+            $keys[] = $key;
+
+            return null;
+        });
+        $cache->shouldReceive('forever');
+        $cache->shouldReceive('put');
+
+        $avatar = new \Laravolt\Avatar\Avatar([], $cache);
+        $avatar->create('Citra')->setDimension(5, 5)->toBase64();
+        $avatar->create('Rama')->setDimension(5, 5)->toBase64();
+
+        $this->assertCount(2, $keys);
+        $this->assertNotEquals($keys[0], $keys[1]);
+    }
+
+    #[Test]
     public function it_can_generate_file()
     {
         $file = __DIR__.'/avatar.png';
