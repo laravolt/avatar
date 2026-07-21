@@ -14,31 +14,24 @@ Display unique avatar for any user based on their (initials) name.
 ## :film_strip: Video Tutorial 
 [<img src="https://img.youtube.com/vi/jD0wu88c5kw/0.jpg" width="250">](https://youtu.be/jD0wu88c5kw)
 
+## Requirements
+
+| Version | PHP    | Laravel     | Intervention Image |
+|---------|--------|-------------|--------------------|
+| 7.x     | >= 8.3 | 10.x – 13.x | ^4.0               |
+| 6.x     | >= 8.1 | 10.x – 12.x | ^3.0               |
+| 5.x     | >= 8.0 | 9.x – 11.x  | ^2.0               |
+
 ## Installation
 This package originally built for Laravel, but can also be used in any PHP project.
 
 [Read more about integration with PHP project here.](#integration-with-other-php-project)
 
-### Laravel >= 5.2:
 ```bash
 composer require laravolt/avatar
 ```
 
-### Laravel 5.1:
-```bash
-composer require laravolt/avatar ~0.3
-```
-
-## Service Provider & Facade
-**Note: only for Laravel 5.4 and below, because since Laravel 5.5 we use package auto-discovery.**
-
-```php
-Laravolt\Avatar\ServiceProvider::class,
-
-...
-
-'Avatar'    => Laravolt\Avatar\Facade::class,
-```
+The service provider and `Avatar` facade are registered automatically via package auto-discovery.
 
 ## Publish Config (optional)
 ```php
@@ -117,7 +110,7 @@ Avatar::create('Susilo Bambang Yudhoyono')->setResponsive()->toSvg();
 ```php
 Avatar::create('Abdul Somad')->getImageObject();
 ```
-The method will return an instance of [Intervention image object](http://image.intervention.io/), so you can use it for further purposes.
+The method will return an instance of [Intervention image object](https://image.intervention.io/v4), so you can use it for further purposes.
 
 ## Non-ASCII Character
 By default, this package will try to output any initials letter as it is. If the name supplied contains any non-ASCII character (e.g. ā, Ě, ǽ) then the result will depend on which font used (see config). It the font supports characters supplied, it will successfully displayed, otherwise it will not.
