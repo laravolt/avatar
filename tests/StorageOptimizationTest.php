@@ -22,8 +22,7 @@ class StorageOptimizationTest extends TestCase
         $this->mockCache();
 
         // Create a test avatar class with StorageOptimization trait
-        $this->avatar = new class extends Avatar
-        {
+        $this->avatar = new class extends Avatar {
             use StorageOptimization;
 
             public function __construct()
