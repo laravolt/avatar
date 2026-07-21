@@ -184,11 +184,10 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     #[Test]
     public function it_can_generate_base64()
     {
-        $expected = $this->sampleBase64String();
         $avatar = new \Laravolt\Avatar\Avatar;
         $result = (string) $avatar->create('Citra')->setDimension(5, 5)->toBase64();
 
-        $this->assertEquals($expected, $result);
+        $this->assertValidPngDataUri($result, 5, 5);
     }
 
     #[Test]
@@ -567,11 +566,10 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     #[Test]
     public function it_can_cast_to_string()
     {
-        $expected = $this->sampleBase64String();
         $avatar = new \Laravolt\Avatar\Avatar;
         $result = $avatar->create('Citra')->setDimension(5, 5)->__toString();
 
-        $this->assertEquals($expected, $result);
+        $this->assertValidPngDataUri($result, 5, 5);
     }
 
     #[Test]
@@ -583,13 +581,19 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('foo', $avatar->buildAvatar()->getInitial());
     }
 
-    protected function sampleBase64String()
+    protected function assertValidPngDataUri(string $result, int $width, int $height): void
     {
-        if (version_compare(phpversion(), '7.2', '>=')) {
-            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
-        }
+        $prefix = 'data:image/png;base64,';
+        $this->assertStringStartsWith($prefix, $result);
 
-        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+        $decoded = base64_decode(substr($result, strlen($prefix)), true);
+        $this->assertNotFalse($decoded, 'Result is not valid base64');
+
+        $info = getimagesizefromstring($decoded);
+        $this->assertNotFalse($info, 'Result is not a valid image');
+        $this->assertSame('image/png', $info['mime']);
+        $this->assertSame($width, $info[0]);
+        $this->assertSame($height, $info[1]);
     }
 }
 
