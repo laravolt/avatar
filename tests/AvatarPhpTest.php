@@ -586,6 +586,12 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     protected function sampleBase64String()
     {
         if (version_compare(phpversion(), '7.2', '>=')) {
+            if (class_exists(\Composer\InstalledVersions::class)
+                && version_compare(\Composer\InstalledVersions::getVersion('intervention/image') ?? '0.0.0', '4.0.0', '>=')
+            ) {
+                return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAAsTAAALEwEAmpwYAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
+            }
+
             return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALUlEQVQImU2MsQ0AAAjCiv+/xk24qJGlhKQoCZMAAqg3HGuL7TM0+n0AWl2fDaErDmjZIJEtAAAAAElFTkSuQmCC';
         }
 
