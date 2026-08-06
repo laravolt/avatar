@@ -23,7 +23,7 @@ Display unique avatar for any user based on their (initials) name.
 | 5.x     | >= 8.0 | 9.x – 11.x  | ^2.0               |
 
 ## Installation
-This package originally built for Laravel, but can also be used in any PHP project.
+This package was originally built for Laravel, but can also be used in any PHP project.
 
 [Read more about integration with PHP project here.](#integration-with-other-php-project)
 
@@ -113,9 +113,9 @@ Avatar::create('Abdul Somad')->getImageObject();
 The method will return an instance of [Intervention image object](https://image.intervention.io/v4), so you can use it for further purposes.
 
 ## Non-ASCII Character
-By default, this package will try to output any initials letter as it is. If the name supplied contains any non-ASCII character (e.g. ā, Ě, ǽ) then the result will depend on which font used (see config). It the font supports characters supplied, it will successfully displayed, otherwise it will not.
+By default, this package will try to output any initials letter as it is. If the name supplied contains any non-ASCII character (e.g. ā, Ě, ǽ) then the result will depend on which font used (see config). If the font supports the characters supplied, they will be displayed successfully, otherwise they will not.
 
-Alternatively, we can convert all non-ascii to their closest ASCII counterparts. If no closest coutnerparts found, those characters are removed. Thanks to [Stringy](https://github.com/danielstjules/Stringy) for providing such useful functions. What we need is just change one line in `config/avatar.php`:
+Alternatively, we can convert all non-ascii to their closest ASCII counterparts. If no closest counterparts are found, those characters are removed. Thanks to [Stringy](https://github.com/danielstjules/Stringy) for providing such useful functions. What we need is just change one line in `config/avatar.php`:
 
 ```php
     'ascii'    => true,
@@ -255,7 +255,7 @@ return [
 ```
 
 ## Overriding config at runtime
-We can overriding configuration at runtime by using following functions:
+We can override configuration at runtime by using the following functions:
 
 ```php
 Avatar::create('Soekarno')->setDimension(100);//width = height = 100 pixel
