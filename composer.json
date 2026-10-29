@@ -18,9 +18,9 @@
         }
     ],
     "require": {
-        "php": ">=8.3",
-        "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
-        "illuminate/cache": "^10.0|^11.0|^12.0|^13.0",
+        "php": "^8.3",
+        "illuminate/support": "^12.0|^13.0",
+        "illuminate/cache": "^12.0|^13.0",
         "intervention/image": "^4.0"
     },
     "suggest": {
@@ -29,11 +29,11 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
-        "phpunit/phpunit": "^11.5.3",
-        "mockery/mockery": "^1.6.7",
-        "php-coveralls/php-coveralls": "^2.1",
-        "pestphp/pest": "^2.34|^3.7",
-        "pestphp/pest-plugin-type-coverage": "^2.8|^3.3"
+        "phpunit/phpunit": "^12.5|^13.4",
+        "mockery/mockery": "^1.6.12",
+        "php-coveralls/php-coveralls": "^2.7",
+        "pestphp/pest": "^4.1|^5.3",
+        "pestphp/pest-plugin-type-coverage": "^4.0|^5.0"
     },
     "autoload": {
         "psr-4": {
