@@ -205,6 +205,45 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
+    public function it_caches_the_base64_avatar_as_a_plain_string()
+    {
+        $stored = [];
+
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
+        $cache->shouldReceive('get')->andReturn(null);
+        $cache->shouldReceive('put')->andReturnUsing(function ($key, $value) use (&$stored) {
+            $stored[] = $value;
+
+            return true;
+        });
+
+        $avatar = new \Laravolt\Avatar\Avatar([], $cache);
+        $result = $avatar->create('Citra')->setDimension(5, 5)->toBase64();
+
+        $this->assertCount(1, $stored);
+        $this->assertIsString($stored[0]);
+        $this->assertSame($result, $stored[0]);
+    }
+
+    #[Test]
+    public function it_regenerates_when_the_cached_value_is_not_a_string()
+    {
+        // What a cached object becomes when the cache refuses to unserialize classes.
+        $class = 'Intervention\\Image\\DataUri';
+        $incomplete = unserialize('O:'.strlen($class).':"'.$class.'":0:{}', ['allowed_classes' => false]);
+        $this->assertInstanceOf(\__PHP_Incomplete_Class::class, $incomplete);
+
+        $cache = Mockery::mock('Illuminate\Contracts\Cache\Repository');
+        $cache->shouldReceive('get')->andReturn($incomplete);
+        $cache->shouldReceive('put')->once();
+
+        $avatar = new \Laravolt\Avatar\Avatar([], $cache);
+        $result = $avatar->create('Citra')->setDimension(5, 5)->toBase64();
+
+        $this->assertValidPngDataUri($result, 5, 5);
+    }
+
+    #[Test]
     public function it_uses_distinct_cache_keys_for_different_names()
     {
         $keys = [];
