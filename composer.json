@@ -28,7 +28,6 @@
         "ext-imagick": "Needed to support image manipulation, better than GD"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
         "phpunit/phpunit": "^12.5|^13.4",
         "mockery/mockery": "^1.6.12",
         "php-coveralls/php-coveralls": "^2.7",
