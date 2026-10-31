@@ -200,7 +200,7 @@ class Avatar
             // Skip cache if it's disabled
             $this->buildAvatar();
 
-            return $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
+            return (string) $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
         }
 
         // Ensure $initials is populated before computing the cache key,
@@ -210,13 +210,17 @@ class Avatar
         $key = $this->cacheKeyPrefix.$this->cacheKey();
 
         // Check if the image is in the cache
-        if ($base64 = $this->cache->get($key)) {
+        // Only trust strings: older releases cached a DataUri object, which comes
+        // back as __PHP_Incomplete_Class when the cache disallows unserializing
+        // objects (Laravel 13 default `cache.serializable_classes => false`).
+        $base64 = $this->cache->get($key);
+        if (is_string($base64) && $base64 !== '') {
             return $base64;
         }
 
         // Generate the avatar
         $this->buildAvatar();
-        $base64 = $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
+        $base64 = (string) $this->image->encodeUsingFormat(Format::PNG)->toDataUri();
 
         // Store in cache based on configured duration
         if ($this->cacheDuration === null) {
