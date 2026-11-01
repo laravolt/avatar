@@ -12,12 +12,16 @@ updates:
       dev-dependencies:
         dependency-type: development
         update-types: [minor, patch]
+    cooldown:
+      default-days: 14
 
   - package-ecosystem: github-actions
     directory: /
     target-branch: master
     schedule:
-      interval: monthly
+      interval: weekly
     groups:
       actions:
         patterns: ["*"]
+    cooldown:
+      default-days: 14
