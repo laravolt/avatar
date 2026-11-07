@@ -260,27 +260,27 @@ class Avatar
             $svg .= '<rect x="'.$x
                 .'" y="'.$y
                 .'" width="'.$width.'" height="'.$height
-                .'" stroke="'.$this->getBorderColor()
+                .'" stroke="'.$this->escapeSvg($this->getBorderColor())
                 .'" stroke-width="'.$this->borderSize
                 .'" rx="'.$this->borderRadius
-                .'" fill="'.$this->background.'" />';
+                .'" fill="'.$this->escapeSvg($this->background).'" />';
         } elseif ($this->shape === 'circle') {
             $svg .= '<circle cx="'.$center
                 .'" cy="'.$center
                 .'" r="'.$radius
-                .'" stroke="'.$this->getBorderColor()
+                .'" stroke="'.$this->escapeSvg($this->getBorderColor())
                 .'" stroke-width="'.$this->borderSize
-                .'" fill="'.$this->background.'" />';
+                .'" fill="'.$this->escapeSvg($this->background).'" />';
         }
 
         $svg .= '<text font-size="'.$this->fontSize;
 
         if ($this->fontFamily) {
-            $svg .= '" font-family="'.$this->fontFamily;
+            $svg .= '" font-family="'.$this->escapeSvg($this->fontFamily);
         }
 
-        $svg .= '" fill="'.$this->foreground.'" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">';
-        $svg .= $this->getInitial();
+        $svg .= '" fill="'.$this->escapeSvg($this->foreground).'" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">';
+        $svg .= $this->escapeSvg($this->getInitial());
         $svg .= '</text>';
 
         $svg .= '</svg>';
@@ -439,12 +439,24 @@ class Avatar
             'height',
             'borderSize',
             'borderColor',
+            'borderRadius',
+            'background',
+            'foreground',
+            'fontFamily',
         ];
         foreach ($attributes as $attr) {
-            $keys[] = $this->$attr;
+            $keys[$attr] = $this->$attr;
         }
 
-        return md5(implode('-', $keys));
+        return md5(serialize($keys));
+    }
+
+    /**
+     * Escape a value for SVG text content or a double-quoted attribute.
+     */
+    protected function escapeSvg(mixed $value): string
+    {
+        return htmlspecialchars((string) $value, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**

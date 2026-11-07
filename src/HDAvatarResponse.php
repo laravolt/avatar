@@ -71,10 +71,15 @@ class HDAvatarResponse extends Avatar
      */
     public function export(string $format = 'png', int $quality = 95): string
     {
-        $this->buildAvatar();
+        return $this->exportTo($this->exportPath.'/'.$this->generateFilename($format), $format, $quality);
+    }
 
-        $filename = $this->generateFilename($format);
-        $filepath = $this->exportPath.'/'.$filename;
+    /**
+     * Render the avatar and save it at the given storage path
+     */
+    protected function exportTo(string $filepath, string $format, int $quality = 95): string
+    {
+        $this->buildAvatar();
 
         // Ensure directory exists
         Storage::makeDirectory($this->exportPath);
@@ -199,22 +204,19 @@ class HDAvatarResponse extends Avatar
      */
     public function getCachedUrl(string $format = 'png', string $size = 'medium'): string
     {
-        $filename = $this->generateFilename($format, $size);
-        $filepath = $this->exportPath.'/'.$filename;
-
-        // Check if file exists in storage
-        if (Storage::exists($filepath)) {
-            return Storage::url($filepath);
-        }
-
-        // Generate and cache the file
+        // Apply the size first so the content hash describes the file we look up.
         if (isset($this->responsiveSizes[$size])) {
             $dimensions = $this->responsiveSizes[$size];
             $this->setDimension($dimensions['width'], $dimensions['height']);
             $this->setFontSize($dimensions['fontSize']);
         }
 
-        $this->export($format);
+        // Stable name (no timestamp) so a later call finds the same file.
+        $filepath = $this->exportPath.'/'.$this->generateContentHash()."_{$size}.{$format}";
+
+        if (! Storage::exists($filepath)) {
+            $this->exportTo($filepath, $format);
+        }
 
         return Storage::url($filepath);
     }

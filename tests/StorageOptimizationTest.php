@@ -71,6 +71,40 @@ class StorageOptimizationTest extends TestCase
         Cache::swap($cacheMock);
     }
 
+    public function test_zero_storage_limit_means_unlimited()
+    {
+        $storage = Mockery::mock();
+        $storage->shouldReceive('disk')->andReturnSelf();
+        $storage->shouldReceive('allFiles')->andReturn(['test-avatars/a.png', 'test-avatars/b.png']);
+        $storage->shouldReceive('size')->andReturn(1024);
+        $storage->shouldReceive('lastModified')->andReturn(time());
+        $storage->shouldNotReceive('delete');
+        Storage::swap($storage);
+
+        $reflection = new \ReflectionClass($this->avatar);
+        $limit = $reflection->getProperty('maxStorageSize');
+        $limit->setValue($this->avatar, 0);
+
+        $reflection->getMethod('checkStorageLimits')->invoke($this->avatar);
+        $this->assertSame([], $reflection->getMethod('cleanupLargeFiles')->invoke($this->avatar));
+        $this->assertSame(0.0, $this->avatar->getStorageStatistics()['usage_percentage']);
+    }
+
+    public function test_url_cache_key_includes_render_inputs_and_storage_location()
+    {
+        $reflection = new \ReflectionClass($this->avatar);
+        $key = $reflection->getMethod('generateCacheKey');
+
+        $first = $key->invoke($this->avatar, 'Jane Doe', 'png', []);
+
+        $this->avatar->setBackground('#123456');
+        $otherColour = $key->invoke($this->avatar, 'Jane Doe', 'png', []);
+        $this->assertNotSame($first, $otherColour);
+
+        $reflection->getProperty('storageDirectory')->setValue($this->avatar, 'other-avatars');
+        $this->assertNotSame($otherColour, $key->invoke($this->avatar, 'Jane Doe', 'png', []));
+    }
+
     public function test_storage_configuration()
     {
         $this->assertEquals('local', $this->avatar->getStorageDisk());
