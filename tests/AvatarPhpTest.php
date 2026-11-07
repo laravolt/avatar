@@ -407,11 +407,26 @@ class AvatarPhpTest extends \PHPUnit\Framework\TestCase
     }
 
     #[Test]
+    public function it_escapes_quotes_in_svg_attribute_values()
+    {
+        $svg = (new \Laravolt\Avatar\Avatar)->create('Andi Budiman')
+            ->setShape('square')
+            ->setBackground('#000" data-x="1')
+            ->setForeground('#fff')
+            ->setFontFamily('Inter" data-y="2')
+            ->toSvg();
+
+        $this->assertStringContainsString('fill="#000&quot; data-x=&quot;1"', $svg);
+        $this->assertStringContainsString('font-family="Inter&quot; data-y=&quot;2"', $svg);
+        $this->assertStringNotContainsString('data-x="1"', $svg);
+    }
+
+    #[Test]
     public function it_can_handle_html_entities()
     {
         $expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">';
         $expected .= '<circle cx="50" cy="50" r="45" stroke="yellow" stroke-width="10" fill="red" />';
-        $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">A&</text>';
+        $expected .= '<text font-size="24" fill="white" x="50%" y="50%" dy=".1em" style="line-height:1" alignment-baseline="middle" text-anchor="middle" dominant-baseline="central">A&amp;</text>';
         $expected .= '</svg>';
 
         $avatar = new \Laravolt\Avatar\Avatar;

@@ -235,6 +235,11 @@ trait StorageOptimization
     protected function cleanupLargeFiles(): array
     {
         $cleaned = [];
+
+        if (! $this->hasStorageLimit()) {
+            return $cleaned; // 0 (or less) means unlimited
+        }
+
         $currentSize = $this->getTotalStorageSize();
 
         if ($currentSize <= $this->maxStorageSize * 1024 * 1024) {
@@ -395,6 +400,10 @@ trait StorageOptimization
      */
     protected function checkStorageLimits(): void
     {
+        if (! $this->hasStorageLimit()) {
+            return; // 0 (or less) means unlimited
+        }
+
         $currentSize = $this->getTotalStorageSize();
         $limitBytes = $this->maxStorageSize * 1024 * 1024;
 
@@ -430,6 +439,15 @@ trait StorageOptimization
             'width' => $this->width,
             'height' => $this->height,
             'options' => $options,
+            'background' => $this->background,
+            'foreground' => $this->foreground,
+            'shape' => $this->shape,
+            'font' => $this->font,
+            'fontSize' => $this->fontSize,
+            'borderSize' => $this->borderSize,
+            'borderColor' => $this->borderColor,
+            'disk' => $this->storageDisk,
+            'directory' => $this->storageDirectory,
         ];
 
         return 'avatar_url_'.md5(serialize($data));
@@ -456,11 +474,21 @@ trait StorageOptimization
             'total_size_mb' => round($this->storageMetrics['total_size'] / 1024 / 1024, 2),
             'formats' => $this->storageMetrics['formats'],
             'storage_limit_mb' => $this->maxStorageSize,
-            'usage_percentage' => round(($this->storageMetrics['total_size'] / ($this->maxStorageSize * 1024 * 1024)) * 100, 2),
+            'usage_percentage' => $this->hasStorageLimit()
+                ? round(($this->storageMetrics['total_size'] / ($this->maxStorageSize * 1024 * 1024)) * 100, 2)
+                : 0.0,
             'last_updated' => $this->storageMetrics['last_updated'],
             'disk' => $this->storageDisk,
             'directory' => $this->storageDirectory,
         ];
+    }
+
+    /**
+     * Whether a storage quota applies. The config documents 0 as unlimited.
+     */
+    protected function hasStorageLimit(): bool
+    {
+        return $this->maxStorageSize > 0;
     }
 
     /**

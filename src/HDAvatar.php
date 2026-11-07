@@ -3,6 +3,7 @@
 namespace Laravolt\Avatar;
 
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Storage;
 use Laravolt\Avatar\Concerns\ImageExport;
 use Laravolt\Avatar\Concerns\StorageOptimization;
 
